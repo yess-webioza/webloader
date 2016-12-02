@@ -101,7 +101,7 @@ class Extension extends CompilerExtension
 		$builder->addDefinition($this->prefix('factory'))
 			->setClass('WebLoader\Nette\LoaderFactory', array($loaderFactoryTempPaths, $this->name));
 
-		if (class_exists('Symfony\Component\Console\Command')) {
+		if (class_exists('Symfony\Component\Console\Command\Command')) {
 			$builder->addDefinition($this->prefix('generateCommand'))
 				->setClass('WebLoader\Nette\SymfonyConsole\GenerateCommand')
 				->addTag('kdyby.console.command');

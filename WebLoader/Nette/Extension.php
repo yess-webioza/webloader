@@ -100,6 +100,12 @@ class Extension extends CompilerExtension
 
 		$builder->addDefinition($this->prefix('factory'))
 			->setClass('WebLoader\Nette\LoaderFactory', array($loaderFactoryTempPaths, $this->name));
+
+		if (class_exists('Symfony\Component\Console\Command')) {
+			$builder->addDefinition($this->prefix('generateCommand'))
+				->setClass('WebLoader\Nette\SymfonyConsole\GenerateCommand')
+				->addTag('kdyby.console.command');
+		}
 	}
 
 	private function addWebLoader(ContainerBuilder $builder, $name, $config)

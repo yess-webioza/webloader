@@ -37,24 +37,26 @@ class LoaderFactory
 
 	/**
 	 * @param string $name
+	 * @param bool $appendLastModified
 	 * @return \WebLoader\Nette\CssLoader
 	 */
-	public function createCssLoader($name)
+	public function createCssLoader($name, $appendLastModified = FALSE)
 	{
 		/** @var Compiler $compiler */
 		$compiler = $this->serviceLocator->getService($this->extensionName . '.css' . ucfirst($name) . 'Compiler');
-		return new CssLoader($compiler, $this->formatTempPath($name));
+		return new CssLoader($compiler, $this->formatTempPath($name), $appendLastModified);
 	}
 
 	/**
 	 * @param string $name
+	 * @param bool $appendLastModified
 	 * @return \WebLoader\Nette\JavaScriptLoader
 	 */
-	public function createJavaScriptLoader($name)
+	public function createJavaScriptLoader($name, $appendLastModified = FALSE)
 	{
 		/** @var Compiler $compiler */
 		$compiler = $this->serviceLocator->getService($this->extensionName . '.js' . ucfirst($name) . 'Compiler');
-		return new JavaScriptLoader($compiler, $this->formatTempPath($name));
+		return new JavaScriptLoader($compiler, $this->formatTempPath($name), $appendLastModified);
 	}
 
 	/**

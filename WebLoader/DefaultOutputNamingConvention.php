@@ -97,7 +97,12 @@ class DefaultOutputNamingConvention implements IOutputNamingConvention
 
 	protected function createHash(array $files, Compiler $compiler)
 	{
-		return substr(md5(implode("|", $files)), 0, 12);
+		$parts = $files;
+		foreach ($files as $file) {
+			$parts[] = @filemtime($file);
+		}
+
+		return substr(md5(implode('|', $parts)), 0, 12);
 	}
 
 }

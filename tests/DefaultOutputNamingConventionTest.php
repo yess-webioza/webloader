@@ -46,7 +46,7 @@ class DefaultOutputNamingConventionTest extends \PHPUnit_Framework_TestCase
 		);
 
 		$name = $this->object->getFilename($files, $this->compiler);
-		$this->assertRegExp('/^webloader-[0-9a-f]{12}-a$/', $name);
+		$this->assertRegExp('/^webloader-[0-9a-f]{12}$/', $name);
 	}
 
 	public function testCssConvention()
@@ -56,7 +56,7 @@ class DefaultOutputNamingConventionTest extends \PHPUnit_Framework_TestCase
 		);
 
 		$name = DefaultOutputNamingConvention::createCssConvention()->getFilename($files, $this->compiler);
-		$this->assertRegExp('/^cssloader-[0-9a-f]{12}-a.css$/', $name);
+		$this->assertRegExp('/^cssloader-[0-9a-f]{12}.css$/', $name);
 	}
 
 	public function testJsConvention()
@@ -66,7 +66,7 @@ class DefaultOutputNamingConventionTest extends \PHPUnit_Framework_TestCase
 		);
 
 		$name = DefaultOutputNamingConvention::createJsConvention()->getFilename($files, $this->compiler);
-		$this->assertRegExp('/^jsloader-[0-9a-f]{12}-a.js$/', $name);
+		$this->assertRegExp('/^jsloader-[0-9a-f]{12}.js$/', $name);
 	}
 
 }

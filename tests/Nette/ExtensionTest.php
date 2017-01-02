@@ -2,7 +2,9 @@
 
 namespace WebLoader\Test\Nette;
 
+use WebLoader\Path;
 use Nette\Utils\Finder;
+
 
 class ExtensionTest extends \PHPUnit_Framework_TestCase
 {
@@ -47,8 +49,8 @@ class ExtensionTest extends \PHPUnit_Framework_TestCase
 		$this->prepareContainer(array(__DIR__ . '/../fixtures/extension.neon'));
 		$files = $this->container->getService('webloader.jsExcludeCompiler')->getFileCollection()->getFiles();
 
-		$this->assertTrue(in_array(realpath(__DIR__ . '/../fixtures/a.txt'), $files));
-		$this->assertFalse(in_array(realpath(__DIR__ . '/../fixtures/dir/one.js'), $files));
+		$this->assertTrue(in_array(Path::normalize(__DIR__ . '/../fixtures/a.txt'), $files));
+		$this->assertFalse(in_array(Path::normalize(__DIR__ . '/../fixtures/dir/one.js'), $files));
 	}
 
 	public function testJoinFilesOn()

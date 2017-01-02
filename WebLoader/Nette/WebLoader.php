@@ -20,11 +20,15 @@ abstract class WebLoader extends \Nette\Application\UI\Control
 	/** @var string */
 	private $tempPath;
 
-	public function __construct(Compiler $compiler, $tempPath)
+	/** @var bool */
+	private $appendLastModified;
+
+	public function __construct(Compiler $compiler, $tempPath, $appendLastModified)
 	{
 		parent::__construct();
 		$this->compiler = $compiler;
 		$this->tempPath = $tempPath;
+		$this->appendLastModified = $appendLastModified;
 	}
 
 	/**
@@ -96,7 +100,13 @@ abstract class WebLoader extends \Nette\Application\UI\Control
 
 	protected function getGeneratedFilePath($file)
 	{
-		return $this->tempPath . '/' . $file->file . '?' . $file->lastModified;
+		$path = $this->tempPath . '/' . $file->file;
+
+		if ($this->appendLastModified) {
+			$path .= '?' . $file->lastModified;
+		}
+
+		return $path;
 	}
 
 }

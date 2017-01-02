@@ -173,10 +173,9 @@ class Compiler
 
 	/**
 	 * Load content and save file
-	 * @param bool $ifModified
 	 * @return array filenames of generated files
 	 */
-	public function generate($ifModified = TRUE)
+	public function generate()
 	{
 		$files = $this->collection->getFiles();
 
@@ -188,7 +187,7 @@ class Compiler
 			$watchFiles = $this->checkLastModified ? array_unique(array_merge($files, $this->collection->getWatchFiles())) : array();
 
 			return array(
-				$this->generateFiles($files, $ifModified, $watchFiles),
+				$this->generateFiles($files, $watchFiles),
 			);
 
 		} else {
@@ -196,20 +195,20 @@ class Compiler
 
 			foreach ($files as $file) {
 				$watchFiles = $this->checkLastModified ? array_unique(array_merge(array($file), $this->collection->getWatchFiles())) : array();
-				$arr[] = $this->generateFiles(array($file), $ifModified, $watchFiles);
+				$arr[] = $this->generateFiles(array($file), $watchFiles);
 			}
 
 			return $arr;
 		}
 	}
 
-	protected function generateFiles(array $files, $ifModified, array $watchFiles = array())
+	protected function generateFiles(array $files, array $watchFiles = array())
 	{
 		$name = $this->namingConvention->getFilename($files, $this);
 		$path = $this->outputDir . '/' . $name;
 		$lastModified = $this->checkLastModified ? $this->getLastModified($watchFiles) : 0;
 
-		if (!$ifModified || !file_exists($path) || $lastModified > filemtime($path) || $this->debugging === TRUE) {
+		if (!file_exists($path) || $lastModified > filemtime($path) || $this->debugging === TRUE) {
 			$outPath = in_array('safe', stream_get_wrappers()) ? 'safe://' . $path : $path;
 			file_put_contents($outPath, $this->getContent($files));
 		}

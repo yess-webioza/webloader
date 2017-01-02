@@ -11,7 +11,7 @@ class DefaultOutputNamingConvention implements IOutputNamingConvention
 {
 
 	/** @var string */
-	private $prefix = 'webloader-';
+	private $prefix = '';
 
 	/** @var string */
 	private $suffix = '';
@@ -22,7 +22,6 @@ class DefaultOutputNamingConvention implements IOutputNamingConvention
 	public static function createCssConvention()
 	{
 		$convention = new static();
-		$convention->setPrefix('cssloader-');
 		$convention->setSuffix('.css');
 
 		return $convention;
@@ -34,7 +33,6 @@ class DefaultOutputNamingConvention implements IOutputNamingConvention
 	public static function createJsConvention()
 	{
 		$convention = new static();
-		$convention->setPrefix('jsloader-');
 		$convention->setSuffix('.js');
 
 		return $convention;

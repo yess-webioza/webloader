@@ -140,7 +140,7 @@ class Extension extends CompilerExtension
 
 		$compiler->addSetup('setJoinFiles', array($config['joinFiles']))
 			->addSetup('setAsync', array($config['async']))
-			->addSetup('setDefer', array($config['defer']));
+			->addSetup('setDefer', array($config['defer']))
 			->addSetup('setNonce', array($config['nonce']));
 
 		if ($builder->parameters['webloader']['debugger']) {

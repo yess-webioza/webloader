@@ -23,6 +23,8 @@ class JavaScriptLoader extends WebLoader
 		$el = Html::el("script");
 		$this->getCompiler()->isAsync() ? $el = $el->addAttributes(['async' => TRUE]) : NULL;
 		$this->getCompiler()->isDefer() ? $el = $el->addAttributes(['defer' => TRUE]) : NULL;
+		($nonce = $this->getCompiler()->getNonce()) ? $el = $el->addAttributes(['nonce' => $nonce]) : NULL;
+
 		return $el->type("text/javascript")->src($source);
 	}
 

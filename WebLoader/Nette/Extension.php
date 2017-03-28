@@ -39,6 +39,7 @@ class Extension extends CompilerExtension
 				'joinFiles' => TRUE,
 				'async' => FALSE,
 				'defer' => FALSE,
+				'nonce' => NULL,
 				'namingConvention' => '@' . $this->prefix('jsNamingConvention'),
 			),
 			'cssDefaults' => array(
@@ -55,6 +56,7 @@ class Extension extends CompilerExtension
 				'joinFiles' => TRUE,
 				'async' => FALSE,
 				'defer' => FALSE,
+				'nonce' => NULL,
 				'namingConvention' => '@' . $this->prefix('cssNamingConvention'),
 			),
 			'js' => array(
@@ -102,6 +104,12 @@ class Extension extends CompilerExtension
 
 		$builder->addDefinition($this->prefix('factory'))
 			->setClass('WebLoader\Nette\LoaderFactory', array($loaderFactoryTempPaths, $this->name));
+
+		if (class_exists('Symfony\Component\Console\Command\Command')) {
+			$builder->addDefinition($this->prefix('generateCommand'))
+				->setClass('WebLoader\Nette\SymfonyConsole\GenerateCommand')
+				->addTag('kdyby.console.command');
+		}
 	}
 
 	private function addWebLoader(ContainerBuilder $builder, $name, $config)
@@ -133,6 +141,7 @@ class Extension extends CompilerExtension
 		$compiler->addSetup('setJoinFiles', array($config['joinFiles']))
 			->addSetup('setAsync', array($config['async']))
 			->addSetup('setDefer', array($config['defer']));
+			->addSetup('setNonce', array($config['nonce']));
 
 		if ($builder->parameters['webloader']['debugger']) {
 			$compiler->addSetup('@' . $this->prefix('tracyPanel') . '::addLoader', array(

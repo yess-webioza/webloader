@@ -25,7 +25,7 @@ class JavaScriptLoader extends WebLoader
 		$this->getCompiler()->isDefer() ? $el = $el->addAttributes(['defer' => TRUE]) : NULL;
 		($nonce = $this->getCompiler()->getNonce()) ? $el = $el->addAttributes(['nonce' => $nonce]) : NULL;
 
-		return $el->type("text/javascript")->src($source);
+		return $el->src($source);
 	}
 
 }

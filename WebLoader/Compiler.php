@@ -43,6 +43,9 @@ class Compiler
 	/** @var string */
 	private $nonce = NULL;
 
+	/** @var bool */
+	private $absoluteUrl = FALSE;
+
 	public function __construct(IFileCollection $files, IOutputNamingConvention $convention, $outputDir)
 	{
 		$this->collection = $files;
@@ -175,6 +178,25 @@ class Compiler
 	public function setDefer($defer)
 	{
 		$this->defer = $defer;
+		return $this;
+	}
+
+
+	/**
+	 * @return boolean
+	 */
+	public function isAbsoluteUrl()
+	{
+		return $this->absoluteUrl;
+	}
+
+	/**
+	 * @param boolean $absoluteUrl
+	 * @return Compiler
+	 */
+	public function setAbsoluteUrl($absoluteUrl)
+	{
+		$this->absoluteUrl = $absoluteUrl;
 		return $this;
 	}
 

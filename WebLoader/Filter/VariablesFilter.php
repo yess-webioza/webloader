@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace WebLoader\Filter;
 
 /**
@@ -24,7 +26,7 @@ class VariablesFilter
 	 * Construct
 	 * @param array $variables
 	 */
-	public function __construct(array $variables = array())
+	public function __construct(array $variables = [])
 	{
 		foreach ($variables as $key => $value) {
 			$this->$key = $value;
@@ -35,12 +37,12 @@ class VariablesFilter
 	 * Set delimiter
 	 * @param string $start
 	 * @param string $end
-	 * @return VariablesFilter
+	 * @return \WebLoader\Filter\VariablesFilter
 	 */
-	public function setDelimiter($start, $end)
+	public function setDelimiter(string $start, string $end): VariablesFilter
 	{
-		$this->startVariable = (string)$start;
-		$this->endVariable = (string)$end;
+		$this->startVariable = (string) $start;
+		$this->endVariable = (string) $end;
 		return $this;
 	}
 
@@ -49,7 +51,7 @@ class VariablesFilter
 	 * @param string $code
 	 * @return string
 	 */
-	public function __invoke($code)
+	public function __invoke(string $code): string
 	{
 		$start = $this->startVariable;
 		$end = $this->endVariable;
@@ -68,7 +70,7 @@ class VariablesFilter
 	 * @param string $name
 	 * @param string $value
 	 */
-	public function __set($name, $value)
+	public function __set(string $name, string $value): void
 	{
 		$this->variables[$name] = (string) $value;
 	}
@@ -79,7 +81,7 @@ class VariablesFilter
 	 * @return string
 	 * @throws \WebLoader\InvalidArgumentException
 	 */
-	public function & __get($name)
+	public function & __get(string $name): string
 	{
 		if (array_key_exists($name, $this->variables)) {
 			return $this->variables[$name];

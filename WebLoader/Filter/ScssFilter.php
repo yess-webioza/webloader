@@ -1,6 +1,10 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace WebLoader\Filter;
+
+use Leafo\ScssPhp\Compiler;
 
 /**
  * Scss CSS filter
@@ -16,7 +20,7 @@ class ScssFilter
 	 */
 	private $sc;
 
-	public function __construct(\Leafo\ScssPhp\Compiler $sc = NULL)
+	public function __construct(?Compiler $sc = null)
 	{
 		$this->sc = $sc;
 	}
@@ -28,7 +32,7 @@ class ScssFilter
 	{
 		// lazy loading
 		if (empty($this->sc)) {
-			$this->sc = new \Leafo\ScssPhp\Compiler();
+			$this->sc = new Compiler();
 		}
 
 		return $this->sc;
@@ -41,10 +45,10 @@ class ScssFilter
 	 * @param string $file
 	 * @return string
 	 */
-	public function __invoke($code, \WebLoader\Compiler $loader, $file)
+	public function __invoke(string $code, \WebLoader\Compiler $loader, string $file): string
 	{
 		if (pathinfo($file, PATHINFO_EXTENSION) === 'scss') {
-			$this->getScssC()->setImportPaths(array('', pathinfo($file, PATHINFO_DIRNAME) . '/'));
+			$this->getScssC()->setImportPaths(['', pathinfo($file, PATHINFO_DIRNAME) . '/']);
 			return $this->getScssC()->compile($code);
 		}
 

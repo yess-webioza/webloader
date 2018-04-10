@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace WebLoader\Filter;
 
 /**
@@ -19,15 +21,15 @@ class Process
 	 * @return string
 	 * @throws \RuntimeExeption
 	 */
-	public static function run($cmd, $stdin = NULL, $cwd = NULL, array $env = NULL)
+	public static function run(string $cmd, ?string $stdin = null, ?string $cwd = null, ?array $env = null): string
 	{
-		$descriptorspec = array(
-			0 => array('pipe', 'r'), // stdin
-			1 => array('pipe', 'w'), // stdout
-			2 => array('pipe', 'w'), // stderr
-		);
+		$descriptorspec = [
+			0 => ['pipe', 'r'], // stdin
+			1 => ['pipe', 'w'], // stdout
+			2 => ['pipe', 'w'], // stderr
+		];
 
-		$pipes = array();
+		$pipes = [];
 		$proc = proc_open($cmd, $descriptorspec, $pipes, $cwd, $env);
 
 		if (!empty($stdin)) {
@@ -40,7 +42,7 @@ class Process
 
 		$code = proc_close($proc);
 
-		if ($code != 0) {
+		if ($code !== 0) {
 			throw new \RuntimeException($stderr, $code);
 		}
 

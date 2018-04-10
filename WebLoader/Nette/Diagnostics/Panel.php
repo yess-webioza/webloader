@@ -1,33 +1,32 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace WebLoader\Nette\Diagnostics;
 
+use Latte;
 use Latte\Runtime\Filters;
 use Tracy\Debugger;
-use Tracy\IBarPanel;
 use WebLoader\Compiler;
-use Latte;
-
-
 
 /**
  * Debugger panel.
  * @author Adam Klvač
  */
-class Panel implements IBarPanel
+class Panel implements \Tracy\IBarPanel
 {
 
 	/** @var array */
-	public static $types = array(
+	public static $types = [
 		'css' => 'CSS files',
 		'js' => 'JavaScript files',
 		'less' => 'Less files',
 		'scss' => 'Sass files',
-		'coffee' => 'CoffeeScript files'
-	);
+		'coffee' => 'CoffeeScript files',
+	];
 
-	/** @var Compiler[] */
-	private $compilers = array();
+	/** @var \WebLoader\Compiler[] */
+	private $compilers = [];
 
 	/** @var array */
 	private $size;
@@ -41,10 +40,7 @@ class Panel implements IBarPanel
 	/** @var string */
 	private $root;
 
-	/**
-	 * @param string
-	 */
-	public function __construct($appDir = NULL)
+	public function __construct(?string $appDir = null)
 	{
 		$this->root = $appDir ? str_replace('\\', DIRECTORY_SEPARATOR, realpath(dirname($appDir))) : '';
 		Debugger::getBar()->addPanel($this);
@@ -54,10 +50,10 @@ class Panel implements IBarPanel
 	 * Registers a compiler.
 	 *
 	 * @param string $name
-	 * @param Compiler $compiler
-	 * @return Panel
+	 * @param \WebLoader\Compiler $compiler
+	 * @return \WebLoader\Nette\Diagnostics\Panel
 	 */
-	public function addLoader($name, Compiler $compiler)
+	public function addLoader(string $name, Compiler $compiler): Panel
 	{
 		$this->compilers[$name] = $compiler;
 		return $this;
@@ -67,26 +63,26 @@ class Panel implements IBarPanel
 	 * Computes the info.
 	 * @return array
 	 */
-	private function compute()
+	private function compute(): array
 	{
-		if ($this->size !== NULL) {
+		if ($this->size !== null) {
 			return $this->size;
 		}
 
-		$size = array(
+		$size = [
 			'original' => 0,
-			'combined' => 0
-		);
-		$this->files = $this->sizes = array();
+			'combined' => 0,
+		];
+		$this->files = $this->sizes = [];
 
 		foreach ($this->compilers as $name => $compiler) {
 			$group = lcfirst(substr($name, $name[0] === 'c' ? 3 : 2));
 
 			if (!isset($this->files[$group])) {
-				$this->files[$group] = array();
+				$this->files[$group] = [];
 			}
 			if (!isset($this->sizes[$group])) {
-				$this->sizes[$group] = array('.' => array('original' => 0, 'combined' => 0));
+				$this->sizes[$group] = ['.' => ['original' => 0, 'combined' => 0]];
 			}
 
 			$compilerCombinedSize = 0;
@@ -96,23 +92,22 @@ class Panel implements IBarPanel
 				$compilerCombinedSize += $generatedSize;
 
 				foreach ($generated->sourceFiles as $file) {
-                                    
-                                    
+
 					$extension = strtolower(pathinfo($file, PATHINFO_EXTENSION));
 					$file = str_replace('\\', DIRECTORY_SEPARATOR, realpath($file));
 
 					if (!isset($this->files[$group][$extension])) {
-						$this->files[$group][$extension] = array();
+						$this->files[$group][$extension] = [];
 					}
 					if (!isset($this->sizes[$group][$extension])) {
-						$this->sizes[$group][$extension] = array('original' => 0);
+						$this->sizes[$group][$extension] = ['original' => 0];
 					}
-                                        
-					$this->files[$group][$extension][] = array(
-							'name' => basename($file),
-							'full' => $file,
-							'size' => $fileSize = filesize($file)
-					);
+
+					$this->files[$group][$extension][] = [
+						'name' => basename($file),
+						'full' => $file,
+						'size' => $fileSize = filesize($file),
+					];
 
 					$size['original'] += $fileSize;
 					$this->sizes[$group][$extension]['original'] += $fileSize;
@@ -123,33 +118,33 @@ class Panel implements IBarPanel
 			$this->sizes[$group]['.']['combined'] += $compilerCombinedSize;
 		}
 
-		return $this->size = $size + array('ratio' => $size['original'] !== 0 ? ($size['combined'] / $size['original']) * 100 : 0);
+		return $this->size = $size + ['ratio' => $size['original'] !== 0 ? ($size['combined'] / $size['original']) * 100 : 0];
 	}
 
 	/**
 	 * Renders loaded files table.
 	 * @return string
 	 */
-	private function getTable()
+	private function getTable(): string
 	{
 		$latte = new Latte\Engine;
 
-		$latte->addFilter('extension', function($extension) {
+		$latte->addFilter('extension', function ($extension) {
 			return isset(Panel::$types[$extension]) ? Panel::$types[$extension] : $extension;
 		});
 
-		return $latte->renderToString(__DIR__ . '/panel.latte', array(
+		return $latte->renderToString(__DIR__ . '/panel.latte', [
 			'files' => $this->files,
 			'sizes' => $this->sizes,
-			'size' => $this->size
-		));
+			'size' => $this->size,
+		]);
 	}
 
 	/**
 	 * Returns panel content.
 	 * @return string
 	 */
-	public function getPanel()
+	public function getPanel(): string
 	{
 		return $this->compute() ? $this->getTable() : '';
 	}
@@ -158,7 +153,7 @@ class Panel implements IBarPanel
 	 * Returns panel tab.
 	 * @return string
 	 */
-	public function getTab()
+	public function getTab(): string
 	{
 		$this->compute();
 

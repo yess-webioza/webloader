@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace WebLoader;
 
 class Path
@@ -10,7 +12,7 @@ class Path
 		$path = strtr($path, '\\', '/');
 		$root = (strpos($path, '/') === 0) ? '/' : '';
 		$pieces = explode('/', trim($path, '/'));
-		$res = array();
+		$res = [];
 
 		foreach ($pieces as $piece) {
 			if ($piece === '.' || $piece === '') {

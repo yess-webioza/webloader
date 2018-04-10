@@ -87,7 +87,7 @@ class Compiler
 		return $this->nonce;
 	}
 
-	public function setNonce(string $nonce): void
+	public function setNonce(?string $nonce): void
 	{
 			$this->nonce = $nonce;
 	}
@@ -311,7 +311,7 @@ class Compiler
 		$this->namingConvention = $namingConvention;
 	}
 
-	public function addFilter(callback $filter): void
+	public function addFilter($filter): void
 	{
 		if (!is_callable($filter)) {
 			throw new \WebLoader\InvalidArgumentException('Filter is not callable.');

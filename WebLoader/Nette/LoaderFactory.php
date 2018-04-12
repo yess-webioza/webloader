@@ -44,7 +44,7 @@ class LoaderFactory
 	{
 		/** @var Compiler $compiler */
 		$compiler = $this->serviceLocator->getService($this->extensionName . '.css' . ucfirst($name) . 'Compiler');
-		return new CssLoader($compiler, $this->formatTempPath($name), $appendLastModified);
+		return new CssLoader($compiler, $this->formatTempPath($name, $compiler->isAbsoluteUrl()), $appendLastModified);
 	}
 
 	/**
@@ -56,18 +56,19 @@ class LoaderFactory
 	{
 		/** @var Compiler $compiler */
 		$compiler = $this->serviceLocator->getService($this->extensionName . '.js' . ucfirst($name) . 'Compiler');
-		return new JavaScriptLoader($compiler, $this->formatTempPath($name), $appendLastModified);
+		return new JavaScriptLoader($compiler, $this->formatTempPath($name, $compiler->isAbsoluteUrl()), $appendLastModified);
 	}
 
 	/**
 	 * @param string $name
 	 * @return string
 	 */
-	private function formatTempPath($name)
+	private function formatTempPath($name, $absoluteUrl = FALSE)
 	{
 		$lName = strtolower($name);
 		$tempPath = isset($this->tempPaths[$lName]) ? $this->tempPaths[$lName] : Extension::DEFAULT_TEMP_PATH;
-		return rtrim($this->httpRequest->getUrl()->basePath, '/') . '/' . $tempPath;
+		$method = $absoluteUrl ? 'getBaseUrl' : 'getBasePath';
+		return rtrim($this->httpRequest->getUrl()->{$method}(), '/') . '/' . $tempPath;
 	}
 
 }

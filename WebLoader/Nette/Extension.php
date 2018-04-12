@@ -40,6 +40,7 @@ class Extension extends CompilerExtension
 				'async' => FALSE,
 				'defer' => FALSE,
 				'nonce' => NULL,
+				'absoluteUrl' => FALSE,
 				'namingConvention' => '@' . $this->prefix('jsNamingConvention'),
 			),
 			'cssDefaults' => array(
@@ -57,6 +58,7 @@ class Extension extends CompilerExtension
 				'async' => FALSE,
 				'defer' => FALSE,
 				'nonce' => NULL,
+				'absoluteUrl' => FALSE,
 				'namingConvention' => '@' . $this->prefix('cssNamingConvention'),
 			),
 			'js' => array(
@@ -138,10 +140,12 @@ class Extension extends CompilerExtension
 				$config['tempDir'],
 			));
 
-		$compiler->addSetup('setJoinFiles', array($config['joinFiles']))
+		$compiler
+			->addSetup('setJoinFiles', array($config['joinFiles']))
 			->addSetup('setAsync', array($config['async']))
 			->addSetup('setDefer', array($config['defer']))
-			->addSetup('setNonce', array($config['nonce']));
+			->addSetup('setNonce', array($config['nonce']))
+			->addSetup('setAbsoluteUrl', array($config['absoluteUrl']));
 
 		if ($builder->parameters['webloader']['debugger']) {
 			$compiler->addSetup('@' . $this->prefix('tracyPanel') . '::addLoader', array(

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace WebLoader;
 
 /**
@@ -7,7 +9,7 @@ namespace WebLoader;
  *
  * @author Jan Marek
  */
-class FileNotFoundException extends WebLoaderException
+class FileNotFoundException extends \WebLoader\WebLoaderException
 {
 
 }

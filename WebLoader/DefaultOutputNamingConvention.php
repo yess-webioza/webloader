@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace WebLoader;
 
 /**
@@ -7,7 +9,7 @@ namespace WebLoader;
  *
  * @author Jan Marek
  */
-class DefaultOutputNamingConvention implements IOutputNamingConvention
+class DefaultOutputNamingConvention implements \WebLoader\IOutputNamingConvention
 {
 
 	/** @var string */
@@ -16,10 +18,7 @@ class DefaultOutputNamingConvention implements IOutputNamingConvention
 	/** @var string */
 	private $suffix = '';
 
-	/**
-	 * @return DefaultOutputNamingConvention
-	 */
-	public static function createCssConvention()
+	public static function createCssConvention(): DefaultOutputNamingConvention
 	{
 		$convention = new static();
 		$convention->setSuffix('.css');
@@ -27,10 +26,7 @@ class DefaultOutputNamingConvention implements IOutputNamingConvention
 		return $convention;
 	}
 
-	/**
-	 * @return DefaultOutputNamingConvention
-	 */
-	public static function createJsConvention()
+	public static function createJsConvention(): DefaultOutputNamingConvention
 	{
 		$convention = new static();
 		$convention->setSuffix('.js');
@@ -42,7 +38,7 @@ class DefaultOutputNamingConvention implements IOutputNamingConvention
 	 * Get generated file name prefix
 	 * @return string
 	 */
-	public function getPrefix()
+	public function getPrefix(): string
 	{
 		return $this->prefix;
 	}
@@ -51,7 +47,7 @@ class DefaultOutputNamingConvention implements IOutputNamingConvention
 	 * Set generated file name prefix
 	 * @param string $prefix generated file name prefix
 	 */
-	public function setPrefix($prefix)
+	public function setPrefix(string $prefix): void
 	{
 		$this->prefix = (string) $prefix;
 	}
@@ -61,7 +57,7 @@ class DefaultOutputNamingConvention implements IOutputNamingConvention
 	 * Get generated file name suffix
 	 * @return string
 	 */
-	public function getSuffix()
+	public function getSuffix(): string
 	{
 		return $this->suffix;
 	}
@@ -71,7 +67,7 @@ class DefaultOutputNamingConvention implements IOutputNamingConvention
 	 * Set generated file name suffix
 	 * @param string $suffix generated file name suffix
 	 */
-	public function setSuffix($suffix)
+	public function setSuffix(string $suffix): void
 	{
 		$this->suffix = (string) $suffix;
 	}
@@ -82,7 +78,7 @@ class DefaultOutputNamingConvention implements IOutputNamingConvention
 	 * @param \WebLoader\Compiler $compiler
 	 * @return string
 	 */
-	public function getFilename(array $files, Compiler $compiler)
+	public function getFilename(array $files, Compiler $compiler): string
 	{
 		return $this->prefix . $this->createHash($files, $compiler) . $this->suffix;
 	}

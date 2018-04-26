@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace WebLoader;
 
 /**
@@ -7,25 +9,25 @@ namespace WebLoader;
  *
  * @author Jan Marek
  */
-class FileCollection implements IFileCollection
+class FileCollection implements \WebLoader\IFileCollection
 {
 
 	/** @var string */
 	private $root;
 
 	/** @var array */
-	private $files = array();
+	private $files = [];
 
 	/** @var array */
-	private $watchFiles = array();
+	private $watchFiles = [];
 
 	/** @var array */
-	private $remoteFiles = array();
+	private $remoteFiles = [];
 
 	/**
 	 * @param string|null $root files root for relative paths
 	 */
-	public function __construct($root = NULL)
+	public function __construct(?string $root = null)
 	{
 		$this->root = $root;
 	}
@@ -34,7 +36,7 @@ class FileCollection implements IFileCollection
 	 * Get file list
 	 * @return array
 	 */
-	public function getFiles()
+	public function getFiles(): array
 	{
 		return array_values($this->files);
 	}
@@ -45,9 +47,9 @@ class FileCollection implements IFileCollection
 	 * @throws \WebLoader\FileNotFoundException
 	 * @return string
 	 */
-	public function cannonicalizePath($path)
+	public function cannonicalizePath($path): string
 	{
-		$rel = Path::normalize($this->root . "/" . $path);
+		$rel = Path::normalize($this->root . '/' . $path);
 		if (file_exists($rel)) {
 			return $rel;
 		}
@@ -57,7 +59,7 @@ class FileCollection implements IFileCollection
 			return $abs;
 		}
 
-		throw new FileNotFoundException("File '$path' does not exist.");
+		throw new \WebLoader\FileNotFoundException("File '$path' does not exist.");
 	}
 
 
@@ -65,11 +67,11 @@ class FileCollection implements IFileCollection
 	 * Add file
 	 * @param $file string filename
 	 */
-	public function addFile($file)
+	public function addFile($file): void
 	{
 		$file = $this->cannonicalizePath((string) $file);
 
-		if (in_array($file, $this->files, TRUE)) {
+		if (in_array($file, $this->files, true)) {
 			return;
 		}
 
@@ -81,7 +83,7 @@ class FileCollection implements IFileCollection
 	 * Add files
 	 * @param array|\Traversable $files array list of files
 	 */
-	public function addFiles($files)
+	public function addFiles($files): void
 	{
 		foreach ($files as $file) {
 			$this->addFile($file);
@@ -93,9 +95,9 @@ class FileCollection implements IFileCollection
 	 * Remove file
 	 * @param $file string filename
 	 */
-	public function removeFile($file)
+	public function removeFile($file): void
 	{
-		$this->removeFiles(array($file));
+		$this->removeFiles([$file]);
 	}
 
 
@@ -103,9 +105,9 @@ class FileCollection implements IFileCollection
 	 * Remove files
 	 * @param array $files list of files
 	 */
-	public function removeFiles(array $files)
+	public function removeFiles(array $files): void
 	{
-		$files = array_map(array($this, 'cannonicalizePath'), $files);
+		$files = array_map([$this, 'cannonicalizePath'], $files);
 		$this->files = array_diff($this->files, $files);
 	}
 
@@ -114,7 +116,7 @@ class FileCollection implements IFileCollection
 	 * Add file in remote repository (for example Google CDN).
 	 * @param string $file URL address
 	 */
-	public function addRemoteFile($file)
+	public function addRemoteFile(string $file): void
 	{
 		if (in_array($file, $this->remoteFiles)) {
 			return;
@@ -127,7 +129,7 @@ class FileCollection implements IFileCollection
 	 * Add multiple remote files
 	 * @param array|\Traversable $files
 	 */
-	public function addRemoteFiles($files)
+	public function addRemoteFiles($files): void
 	{
 		foreach ($files as $file) {
 			$this->addRemoteFile($file);
@@ -137,25 +139,22 @@ class FileCollection implements IFileCollection
 	/**
 	 * Remove all files
 	 */
-	public function clear()
+	public function clear(): void
 	{
-		$this->files = array();
-		$this->watchFiles = array();
-		$this->remoteFiles = array();
+		$this->files = [];
+		$this->watchFiles = [];
+		$this->remoteFiles = [];
 	}
 
 	/**
 	 * @return array
 	 */
-	public function getRemoteFiles()
+	public function getRemoteFiles(): array
 	{
 		return $this->remoteFiles;
 	}
 
-	/**
-	 * @return string
-	 */
-	public function getRoot()
+	public function getRoot(): string
 	{
 		return $this->root;
 	}
@@ -164,11 +163,11 @@ class FileCollection implements IFileCollection
 	 * Add watch file
 	 * @param $file string filename
 	 */
-	public function addWatchFile($file)
+	public function addWatchFile($file): void
 	{
 		$file = $this->cannonicalizePath((string) $file);
 
-		if (in_array($file, $this->watchFiles, TRUE)) {
+		if (in_array($file, $this->watchFiles, true)) {
 			return;
 		}
 
@@ -179,7 +178,7 @@ class FileCollection implements IFileCollection
 	 * Add watch files
 	 * @param array|\Traversable $files array list of files
 	 */
-	public function addWatchFiles($files)
+	public function addWatchFiles($files): void
 	{
 		foreach ($files as $file) {
 			$this->addWatchFile($file);
@@ -190,8 +189,9 @@ class FileCollection implements IFileCollection
 	 * Get watch file list
 	 * @return array
 	 */
-	public function getWatchFiles()
+	public function getWatchFiles(): array
 	{
 		return array_values($this->watchFiles);
 	}
+
 }

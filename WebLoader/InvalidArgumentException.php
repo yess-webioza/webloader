@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace WebLoader;
 
 /**
@@ -7,7 +9,7 @@ namespace WebLoader;
  *
  * @author Jan Marek
  */
-class InvalidArgumentException extends WebLoaderException
+class InvalidArgumentException extends \WebLoader\WebLoaderException
 {
 
 }

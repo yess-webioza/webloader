@@ -1,6 +1,10 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace WebLoader\Filter;
+
+use WebLoader\Compiler;
 
 /**
  * Coffee script filter
@@ -11,16 +15,13 @@ namespace WebLoader\Filter;
 class CoffeeScriptFilter
 {
 
-	/** @var path to coffee bin */
+	/** @var \WebLoader\Filter\path to coffee bin */
 	private $bin;
 
 	/** @var bool */
-	public $bare = FALSE;
+	public $bare = false;
 
-	/**
-	 * @param string
-	 */
-	public function __construct($bin = 'coffee')
+	public function __construct(string $bin = 'coffee')
 	{
 		$this->bin = $bin;
 	}
@@ -33,7 +34,7 @@ class CoffeeScriptFilter
 	 * @param string
 	 * @return string
 	 */
-	public function __invoke($code, \WebLoader\Compiler $loader, $file = NULL)
+	public function __invoke(string $code, Compiler $loader, ?string $file = null): string
 	{
 		if (pathinfo($file, PATHINFO_EXTENSION) === 'coffee') {
 			$code = $this->compileCoffee($code);
@@ -42,12 +43,7 @@ class CoffeeScriptFilter
 		return $code;
 	}
 
-	/**
-	 * @param string
-	 * @param bool|NULL
-	 * @return string
-	 */
-	public function compileCoffee($source, $bare = NULL)
+	public function compileCoffee(string $source, ?bool $bare = null): string
 	{
 		if (is_null($bare)) {
 			$bare = $this->bare;

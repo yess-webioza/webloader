@@ -1,6 +1,10 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace WebLoader\Filter;
+
+use WebLoader\Compiler;
 
 /**
  * Stylus filter
@@ -15,15 +19,12 @@ class StylusFilter
 	private $bin;
 
 	/** @var bool */
-	public $compress = FALSE;
+	public $compress = false;
 
 	/** @var bool */
-	public $includeCss = FALSE;
+	public $includeCss = false;
 
-	/**
-	 * @param string
-	 */
-	public function __construct($bin = 'stylus')
+	public function __construct(string $bin = 'stylus')
 	{
 		$this->bin = $bin;
 	}
@@ -36,7 +37,7 @@ class StylusFilter
 	 * @param string
 	 * @return string
 	 */
-	public function __invoke($code, \WebLoader\Compiler $loader, $file = NULL)
+	public function __invoke(string $code, Compiler $loader, ?string $file = null): string
 	{
 		if (pathinfo($file, PATHINFO_EXTENSION) === 'styl') {
 			$path =

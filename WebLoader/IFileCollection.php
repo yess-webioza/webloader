@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace WebLoader;
 
 /**
@@ -8,23 +10,21 @@ namespace WebLoader;
 interface IFileCollection
 {
 
-	/**
-	 * @return string
-	 */
-	public function getRoot();
+	public function getRoot(): string;
 
 	/**
 	 * @return array
 	 */
-	public function getFiles();
+	public function getFiles(): array;
 
 	/**
 	 * @return array
 	 */
-	public function getRemoteFiles();
+	public function getRemoteFiles(): array;
 
 	/**
 	 * @return array
 	 */
-	public function getWatchFiles();
+	public function getWatchFiles(): array;
+
 }

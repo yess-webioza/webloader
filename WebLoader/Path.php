@@ -6,7 +6,6 @@ namespace WebLoader;
 
 class Path
 {
-
 	public static function normalize($path)
 	{
 		$path = strtr($path, '\\', '/');
@@ -27,5 +26,4 @@ class Path
 
 		return $root . implode('/', $res);
 	}
-
 }

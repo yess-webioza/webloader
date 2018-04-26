@@ -17,8 +17,6 @@ class JavaScriptLoader extends \WebLoader\Nette\WebLoader
 
 	/**
 	 * Get script element
-	 * @param string $source
-	 * @return \Nette\Utils\Html
 	 */
 	public function getElement(string $source): Html
 	{
@@ -29,5 +27,4 @@ class JavaScriptLoader extends \WebLoader\Nette\WebLoader
 
 		return $el->src($source);
 	}
-
 }

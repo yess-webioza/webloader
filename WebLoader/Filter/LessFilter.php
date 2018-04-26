@@ -4,8 +4,8 @@ declare(strict_types = 1);
 
 namespace WebLoader\Filter;
 
-use WebLoader\Compiler;
 use lessc;
+use WebLoader\Compiler;
 
 /**
  * Less CSS filter
@@ -15,13 +15,14 @@ use lessc;
  */
 class LessFilter
 {
-
 	private $lc;
+
 
 	public function __construct(?lessc $lc = null)
 	{
 		$this->lc = $lc;
 	}
+
 
 	private function getLessC(): lessc
 	{
@@ -33,12 +34,9 @@ class LessFilter
 		return clone $this->lc;
 	}
 
+
 	/**
 	 * Invoke filter
-	 * @param string $code
-	 * @param \WebLoader\Compiler $loader
-	 * @param string $file
-	 * @return string
 	 */
 	public function __invoke(string $code, Compiler $loader, string $file): string
 	{
@@ -50,5 +48,4 @@ class LessFilter
 
 		return $code;
 	}
-
 }

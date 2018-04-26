@@ -24,6 +24,7 @@ class FileCollection implements \WebLoader\IFileCollection
 	/** @var array */
 	private $remoteFiles = [];
 
+
 	/**
 	 * @param string|null $root files root for relative paths
 	 */
@@ -32,20 +33,21 @@ class FileCollection implements \WebLoader\IFileCollection
 		$this->root = $root;
 	}
 
+
 	/**
 	 * Get file list
-	 * @return array
 	 */
 	public function getFiles(): array
 	{
 		return array_values($this->files);
 	}
 
+
 	/**
 	 * Make path absolute
+	 *
 	 * @param $path string
 	 * @throws \WebLoader\FileNotFoundException
-	 * @return string
 	 */
 	public function cannonicalizePath($path): string
 	{
@@ -118,12 +120,13 @@ class FileCollection implements \WebLoader\IFileCollection
 	 */
 	public function addRemoteFile(string $file): void
 	{
-		if (in_array($file, $this->remoteFiles)) {
+		if (in_array($file, $this->remoteFiles, true)) {
 			return;
 		}
 
 		$this->remoteFiles[] = $file;
 	}
+
 
 	/**
 	 * Add multiple remote files
@@ -136,6 +139,7 @@ class FileCollection implements \WebLoader\IFileCollection
 		}
 	}
 
+
 	/**
 	 * Remove all files
 	 */
@@ -146,18 +150,18 @@ class FileCollection implements \WebLoader\IFileCollection
 		$this->remoteFiles = [];
 	}
 
-	/**
-	 * @return array
-	 */
+
 	public function getRemoteFiles(): array
 	{
 		return $this->remoteFiles;
 	}
 
+
 	public function getRoot(): string
 	{
 		return $this->root;
 	}
+
 
 	/**
 	 * Add watch file
@@ -174,6 +178,7 @@ class FileCollection implements \WebLoader\IFileCollection
 		$this->watchFiles[] = $file;
 	}
 
+
 	/**
 	 * Add watch files
 	 * @param array|\Traversable $files array list of files
@@ -185,13 +190,12 @@ class FileCollection implements \WebLoader\IFileCollection
 		}
 	}
 
+
 	/**
 	 * Get watch file list
-	 * @return array
 	 */
 	public function getWatchFiles(): array
 	{
 		return array_values($this->watchFiles);
 	}
-
 }

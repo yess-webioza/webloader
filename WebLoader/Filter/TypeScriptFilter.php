@@ -21,10 +21,7 @@ class TypeScriptFilter
 	/** @var array */
 	private $env;
 
-	/**
-	 * @param string $bin
-	 * @param array $env
-	 */
+
 	public function __construct(string $bin = 'tsc', array $env = [])
 	{
 		$this->bin = $bin;
@@ -32,13 +29,9 @@ class TypeScriptFilter
 		unset($this->env['argv'], $this->env['argc']);
 	}
 
+
 	/**
 	 * Invoke filter
-	 *
-	 * @param  string $code
-	 * @param  \WebLoader\Compiler $compiler
-	 * @param  string $file
-	 * @return string
 	 */
 	public function __invoke(string $code, Compiler $compiler, ?string $file = null): string
 	{
@@ -51,5 +44,4 @@ class TypeScriptFilter
 
 		return $code;
 	}
-
 }

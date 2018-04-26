@@ -9,5 +9,4 @@ namespace WebLoader\Nette;
  */
 class CompilationException extends \WebLoader\WebLoaderException
 {
-
 }

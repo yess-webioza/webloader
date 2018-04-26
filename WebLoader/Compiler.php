@@ -43,10 +43,11 @@ class Compiler
 	private $defer = false;
 
 	/** @var string */
-	private $nonce = null;
+	private $nonce;
 
 	/** @var bool */
 	private $absoluteUrl = false;
+
 
 	public function __construct(IFileCollection $files, IOutputNamingConvention $convention, $outputDir)
 	{
@@ -55,55 +56,54 @@ class Compiler
 		$this->setOutputDir($outputDir);
 	}
 
+
 	/**
 	 * Create compiler with predefined css output naming convention
-	 * @param \WebLoader\IFileCollection $files
-	 * @param string $outputDir
-	 * @return \WebLoader\Compiler
 	 */
-	public static function createCssCompiler(IFileCollection $files, string $outputDir): Compiler
+	public static function createCssCompiler(IFileCollection $files, string $outputDir): self
 	{
 		return new static($files, DefaultOutputNamingConvention::createCssConvention(), $outputDir);
 	}
 
+
 	/**
 	 * Create compiler with predefined javascript output naming convention
-	 * @param \WebLoader\IFileCollection $files
-	 * @param string $outputDir
-	 * @return \WebLoader\Compiler
 	 */
-	public static function createJsCompiler(IFileCollection $files, string $outputDir): Compiler
+	public static function createJsCompiler(IFileCollection $files, string $outputDir): self
 	{
 		return new static($files, DefaultOutputNamingConvention::createJsConvention(), $outputDir);
 	}
+
 
 	public function enableDebugging(bool $allow = true): void
 	{
 		$this->debugging = (bool) $allow;
 	}
 
+
 	public function getNonce(): ?string
 	{
 		return $this->nonce;
 	}
+
 
 	public function setNonce(?string $nonce): void
 	{
 		$this->nonce = $nonce;
 	}
 
+
 	/**
 	 * Get temp path
-	 * @return string
 	 */
 	public function getOutputDir(): string
 	{
 		return $this->outputDir;
 	}
 
+
 	/**
 	 * Set temp path
-	 * @param string $tempPath
 	 */
 	public function setOutputDir(string $tempPath): void
 	{
@@ -120,41 +120,45 @@ class Compiler
 		$this->outputDir = $tempPath;
 	}
 
+
 	/**
 	 * Get join files
-	 * @return bool
 	 */
 	public function getJoinFiles(): bool
 	{
 		return $this->joinFiles;
 	}
 
+
 	/**
 	 * Set join files
-	 * @param bool $joinFiles
 	 */
 	public function setJoinFiles(bool $joinFiles): void
 	{
 		$this->joinFiles = (bool) $joinFiles;
 	}
 
+
 	public function isAsync(): bool
 	{
 		return $this->async;
 	}
 
-	public function setAsync(bool $async): Compiler
+
+	public function setAsync(bool $async): self
 	{
 		$this->async = (bool) $async;
 		return $this;
 	}
+
 
 	public function isDefer(): bool
 	{
 		return $this->defer;
 	}
 
-	public function setDefer(bool $defer): Compiler
+
+	public function setDefer(bool $defer): self
 	{
 		$this->defer = $defer;
 		return $this;
@@ -166,25 +170,25 @@ class Compiler
 		return $this->absoluteUrl;
 	}
 
-	public function setAbsoluteUrl(bool $absoluteUrl): Compiler
+
+	public function setAbsoluteUrl(bool $absoluteUrl): self
 	{
 		$this->absoluteUrl = $absoluteUrl;
 		return $this;
 	}
 
+
 	/**
 	 * Set check last modified
-	 * @param bool $checkLastModified
 	 */
 	public function setCheckLastModified(bool $checkLastModified): void
 	{
 		$this->checkLastModified = (bool) $checkLastModified;
 	}
 
+
 	/**
 	 * Get last modified timestamp of newest file
-	 * @param array $files
-	 * @return int
 	 */
 	public function getLastModified(?array $files = null): int
 	{
@@ -201,10 +205,9 @@ class Compiler
 		return $modified;
 	}
 
+
 	/**
 	 * Get joined content of all files
-	 * @param array $files
-	 * @return string
 	 */
 	public function getContent(?array $files = null): string
 	{
@@ -226,9 +229,9 @@ class Compiler
 		return $content;
 	}
 
+
 	/**
 	 * Load content and save file
-	 * @return array filenames of generated files
 	 */
 	public function generate(): array
 	{
@@ -257,6 +260,7 @@ class Compiler
 		}
 	}
 
+
 	protected function generateFiles(array $files, array $watchFiles = [])
 	{
 		$name = $this->namingConvention->getFilename($files, $this);
@@ -264,7 +268,7 @@ class Compiler
 		$lastModified = $this->checkLastModified ? $this->getLastModified($watchFiles) : 0;
 
 		if (!file_exists($path) || $lastModified > filemtime($path) || $this->debugging === true) {
-			$outPath = in_array('nette.safe', stream_get_wrappers()) ? 'nette.safe://' . $path : $path;
+			$outPath = in_array('nette.safe', stream_get_wrappers(), true) ? 'nette.safe://' . $path : $path;
 			file_put_contents($outPath, $this->getContent($files));
 		}
 
@@ -275,10 +279,11 @@ class Compiler
 		];
 	}
 
+
 	/**
 	 * Load file
+	 *
 	 * @param string $file path
-	 * @return string
 	 */
 	protected function loadFile(string $file): string
 	{
@@ -291,25 +296,30 @@ class Compiler
 		return $content;
 	}
 
+
 	public function getFileCollection(): IFileCollection
 	{
 		return $this->collection;
 	}
+
 
 	public function getOutputNamingConvention(): IOutputNamingConvention
 	{
 		return $this->namingConvention;
 	}
 
+
 	public function setFileCollection(IFileCollection $collection): void
 	{
 		$this->collection = $collection;
 	}
 
+
 	public function setOutputNamingConvention(IOutputNamingConvention $namingConvention): void
 	{
 		$this->namingConvention = $namingConvention;
 	}
+
 
 	public function addFilter($filter): void
 	{
@@ -320,13 +330,12 @@ class Compiler
 		$this->filters[] = $filter;
 	}
 
-	/**
-	 * @return array
-	 */
+
 	public function getFilters(): array
 	{
 		return $this->filters;
 	}
+
 
 	public function addFileFilter(callable $filter): void
 	{
@@ -337,12 +346,9 @@ class Compiler
 		$this->fileFilters[] = $filter;
 	}
 
-	/**
-	 * @return array
-	 */
+
 	public function getFileFilters(): array
 	{
 		return $this->fileFilters;
 	}
-
 }

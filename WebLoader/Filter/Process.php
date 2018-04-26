@@ -14,11 +14,9 @@ class Process
 {
 
 	/**
-	 * @param string $cmd
-	 * @param string|NULL $stdin
-	 * @param string|NULL $cwd
-	 * @param array|NULL $env
-	 * @return string
+	 * @param string|null $stdin
+	 * @param string|null $cwd
+	 * @param array|null $env
 	 * @throws \RuntimeExeption
 	 */
 	public static function run(string $cmd, ?string $stdin = null, ?string $cwd = null, ?array $env = null): string
@@ -48,5 +46,4 @@ class Process
 
 		return $stdout;
 	}
-
 }

@@ -15,27 +15,24 @@ use WebLoader\Compiler;
 class StylusFilter
 {
 
-	/** @var string */
-	private $bin;
-
 	/** @var bool */
 	public $compress = false;
 
 	/** @var bool */
 	public $includeCss = false;
 
+	/** @var string */
+	private $bin;
+
+
 	public function __construct(string $bin = 'stylus')
 	{
 		$this->bin = $bin;
 	}
 
+
 	/**
 	 * Invoke filter
-	 *
-	 * @param string
-	 * @param \WebLoader\Compiler
-	 * @param string
-	 * @return string
 	 */
 	public function __invoke(string $code, Compiler $loader, ?string $file = null): string
 	{
@@ -51,5 +48,4 @@ class StylusFilter
 
 		return $code;
 	}
-
 }

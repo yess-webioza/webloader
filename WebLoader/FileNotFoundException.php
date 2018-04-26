@@ -11,5 +11,4 @@ namespace WebLoader;
  */
 class FileNotFoundException extends \WebLoader\WebLoaderException
 {
-
 }

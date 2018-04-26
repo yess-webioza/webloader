@@ -20,10 +20,12 @@ class ScssFilter
 	 */
 	private $sc;
 
+
 	public function __construct(?Compiler $sc = null)
 	{
 		$this->sc = $sc;
 	}
+
 
 	/**
 	 * @return \Leafo\ScssPhp\Compiler|\scssc
@@ -38,12 +40,9 @@ class ScssFilter
 		return $this->sc;
 	}
 
+
 	/**
 	 * Invoke filter
-	 * @param string $code
-	 * @param \WebLoader\Compiler $loader
-	 * @param string $file
-	 * @return string
 	 */
 	public function __invoke(string $code, \WebLoader\Compiler $loader, string $file): string
 	{
@@ -54,5 +53,4 @@ class ScssFilter
 
 		return $code;
 	}
-
 }

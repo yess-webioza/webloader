@@ -16,9 +16,9 @@ use Nette\Utils\Finder;
  */
 class Extension extends \Nette\DI\CompilerExtension
 {
+	public const DEFAULT_TEMP_PATH = 'webtemp';
+	public const EXTENSION_NAME = 'webloader';
 
-	const DEFAULT_TEMP_PATH = 'webtemp';
-	const EXTENSION_NAME = 'webloader';
 
 	public function getDefaultConfig()
 	{
@@ -65,6 +65,7 @@ class Extension extends \Nette\DI\CompilerExtension
 		];
 	}
 
+
 	public function loadConfiguration(): void
 	{
 		$builder = $this->getContainerBuilder();
@@ -107,6 +108,7 @@ class Extension extends \Nette\DI\CompilerExtension
 				->addTag('kdyby.console.command');
 		}
 	}
+
 
 	private function addWebLoader(ContainerBuilder $builder, $name, $config): void
 	{
@@ -165,6 +167,7 @@ class Extension extends \Nette\DI\CompilerExtension
 		// todo css media
 	}
 
+
 	public function afterCompile(Nette\PhpGenerator\ClassType $class): void
 	{
 		$meta = $class->getProperty('meta');
@@ -179,6 +182,7 @@ class Extension extends \Nette\DI\CompilerExtension
 		$init->addBody('if (!class_exists(?, ?)) class_alias(?, ?);', ['WebLoader\\LoaderFactory', false, 'WebLoader\\Nette\\LoaderFactory', 'WebLoader\\LoaderFactory']);
 	}
 
+
 	public function install(Configurator $configurator): void
 	{
 		$self = $this;
@@ -187,11 +191,7 @@ class Extension extends \Nette\DI\CompilerExtension
 		};
 	}
 
-	/**
-	 * @param array $filesConfig
-	 * @param string $sourceDir
-	 * @return array
-	 */
+
 	private function findFiles(array $filesConfig, string $sourceDir): array
 	{
 		$normalizedFiles = [];
@@ -232,6 +232,7 @@ class Extension extends \Nette\DI\CompilerExtension
 		return $normalizedFiles;
 	}
 
+
 	protected function checkFileExists(string $file, string $sourceDir): void
 	{
 		if (!file_exists($file)) {
@@ -241,5 +242,4 @@ class Extension extends \Nette\DI\CompilerExtension
 			}
 		}
 	}
-
 }

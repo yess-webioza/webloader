@@ -19,6 +19,7 @@ class GenerateCommand extends \Symfony\Component\Console\Command\Command
 	/** @var \WebLoader\Compiler[] */
 	private $compilers = [];
 
+
 	public function __construct(Nette\DI\Container $container)
 	{
 		parent::__construct();
@@ -29,12 +30,14 @@ class GenerateCommand extends \Symfony\Component\Console\Command\Command
 		}
 	}
 
+
 	protected function configure(): void
 	{
 		$this->setName('webloader:generate')
 			->setDescription('Generates files.')
 			->addOption('force', 'f', InputOption::VALUE_NONE, 'Generate if not modified.');
 	}
+
 
 	protected function execute(InputInterface $input, OutputInterface $output): void
 	{
@@ -53,5 +56,4 @@ class GenerateCommand extends \Symfony\Component\Console\Command\Command
 			$output->writeln('No files generated.');
 		}
 	}
-
 }

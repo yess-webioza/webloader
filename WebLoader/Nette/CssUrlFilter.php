@@ -12,10 +12,8 @@ use Nette\Http\IRequest;
  */
 class CssUrlFilter extends \WebLoader\Filter\CssUrlsFilter
 {
-
 	public function __construct($docRoot, IRequest $httpRequest)
 	{
 		parent::__construct($docRoot, $httpRequest->getUrl()->getBasePath());
 	}
-
 }

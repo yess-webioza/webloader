@@ -11,5 +11,4 @@ namespace WebLoader;
  */
 class WebLoaderException extends \Exception
 {
-
 }

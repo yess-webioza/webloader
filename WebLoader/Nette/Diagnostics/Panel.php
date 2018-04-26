@@ -40,28 +40,28 @@ class Panel implements \Tracy\IBarPanel
 	/** @var string */
 	private $root;
 
+
 	public function __construct(?string $appDir = null)
 	{
 		$this->root = $appDir ? str_replace('\\', DIRECTORY_SEPARATOR, realpath(dirname($appDir))) : '';
 		Debugger::getBar()->addPanel($this);
 	}
 
+
 	/**
 	 * Registers a compiler.
 	 *
-	 * @param string $name
-	 * @param \WebLoader\Compiler $compiler
 	 * @return \WebLoader\Nette\Diagnostics\Panel
 	 */
-	public function addLoader(string $name, Compiler $compiler): Panel
+	public function addLoader(string $name, Compiler $compiler): self
 	{
 		$this->compilers[$name] = $compiler;
 		return $this;
 	}
 
+
 	/**
 	 * Computes the info.
-	 * @return array
 	 */
 	private function compute(): array
 	{
@@ -92,7 +92,6 @@ class Panel implements \Tracy\IBarPanel
 				$compilerCombinedSize += $generatedSize;
 
 				foreach ($generated->sourceFiles as $file) {
-
 					$extension = strtolower(pathinfo($file, PATHINFO_EXTENSION));
 					$file = str_replace('\\', DIRECTORY_SEPARATOR, realpath($file));
 
@@ -121,9 +120,9 @@ class Panel implements \Tracy\IBarPanel
 		return $this->size = $size + ['ratio' => $size['original'] !== 0 ? ($size['combined'] / $size['original']) * 100 : 0];
 	}
 
+
 	/**
 	 * Renders loaded files table.
-	 * @return string
 	 */
 	private function getTable(): string
 	{
@@ -140,18 +139,18 @@ class Panel implements \Tracy\IBarPanel
 		]);
 	}
 
+
 	/**
 	 * Returns panel content.
-	 * @return string
 	 */
 	public function getPanel(): string
 	{
 		return $this->compute() ? $this->getTable() : '';
 	}
 
+
 	/**
 	 * Returns panel tab.
-	 * @return string
 	 */
 	public function getTab(): string
 	{
@@ -162,5 +161,4 @@ class Panel implements \Tracy\IBarPanel
 			. Filters::bytes($this->size['combined'])
 		. '</span>';
 	}
-
 }

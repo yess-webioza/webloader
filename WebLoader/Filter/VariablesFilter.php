@@ -22,9 +22,9 @@ class VariablesFilter
 	/** @var array */
 	private $variables;
 
+
 	/**
 	 * Construct
-	 * @param array $variables
 	 */
 	public function __construct(array $variables = [])
 	{
@@ -33,23 +33,22 @@ class VariablesFilter
 		}
 	}
 
+
 	/**
 	 * Set delimiter
-	 * @param string $start
-	 * @param string $end
+	 *
 	 * @return \WebLoader\Filter\VariablesFilter
 	 */
-	public function setDelimiter(string $start, string $end): VariablesFilter
+	public function setDelimiter(string $start, string $end): self
 	{
 		$this->startVariable = (string) $start;
 		$this->endVariable = (string) $end;
 		return $this;
 	}
 
+
 	/**
 	 * Invoke filter
-	 * @param string $code
-	 * @return string
 	 */
 	public function __invoke(string $code): string
 	{
@@ -65,23 +64,22 @@ class VariablesFilter
 		return str_replace($variables, $values, $code);
 	}
 
+
 	/**
 	 * Magic set variable, do not call directly
-	 * @param string $name
-	 * @param string $value
 	 */
 	public function __set(string $name, string $value): void
 	{
 		$this->variables[$name] = (string) $value;
 	}
 
+
 	/**
 	 * Magic get variable, do not call directly
-	 * @param string $name
-	 * @return string
+	 *
 	 * @throws \WebLoader\InvalidArgumentException
 	 */
-	public function & __get(string $name): string
+	public function &__get(string $name): string
 	{
 		if (array_key_exists($name, $this->variables)) {
 			return $this->variables[$name];
@@ -89,5 +87,4 @@ class VariablesFilter
 			throw new \WebLoader\InvalidArgumentException("Variable '$name' is not set.");
 		}
 	}
-
 }

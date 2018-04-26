@@ -9,7 +9,6 @@ namespace WebLoader;
  */
 interface IFileCollection
 {
-
 	public function getRoot(): string;
 
 	/**
@@ -26,5 +25,4 @@ interface IFileCollection
 	 * @return array
 	 */
 	public function getWatchFiles(): array;
-
 }

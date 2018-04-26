@@ -15,24 +15,21 @@ use WebLoader\Compiler;
 class CoffeeScriptFilter
 {
 
+	/** @var bool */
+	public $bare = false;
+
 	/** @var \WebLoader\Filter\path to coffee bin */
 	private $bin;
 
-	/** @var bool */
-	public $bare = false;
 
 	public function __construct(string $bin = 'coffee')
 	{
 		$this->bin = $bin;
 	}
 
+
 	/**
 	 * Invoke filter
-	 *
-	 * @param string
-	 * @param \WebLoader\Compiler
-	 * @param string
-	 * @return string
 	 */
 	public function __invoke(string $code, Compiler $loader, ?string $file = null): string
 	{
@@ -43,9 +40,10 @@ class CoffeeScriptFilter
 		return $code;
 	}
 
+
 	public function compileCoffee(string $source, ?bool $bare = null): string
 	{
-		if (is_null($bare)) {
+		if ($bare === null) {
 			$bare = $this->bare;
 		}
 
@@ -53,5 +51,4 @@ class CoffeeScriptFilter
 
 		return Process::run($cmd, $source);
 	}
-
 }

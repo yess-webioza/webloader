@@ -16,11 +16,6 @@ class PHPCoffeeScriptFilter
 
 	/**
 	 * Invoke filter
-	 *
-	 * @param string
-	 * @param \WebLoader\Compiler
-	 * @param string
-	 * @return string
 	 */
 	public function __invoke(string $code, \WebLoader\Compiler $loader, ?string $file = null): string
 	{
@@ -36,7 +31,6 @@ class PHPCoffeeScriptFilter
 	 * @param $source $string
 	 * @param $file bool|NULL
 	 * @throws \WebLoader\WebLoaderException
-	 * @return string
 	 */
 	public function compileCoffee($source, $file): string
 	{
@@ -46,5 +40,4 @@ class PHPCoffeeScriptFilter
 			throw new \WebLoader\WebLoaderException('CoffeeScript Filter Error: ' . $e->getMessage(), 0, $e);
 		}
 	}
-
 }

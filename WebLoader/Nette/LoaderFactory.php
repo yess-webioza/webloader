@@ -22,12 +22,7 @@ class LoaderFactory
 	/** @var string */
 	private $extensionName;
 
-	/**
-	 * @param array $tempPaths
-	 * @param string $extensionName
-	 * @param \Nette\Http\IRequest $httpRequest
-	 * @param \Nette\DI\Container $serviceLocator
-	 */
+
 	public function __construct(array $tempPaths, string $extensionName, IRequest $httpRequest, Container $serviceLocator)
 	{
 		$this->httpRequest = $httpRequest;
@@ -36,12 +31,14 @@ class LoaderFactory
 		$this->extensionName = $extensionName;
 	}
 
+
 	public function createCssLoader(string $name, bool $appendLastModified = false): CssLoader
 	{
 		/** @var \WebLoader\Compiler $compiler */
 		$compiler = $this->serviceLocator->getService($this->extensionName . '.css' . ucfirst($name) . 'Compiler');
 		return new CssLoader($compiler, $this->formatTempPath($name, $compiler->isAbsoluteUrl()), $appendLastModified);
 	}
+
 
 	public function createJavaScriptLoader(string $name, bool $appendLastModified = false, ?string $nonce = null): JavaScriptLoader
 	{
@@ -53,6 +50,7 @@ class LoaderFactory
 		return new JavaScriptLoader($compiler, $this->formatTempPath($name, $compiler->isAbsoluteUrl()), $appendLastModified);
 	}
 
+
 	private function formatTempPath(string $name, $absoluteUrl = false): string
 	{
 		$lName = strtolower($name);
@@ -60,5 +58,4 @@ class LoaderFactory
 		$method = $absoluteUrl ? 'getBaseUrl' : 'getBasePath';
 		return rtrim($this->httpRequest->getUrl()->{$method}(), '/') . '/' . $tempPath;
 	}
-
 }

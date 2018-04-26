@@ -19,16 +19,16 @@ class CssUrlsFilter
 	/**
 	 * @var string
 	 */
-	private $docRoot;
+	protected $basePath;
 
 	/**
 	 * @var string
 	 */
-	protected $basePath;
+	private $docRoot;
+
 
 	/**
 	 * @param string $docRoot web document root
-	 * @param string $basePath base path
 	 * @throws \WebLoader\InvalidArgumentException
 	 */
 	public function __construct(string $docRoot, string $basePath = '/')
@@ -42,17 +42,19 @@ class CssUrlsFilter
 		$this->basePath = $basePath;
 	}
 
+
 	public function setBasePath(string $basePath): void
 	{
 		$this->basePath = $basePath;
 	}
 
+
 	/**
 	 * Make relative url absolute
+	 *
 	 * @param string $url image url
 	 * @param string $quote single or double quote
 	 * @param string $cssFile absolute css file path
-	 * @return string
 	 */
 	public function absolutizeUrl(string $url, string $quote, string $cssFile): string
 	{
@@ -76,9 +78,10 @@ class CssUrlsFilter
 		return $quote === '"' ? addslashes($path) : $path;
 	}
 
+
 	/**
 	 * Cannonicalize path
-	 * @param string $path
+	 *
 	 * @return string path
 	 */
 	public function cannonicalizePath(string $path): string
@@ -102,12 +105,9 @@ class CssUrlsFilter
 		return implode('/', $pathArr);
 	}
 
+
 	/**
 	 * Invoke filter
-	 * @param string $code
-	 * @param \WebLoader\Compiler $loader
-	 * @param string $file
-	 * @return string
 	 */
 	public function __invoke(string $code, Compiler $loader, ?string $file = null): string
 	{
@@ -136,5 +136,4 @@ class CssUrlsFilter
 			return "url('" . $self->absolutizeUrl($matches[2], $matches[1], $file) . "')";
 		}, $code);
 	}
-
 }

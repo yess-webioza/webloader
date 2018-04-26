@@ -26,6 +26,7 @@ abstract class WebLoader extends \Nette\Application\UI\Control
 	/** @var bool */
 	private $appendLastModified;
 
+
 	public function __construct(Compiler $compiler, $tempPath, $appendLastModified)
 	{
 		parent::__construct();
@@ -34,32 +35,36 @@ abstract class WebLoader extends \Nette\Application\UI\Control
 		$this->appendLastModified = $appendLastModified;
 	}
 
+
 	public function getCompiler(): Compiler
 	{
 		return $this->compiler;
 	}
+
 
 	public function setCompiler(Compiler $compiler): void
 	{
 		$this->compiler = $compiler;
 	}
 
+
 	public function getTempPath(): string
 	{
 		return $this->tempPath;
 	}
+
 
 	public function setTempPath(string $tempPath): void
 	{
 		$this->tempPath = $tempPath;
 	}
 
+
 	/**
 	 * Get html element including generated content
-	 * @param string $source
-	 * @return \Nette\Utils\Html
 	 */
 	abstract public function getElement(string $source): Html;
+
 
 	/**
 	 * Generate compiled file(s) and render link(s)
@@ -89,6 +94,7 @@ abstract class WebLoader extends \Nette\Application\UI\Control
 		}
 	}
 
+
 	protected function getGeneratedFilePath($file)
 	{
 		$path = $this->tempPath . '/' . $file->file;
@@ -99,5 +105,4 @@ abstract class WebLoader extends \Nette\Application\UI\Control
 
 		return $path;
 	}
-
 }

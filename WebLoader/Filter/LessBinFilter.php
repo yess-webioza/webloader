@@ -21,10 +21,7 @@ class LessBinFilter
 	/** @var array */
 	private $env;
 
-	/**
-	 * @param string $bin
-	 * @param array $env
-	 */
+
 	public function __construct(string $bin = 'lessc', array $env = [])
 	{
 		$this->bin = $bin;
@@ -32,12 +29,9 @@ class LessBinFilter
 		unset($this->env['argv'], $this->env['argc']);
 	}
 
+
 	/**
 	 * Invoke filter
-	 * @param string $code
-	 * @param \WebLoader\Compiler $loader
-	 * @param string $file
-	 * @return string
 	 */
 	public function __invoke(string $code, Compiler $loader, string $file): string
 	{
@@ -47,5 +41,4 @@ class LessBinFilter
 
 		return $code;
 	}
-
 }

@@ -11,5 +11,4 @@ namespace WebLoader;
  */
 class InvalidArgumentException extends \WebLoader\WebLoaderException
 {
-
 }

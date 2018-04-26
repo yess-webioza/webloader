@@ -113,6 +113,7 @@ class ExtensionTest extends \PHPUnit_Framework_TestCase
 			__DIR__ . '/../fixtures/extensionDeferFalse.neon',
 		));
 		$this->assertFalse($this->container->getService('webloader.jsDefaultCompiler')->isDefer());
+	}
 
 	public function testNonceSet()
 	{

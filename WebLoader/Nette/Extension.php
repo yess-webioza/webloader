@@ -235,11 +235,27 @@ class Extension extends \Nette\DI\CompilerExtension
 
 	protected function checkFileExists(string $file, string $sourceDir): void
 	{
-		if (!file_exists($file)) {
+		if (!$this->fileExists($file)) {
 			$tmp = rtrim($sourceDir, '/\\') . DIRECTORY_SEPARATOR . $file;
-			if (!file_exists($tmp)) {
+			if (!$this->fileExists($tmp)) {
 				throw new \WebLoader\FileNotFoundException(sprintf("Neither '%s' or '%s' was found", $file, $tmp));
 			}
 		}
 	}
+
+
+	/**
+	 * Some servers seem to have problems under cron user with open_basedir restriction when using relative paths
+	 */
+	protected function fileExists(string $file): bool
+	{
+		$file = realpath($file);
+
+		if ($file === false) {
+			$file = '';
+		}
+
+		return file_exists($file);
+	}
 }
+

@@ -2,11 +2,12 @@
 
 namespace WebLoader\Test\Nette;
 
+use PHPUnit\Framework\TestCase;
 use WebLoader\Path;
 use Nette\Utils\Finder;
 
 
-class ExtensionTest extends \PHPUnit_Framework_TestCase
+class ExtensionTest extends TestCase
 {
 
 	/** @var \Nette\DI\Container */

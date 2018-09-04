@@ -4,13 +4,14 @@ namespace WebLoader\Test;
 
 use Mockery;
 use WebLoader\Compiler;
+use PHPUnit\Framework\TestCase;
 
 /**
  * CompilerTest
  *
  * @author Jan Marek
  */
-class CompilerTest extends \PHPUnit_Framework_TestCase
+class CompilerTest extends TestCase
 {
 
 	/** @var \WebLoader\Compiler */
@@ -143,7 +144,7 @@ class CompilerTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @expectedException \WebLoader\InvalidArgumentException
+	 * @expectedException \TypeError
 	 */
 	public function testNonCallableFilter()
 	{
@@ -151,7 +152,7 @@ class CompilerTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @expectedException \WebLoader\InvalidArgumentException
+	 * @expectedException \TypeError
 	 */
 	public function testNonCallableFileFilter()
 	{

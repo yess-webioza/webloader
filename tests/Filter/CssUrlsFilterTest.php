@@ -2,9 +2,10 @@
 
 namespace WebLoader\Test\Filter;
 
+use PHPUnit\Framework\TestCase;
 use WebLoader\Filter\CssUrlsFilter;
 
-class CssUrlsFilterTest extends \PHPUnit_Framework_TestCase
+class CssUrlsFilterTest extends TestCase
 {
 
 	/** @var CssUrlsFilter */

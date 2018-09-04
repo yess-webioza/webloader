@@ -2,12 +2,13 @@
 
 namespace WebLoader\Test\Filter;
 
+use PHPUnit\Framework\TestCase;
 use WebLoader\Compiler;
 use WebLoader\DefaultOutputNamingConvention;
 use WebLoader\FileCollection;
 use WebLoader\Filter\LessFilter;
 
-class LessFilterTest extends \PHPUnit_Framework_TestCase
+class LessFilterTest extends TestCase
 {
 	/** @var LessFilter */
 	private $filter;

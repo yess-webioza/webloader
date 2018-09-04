@@ -2,6 +2,7 @@
 
 namespace WebLoader\Test\Filter;
 
+use PHPUnit\Framework\TestCase;
 use WebLoader\Filter\PHPCoffeeScriptFilter;
 
 /**
@@ -9,7 +10,7 @@ use WebLoader\Filter\PHPCoffeeScriptFilter;
  *
  * @author Jan Svantner
  */
-class PHPCoffeeScriptFilterTest extends \PHPUnit_Framework_TestCase
+class PHPCoffeeScriptFilterTest extends TestCase
 {
 
 	/** @var PHPCoffeeScriptFilter */

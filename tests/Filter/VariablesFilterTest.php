@@ -2,9 +2,10 @@
 
 namespace WebLoader\Test\Filter;
 
+use PHPUnit\Framework\TestCase;
 use WebLoader\Filter\VariablesFilter;
 
-class VariablesFilterTest extends \PHPUnit_Framework_TestCase
+class VariablesFilterTest extends TestCase
 {
 
 	/** @var VariablesFilter */

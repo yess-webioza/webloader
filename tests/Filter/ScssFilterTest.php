@@ -2,13 +2,14 @@
 
 namespace WebLoader\Test\Filter;
 
+use PHPUnit\Framework\TestCase;
 use WebLoader\Compiler;
 use WebLoader\DefaultOutputNamingConvention;
 use WebLoader\FileCollection;
 use WebLoader\Filter\ScssFilter;
 use WebLoader\Filter\VariablesFilter;
 
-class ScssFilterTest extends \PHPUnit_Framework_TestCase
+class ScssFilterTest extends TestCase
 {
 	/** @var ScssFilter */
 	private $filter;

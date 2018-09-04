@@ -2,6 +2,7 @@
 
 namespace WebLoader\Test;
 
+use PHPUnit\Framework\TestCase;
 use WebLoader\FileCollection;
 
 /**
@@ -9,7 +10,7 @@ use WebLoader\FileCollection;
  *
  * @author Jan Marek
  */
-class FileCollectionTest extends \PHPUnit_Framework_TestCase
+class FileCollectionTest extends TestCase
 {
 
 	/** @var FileCollection */

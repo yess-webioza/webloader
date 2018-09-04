@@ -2,6 +2,7 @@
 
 namespace WebLoader\Test;
 
+use PHPUnit\Framework\TestCase;
 use WebLoader\DefaultOutputNamingConvention;
 
 /**
@@ -9,7 +10,7 @@ use WebLoader\DefaultOutputNamingConvention;
  *
  * @author Jan Marek
  */
-class DefaultOutputNamingConventionTest extends \PHPUnit_Framework_TestCase
+class DefaultOutputNamingConventionTest extends TestCase
 {
 
 	/** @var DefaultOutputNamingConvention */

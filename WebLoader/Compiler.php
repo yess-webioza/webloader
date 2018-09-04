@@ -321,12 +321,8 @@ class Compiler
 	}
 
 
-	public function addFilter($filter): void
+	public function addFilter(callable $filter): void
 	{
-		if (!is_callable($filter)) {
-			throw new \WebLoader\InvalidArgumentException('Filter is not callable.');
-		}
-
 		$this->filters[] = $filter;
 	}
 
@@ -339,10 +335,6 @@ class Compiler
 
 	public function addFileFilter(callable $filter): void
 	{
-		if (!is_callable($filter)) {
-			throw new \WebLoader\InvalidArgumentException('Filter is not callable.');
-		}
-
 		$this->fileFilters[] = $filter;
 	}
 

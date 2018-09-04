@@ -11,18 +11,9 @@ interface IFileCollection
 {
 	public function getRoot(): string;
 
-	/**
-	 * @return array
-	 */
 	public function getFiles(): array;
 
-	/**
-	 * @return array
-	 */
 	public function getRemoteFiles(): array;
 
-	/**
-	 * @return array
-	 */
 	public function getWatchFiles(): array;
 }

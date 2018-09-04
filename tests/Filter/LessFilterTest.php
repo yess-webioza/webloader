@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace WebLoader\Test\Filter;
 
@@ -16,6 +17,7 @@ class LessFilterTest extends TestCase
 	/** @var Compiler */
 	private $compiler;
 
+
 	protected function setUp()
 	{
 		$this->filter = new LessFilter(new \lessc());
@@ -25,11 +27,11 @@ class LessFilterTest extends TestCase
 		$this->compiler = new Compiler($files, new DefaultOutputNamingConvention(), $outputDir);
 	}
 
+
 	public function testReplace()
 	{
 		$file = __DIR__ . '/../fixtures/style.less';
 		$less = $this->filter->__invoke(file_get_contents($file), $this->compiler, $file);
 		$this->assertSame(file_get_contents(__DIR__ . '/../fixtures/style.less.expected'), $less);
 	}
-
 }

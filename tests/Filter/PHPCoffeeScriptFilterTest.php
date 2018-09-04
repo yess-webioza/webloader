@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace WebLoader\Test\Filter;
 
@@ -16,10 +17,12 @@ class PHPCoffeeScriptFilterTest extends TestCase
 	/** @var PHPCoffeeScriptFilter */
 	private $object;
 
+
 	protected function setUp()
 	{
 		$this->object = new PHPCoffeeScriptFilter();
 	}
+
 
 	public function testSimpleLoadAndParse()
 	{
@@ -28,7 +31,7 @@ class PHPCoffeeScriptFilterTest extends TestCase
 		}
 
 		$compiler = new PHPCoffeeScriptFilter();
-		$coffee = $compiler->compileCoffee("number = -42 if opposite", null);
+		$coffee = $compiler->compileCoffee('number = -42 if opposite', null);
 
 		$version = COFFEESCRIPT_VERSION;
 		$expected = <<<COFFEE

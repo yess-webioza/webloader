@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace WebLoader\Test\Filter;
 
@@ -11,16 +12,19 @@ class CssUrlsFilterTest extends TestCase
 	/** @var CssUrlsFilter */
 	private $object;
 
+
 	protected function setUp()
 	{
 		$this->object = new CssUrlsFilter(__DIR__ . '/..', '/');
 	}
+
 
 	public function testCannonicalizePath()
 	{
 		$path = $this->object->cannonicalizePath('/prase/./dobytek/../ale/nic.jpg');
 		$this->assertEquals('/prase/ale/nic.jpg', $path);
 	}
+
 
 	public function testAbsolutizeAbsolutized()
 	{
@@ -32,6 +36,7 @@ class CssUrlsFilterTest extends TestCase
 		$abs = '/images/img.png';
 		$this->assertEquals($abs, $this->object->absolutizeUrl($abs, '\'', $cssPath));
 	}
+
 
 	public function testAbsolutize()
 	{
@@ -48,11 +53,11 @@ class CssUrlsFilterTest extends TestCase
 		);
 	}
 
+
 	public function testAbsolutizeOutsideOfDocRoot()
 	{
 		$path = './../images/image.png';
 		$existingPath = __DIR__ . '/../../Compiler.php';
 		$this->assertEquals($path, $this->object->absolutizeUrl($path, '\'', $existingPath));
 	}
-
 }

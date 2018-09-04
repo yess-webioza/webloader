@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace WebLoader\Test\Filter;
 
@@ -11,12 +12,14 @@ class VariablesFilterTest extends TestCase
 	/** @var VariablesFilter */
 	private $object;
 
+
 	protected function setUp()
 	{
-		$this->object = new VariablesFilter(array(
+		$this->object = new VariablesFilter([
 			'foo' => 'bar',
-		));
+		]);
 	}
+
 
 	public function testReplace()
 	{
@@ -31,10 +34,10 @@ class VariablesFilterTest extends TestCase
 		$this->assertEquals('a tak sel bar za bazem a potkali druheho bar', $filtered);
 	}
 
+
 	public function testDelimiters()
 	{
 		$this->object->setDelimiter('[', ']');
 		$this->assertEquals('bar', call_user_func($this->object, '[foo]'));
 	}
-
 }

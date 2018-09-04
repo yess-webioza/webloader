@@ -1,10 +1,11 @@
 <?php
+declare(strict_types=1);
 
 namespace WebLoader\Test;
 
 use Mockery;
-use WebLoader\Compiler;
 use PHPUnit\Framework\TestCase;
+use WebLoader\Compiler;
 
 /**
  * CompilerTest
@@ -17,19 +18,20 @@ class CompilerTest extends TestCase
 	/** @var \WebLoader\Compiler */
 	private $object;
 
+
 	protected function setUp()
 	{
 		$fileCollection = Mockery::mock('WebLoader\IFileCollection');
-		$fileCollection->shouldReceive('getFiles')->andReturn(array(
+		$fileCollection->shouldReceive('getFiles')->andReturn([
 			__DIR__ . '/fixtures/a.txt',
 			__DIR__ . '/fixtures/b.txt',
 			__DIR__ . '/fixtures/c.txt',
-		));
-		$fileCollection->shouldReceive('getWatchFiles')->andReturn(array(
+		]);
+		$fileCollection->shouldReceive('getWatchFiles')->andReturn([
 			__DIR__ . '/fixtures/a.txt',
 			__DIR__ . '/fixtures/b.txt',
 			__DIR__ . '/fixtures/c.txt',
-		));
+		]);
 
 		$convention = Mockery::mock('WebLoader\IOutputNamingConvention');
 		$convention->shouldReceive('getFilename')->andReturnUsing(function ($files, $compiler) {
@@ -43,6 +45,7 @@ class CompilerTest extends TestCase
 		}
 	}
 
+
 	/**
 	 * @return array
 	 */
@@ -50,6 +53,7 @@ class CompilerTest extends TestCase
 	{
 		return glob(__DIR__ . '/temp/webloader-*');
 	}
+
 
 	public function testJoinFiles()
 	{
@@ -59,6 +63,7 @@ class CompilerTest extends TestCase
 		$this->assertEquals(1, count($ret), 'Multiple files are generated instead of join.');
 		$this->assertEquals(1, count($this->getTempFiles()), 'Multiple files are generated instead of join.');
 	}
+
 
 	public function testEmptyFiles()
 	{
@@ -70,15 +75,17 @@ class CompilerTest extends TestCase
 		$this->assertEquals(0, count($this->getTempFiles()));
 	}
 
+
 	public function testNotJoinFiles()
 	{
-		$this->object->setJoinFiles(FALSE);
+		$this->object->setJoinFiles(false);
 		$this->assertFalse($this->object->getJoinFiles());
 
 		$ret = $this->object->generate();
 		$this->assertEquals(3, count($ret), 'Wrong file count generated.');
 		$this->assertEquals(3, count($this->getTempFiles()), 'Wrong file count generated.');
 	}
+
 
 	/**
 	 * @expectedException \WebLoader\FileNotFoundException
@@ -87,6 +94,7 @@ class CompilerTest extends TestCase
 	{
 		$this->object->setOutputDir('blablabla');
 	}
+
 
 	public function testGeneratingAndFilters()
 	{
@@ -115,6 +123,7 @@ class CompilerTest extends TestCase
 		$this->assertEquals($expectedContent, $content);
 	}
 
+
 	public function testGenerateReturnsSourceFilePaths()
 	{
 		$res = $this->object->generate();
@@ -123,6 +132,7 @@ class CompilerTest extends TestCase
 		$this->assertFileExists($res[0]->sourceFiles[0]);
 	}
 
+
 	public function testFilters()
 	{
 		$filter = function ($code, \WebLoader\Compiler $loader) {
@@ -130,8 +140,9 @@ class CompilerTest extends TestCase
 		};
 		$this->object->addFilter($filter);
 		$this->object->addFilter($filter);
-		$this->assertEquals(array($filter, $filter), $this->object->getFilters());
+		$this->assertEquals([$filter, $filter], $this->object->getFilters());
 	}
+
 
 	public function testFileFilters()
 	{
@@ -140,8 +151,9 @@ class CompilerTest extends TestCase
 		};
 		$this->object->addFileFilter($filter);
 		$this->object->addFileFilter($filter);
-		$this->assertEquals(array($filter, $filter), $this->object->getFileFilters());
+		$this->assertEquals([$filter, $filter], $this->object->getFileFilters());
 	}
+
 
 	/**
 	 * @expectedException \TypeError
@@ -151,6 +163,7 @@ class CompilerTest extends TestCase
 		$this->object->addFilter(4);
 	}
 
+
 	/**
 	 * @expectedException \TypeError
 	 */
@@ -158,5 +171,4 @@ class CompilerTest extends TestCase
 	{
 		$this->object->addFileFilter(4);
 	}
-
 }

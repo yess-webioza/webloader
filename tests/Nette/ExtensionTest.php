@@ -1,10 +1,11 @@
 <?php
+declare(strict_types=1);
 
 namespace WebLoader\Test\Nette;
 
+use Nette\Utils\Finder;
 use PHPUnit\Framework\TestCase;
 use WebLoader\Path;
-use Nette\Utils\Finder;
 
 
 class ExtensionTest extends TestCase
@@ -12,6 +13,7 @@ class ExtensionTest extends TestCase
 
 	/** @var \Nette\DI\Container */
 	private $container;
+
 
 	private function prepareContainer($configFiles)
 	{
@@ -27,11 +29,11 @@ class ExtensionTest extends TestCase
 			$configurator->addConfig($file);
 		}
 
-		$configurator->addParameters(array(
-			'wwwDir' =>  __DIR__ . '/..',
-			'fixturesDir' =>  __DIR__ . '/../fixtures',
+		$configurator->addParameters([
+			'wwwDir' => __DIR__ . '/..',
+			'fixturesDir' => __DIR__ . '/../fixtures',
 			'tempDir' => $tempDir,
-		));
+		]);
 
 		$extension = new \WebLoader\Nette\Extension();
 		$extension->install($configurator);
@@ -39,99 +41,111 @@ class ExtensionTest extends TestCase
 		$this->container = @$configurator->createContainer(); // sends header X-Powered-By, ...
 	}
 
+
 	public function testJsCompilerService()
 	{
-		$this->prepareContainer(array(__DIR__ . '/../fixtures/extension.neon'));
+		$this->prepareContainer([__DIR__ . '/../fixtures/extension.neon']);
 		$this->assertInstanceOf('WebLoader\Compiler', $this->container->getService('webloader.jsDefaultCompiler'));
 	}
 
+
 	public function testExcludeFiles()
 	{
-		$this->prepareContainer(array(__DIR__ . '/../fixtures/extension.neon'));
+		$this->prepareContainer([__DIR__ . '/../fixtures/extension.neon']);
 		$files = $this->container->getService('webloader.jsExcludeCompiler')->getFileCollection()->getFiles();
 
-		$this->assertTrue(in_array(Path::normalize(__DIR__ . '/../fixtures/a.txt'), $files));
-		$this->assertFalse(in_array(Path::normalize(__DIR__ . '/../fixtures/dir/one.js'), $files));
+		$this->assertTrue(in_array(Path::normalize(__DIR__ . '/../fixtures/a.txt'), $files, true));
+		$this->assertFalse(in_array(Path::normalize(__DIR__ . '/../fixtures/dir/one.js'), $files, true));
 	}
+
 
 	public function testJoinFilesOn()
 	{
-		$this->prepareContainer(array(
+		$this->prepareContainer([
 			__DIR__ . '/../fixtures/extension.neon',
 			__DIR__ . '/../fixtures/extensionJoinFilesTrue.neon',
-		));
+		]);
 		$this->assertTrue($this->container->getService('webloader.jsDefaultCompiler')->getJoinFiles());
 	}
 
+
 	public function testJoinFilesOff()
 	{
-		$this->prepareContainer(array(
+		$this->prepareContainer([
 			__DIR__ . '/../fixtures/extension.neon',
 			__DIR__ . '/../fixtures/extensionJoinFilesFalse.neon',
-		));
+		]);
 		$this->assertFalse($this->container->getService('webloader.jsDefaultCompiler')->getJoinFiles());
 	}
 
+
 	public function testJoinFilesOffInOneService()
 	{
-		$this->prepareContainer(array(
+		$this->prepareContainer([
 			__DIR__ . '/../fixtures/extension.neon',
-		));
+		]);
 		$this->assertFalse($this->container->getService('webloader.cssJoinOffCompiler')->getJoinFiles());
 	}
 
+
 	public function testAsyncOn()
 	{
-		$this->prepareContainer(array(
+		$this->prepareContainer([
 			__DIR__ . '/../fixtures/extension.neon',
 			__DIR__ . '/../fixtures/extensionAsyncTrue.neon',
-		));
+		]);
 		$this->assertTrue($this->container->getService('webloader.jsDefaultCompiler')->isAsync());
 	}
 
+
 	public function testAsyncOff()
 	{
-		$this->prepareContainer(array(
+		$this->prepareContainer([
 			__DIR__ . '/../fixtures/extension.neon',
 			__DIR__ . '/../fixtures/extensionAsyncFalse.neon',
-		));
+		]);
 		$this->assertFalse($this->container->getService('webloader.jsDefaultCompiler')->isAsync());
 	}
 
+
 	public function testDeferOn()
 	{
-		$this->prepareContainer(array(
+		$this->prepareContainer([
 			__DIR__ . '/../fixtures/extension.neon',
 			__DIR__ . '/../fixtures/extensionDeferTrue.neon',
-		));
+		]);
 		$this->assertTrue($this->container->getService('webloader.jsDefaultCompiler')->isDefer());
 	}
 
+
 	public function testDeferOff()
 	{
-		$this->prepareContainer(array(
+		$this->prepareContainer([
 			__DIR__ . '/../fixtures/extension.neon',
 			__DIR__ . '/../fixtures/extensionDeferFalse.neon',
-		));
+		]);
 		$this->assertFalse($this->container->getService('webloader.jsDefaultCompiler')->isDefer());
 	}
 
+
 	public function testNonceSet()
 	{
-		$this->prepareContainer(array(
+		$this->prepareContainer([
 			__DIR__ . '/../fixtures/extension.neon',
 			__DIR__ . '/../fixtures/extensionNonce.neon',
-		));
+		]);
 		$this->assertEquals('rAnd0m123', $this->container->getService('webloader.jsDefaultCompiler')->getNonce());
 	}
 
+
 	public function testNonceNotSet()
 	{
-		$this->prepareContainer(array(
+		$this->prepareContainer([
 			__DIR__ . '/../fixtures/extension.neon',
-		));
+		]);
 		$this->assertNull($this->container->getService('webloader.jsDefaultCompiler')->getNonce());
 	}
+
 
 	public function testExtensionName()
 	{
@@ -140,7 +154,7 @@ class ExtensionTest extends TestCase
 
 		$configurator = new \Nette\Configurator();
 		$configurator->setTempDirectory($tempDir);
-		$configurator->addParameters(array('container' => array('class' => $class)));
+		$configurator->addParameters(['container' => ['class' => $class]]);
 		$configurator->onCompile[] = function ($configurator, \Nette\DI\Compiler $compiler) {
 			$compiler->addExtension('Foo', new \WebLoader\Nette\Extension());
 		};
@@ -150,5 +164,4 @@ class ExtensionTest extends TestCase
 		$this->assertInstanceOf('WebLoader\Compiler', $container->getService('Foo.cssDefaultCompiler'));
 		$this->assertInstanceOf('WebLoader\Compiler', $container->getService('Foo.jsDefaultCompiler'));
 	}
-
 }

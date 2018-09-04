@@ -1,5 +1,5 @@
 <?php
-
+declare(strict_types=1);
 $rootDir = __DIR__ . '/../..';
 $travisDir = __DIR__;
 
@@ -11,10 +11,10 @@ if (getenv('NETTE') !== 'default') {
 		exit(1);
 	}
 
-	echo "Using tests/", basename($composerFile);
+	echo 'Using tests/', basename($composerFile);
 
 } else {
-	echo "Using default composer.json";
+	echo 'Using default composer.json';
 }
 
 exit(0);

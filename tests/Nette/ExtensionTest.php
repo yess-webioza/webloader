@@ -128,6 +128,26 @@ class ExtensionTest extends TestCase
 	}
 
 
+	public function testAbsoluteUrlOn(): void
+	{
+		$this->prepareContainer([
+			__DIR__ . '/../fixtures/extension.neon',
+			__DIR__ . '/../fixtures/extensionAbsoluteUrlTrue.neon',
+		]);
+		$this->assertTrue($this->container->getService('webloader.jsDefaultCompiler')->isAbsoluteUrl());
+	}
+
+
+	public function testAbsoluteUrlOff(): void
+	{
+		$this->prepareContainer([
+			__DIR__ . '/../fixtures/extension.neon',
+			__DIR__ . '/../fixtures/extensionAbsoluteUrlFalse.neon',
+		]);
+		$this->assertFalse($this->container->getService('webloader.jsDefaultCompiler')->isAbsoluteUrl());
+	}
+
+
 	public function testNonceSet(): void
 	{
 		$this->prepareContainer([

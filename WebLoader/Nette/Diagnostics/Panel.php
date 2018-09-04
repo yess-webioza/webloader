@@ -8,6 +8,7 @@ use Latte;
 use Latte\Runtime\Filters;
 use Tracy\Debugger;
 use WebLoader\Compiler;
+use WebLoader\File;
 
 /**
  * Debugger panel.
@@ -86,12 +87,14 @@ class Panel implements \Tracy\IBarPanel
 			}
 
 			$compilerCombinedSize = 0;
+
+			/** @var $generated File */
 			foreach ($compiler->generate() as $generated) {
-				$generatedSize = filesize($compiler->getOutputDir() . DIRECTORY_SEPARATOR . $generated->file);
+				$generatedSize = filesize($compiler->getOutputDir() . DIRECTORY_SEPARATOR . $generated->getFile());
 				$size['combined'] += $generatedSize;
 				$compilerCombinedSize += $generatedSize;
 
-				foreach ($generated->sourceFiles as $file) {
+				foreach ($generated->getSourceFiles() as $file) {
 					$extension = strtolower(pathinfo($file, PATHINFO_EXTENSION));
 					$file = str_replace('\\', DIRECTORY_SEPARATOR, realpath($file));
 

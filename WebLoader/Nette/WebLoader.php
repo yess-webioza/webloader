@@ -6,6 +6,7 @@ namespace WebLoader\Nette;
 
 use Nette\Utils\Html;
 use WebLoader\Compiler;
+use WebLoader\File;
 use WebLoader\FileCollection;
 
 /**
@@ -95,12 +96,12 @@ abstract class WebLoader extends \Nette\Application\UI\Control
 	}
 
 
-	protected function getGeneratedFilePath(string $file)
+	protected function getGeneratedFilePath(File $file)
 	{
-		$path = $this->tempPath . '/' . $file->file;
+		$path = $this->tempPath . '/' . $file->getFile();
 
 		if ($this->appendLastModified) {
-			$path .= '?' . $file->lastModified;
+			$path .= '?' . $file->getLastModified();
 		}
 
 		return $path;

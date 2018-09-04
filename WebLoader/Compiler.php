@@ -272,11 +272,7 @@ class Compiler
 			file_put_contents($outPath, $this->getContent($files));
 		}
 
-		return (object) [
-			'file' => $name,
-			'lastModified' => filemtime($path),
-			'sourceFiles' => $files,
-		];
+		return new File($name, filemtime($path), $files);
 	}
 
 

@@ -6,6 +6,7 @@ namespace WebLoader\Test;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 use WebLoader\Compiler;
+use WebLoader\File;
 
 /**
  * CompilerTest
@@ -111,11 +112,14 @@ class CompilerTest extends TestCase
 		$expectedContent = '-' . PHP_EOL . 'a:cba,' . PHP_EOL . 'b:fed,' . PHP_EOL .
 			'c:ihg,-' . PHP_EOL . 'a:cba,' . PHP_EOL . 'b:fed,' . PHP_EOL . 'c:ihg,';
 
+		/**
+		 * @var $files File[]
+		 */
 		$files = $this->object->generate();
 
-		$this->assertTrue(is_numeric($files[0]->lastModified) && $files[0]->lastModified > 0, 'Generate does not provide last modified timestamp correctly.');
+		$this->assertTrue(is_numeric($files[0]->getLastModified()) && $files[0]->getLastModified() > 0, 'Generate does not provide last modified timestamp correctly.');
 
-		$content = file_get_contents($this->object->getOutputDir() . '/' . $files[0]->file);
+		$content = file_get_contents($this->object->getOutputDir() . '/' . $files[0]->getFile());
 
 		$this->assertEquals($expectedContent, $content);
 	}
@@ -123,10 +127,13 @@ class CompilerTest extends TestCase
 
 	public function testGenerateReturnsSourceFilePaths(): void
 	{
+		/**
+		 * @var $res File[]
+		 */
 		$res = $this->object->generate();
-		$this->assertInternalType('array', $res[0]->sourceFiles);
-		$this->assertCount(3, $res[0]->sourceFiles);
-		$this->assertFileExists($res[0]->sourceFiles[0]);
+		$this->assertInternalType('array', $res[0]->getSourceFiles());
+		$this->assertCount(3, $res[0]->getSourceFiles());
+		$this->assertFileExists($res[0]->getSourceFiles()[0]);
 	}
 
 

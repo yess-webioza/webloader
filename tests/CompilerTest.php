@@ -19,7 +19,7 @@ class CompilerTest extends TestCase
 	private $object;
 
 
-	protected function setUp()
+	protected function setUp(): void
 	{
 		$fileCollection = Mockery::mock('WebLoader\IFileCollection');
 		$fileCollection->shouldReceive('getFiles')->andReturn([
@@ -46,16 +46,13 @@ class CompilerTest extends TestCase
 	}
 
 
-	/**
-	 * @return array
-	 */
-	private function getTempFiles()
+	private function getTempFiles(): array
 	{
 		return glob(__DIR__ . '/temp/webloader-*');
 	}
 
 
-	public function testJoinFiles()
+	public function testJoinFiles(): void
 	{
 		$this->assertTrue($this->object->getJoinFiles());
 
@@ -65,7 +62,7 @@ class CompilerTest extends TestCase
 	}
 
 
-	public function testEmptyFiles()
+	public function testEmptyFiles(): void
 	{
 		$this->assertTrue($this->object->getJoinFiles());
 		$this->object->setFileCollection(new \WebLoader\FileCollection());
@@ -76,7 +73,7 @@ class CompilerTest extends TestCase
 	}
 
 
-	public function testNotJoinFiles()
+	public function testNotJoinFiles(): void
 	{
 		$this->object->setJoinFiles(false);
 		$this->assertFalse($this->object->getJoinFiles());
@@ -90,13 +87,13 @@ class CompilerTest extends TestCase
 	/**
 	 * @expectedException \WebLoader\FileNotFoundException
 	 */
-	public function testSetOutDir()
+	public function testSetOutDir(): void
 	{
 		$this->object->setOutputDir('blablabla');
 	}
 
 
-	public function testGeneratingAndFilters()
+	public function testGeneratingAndFilters(): void
 	{
 		$this->object->addFileFilter(function ($code) {
 			return strrev($code);
@@ -124,7 +121,7 @@ class CompilerTest extends TestCase
 	}
 
 
-	public function testGenerateReturnsSourceFilePaths()
+	public function testGenerateReturnsSourceFilePaths(): void
 	{
 		$res = $this->object->generate();
 		$this->assertInternalType('array', $res[0]->sourceFiles);
@@ -133,7 +130,7 @@ class CompilerTest extends TestCase
 	}
 
 
-	public function testFilters()
+	public function testFilters(): void
 	{
 		$filter = function ($code, \WebLoader\Compiler $loader) {
 			return $code . $code;
@@ -144,7 +141,7 @@ class CompilerTest extends TestCase
 	}
 
 
-	public function testFileFilters()
+	public function testFileFilters(): void
 	{
 		$filter = function ($code, \WebLoader\Compiler $loader, $file = null) {
 			return $code . $code;
@@ -158,7 +155,7 @@ class CompilerTest extends TestCase
 	/**
 	 * @expectedException \TypeError
 	 */
-	public function testNonCallableFilter()
+	public function testNonCallableFilter(): void
 	{
 		$this->object->addFilter(4);
 	}
@@ -167,7 +164,7 @@ class CompilerTest extends TestCase
 	/**
 	 * @expectedException \TypeError
 	 */
-	public function testNonCallableFileFilter()
+	public function testNonCallableFileFilter(): void
 	{
 		$this->object->addFileFilter(4);
 	}

@@ -20,14 +20,14 @@ class DefaultOutputNamingConventionTest extends TestCase
 	private $compiler;
 
 
-	protected function setUp()
+	protected function setUp(): void
 	{
 		$this->object = new DefaultOutputNamingConvention();
 		$this->compiler = \Mockery::mock('Webloader\Compiler');
 	}
 
 
-	public function testMultipleFiles()
+	public function testMultipleFiles(): void
 	{
 		$files = [
 			__DIR__ . DIRECTORY_SEPARATOR . 'fixtures' . DIRECTORY_SEPARATOR . 'a.txt',
@@ -44,7 +44,7 @@ class DefaultOutputNamingConventionTest extends TestCase
 	}
 
 
-	public function testOneFile()
+	public function testOneFile(): void
 	{
 		$files = [
 			__DIR__ . DIRECTORY_SEPARATOR . 'fixtures' . DIRECTORY_SEPARATOR . 'a.txt',
@@ -55,7 +55,7 @@ class DefaultOutputNamingConventionTest extends TestCase
 	}
 
 
-	public function testCssConvention()
+	public function testCssConvention(): void
 	{
 		$files = [
 			__DIR__ . DIRECTORY_SEPARATOR . 'fixtures' . DIRECTORY_SEPARATOR . 'a.txt',
@@ -66,7 +66,7 @@ class DefaultOutputNamingConventionTest extends TestCase
 	}
 
 
-	public function testJsConvention()
+	public function testJsConvention(): void
 	{
 		$files = [
 			__DIR__ . DIRECTORY_SEPARATOR . 'fixtures' . DIRECTORY_SEPARATOR . 'a.txt',

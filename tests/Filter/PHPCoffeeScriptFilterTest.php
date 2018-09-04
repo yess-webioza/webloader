@@ -18,13 +18,13 @@ class PHPCoffeeScriptFilterTest extends TestCase
 	private $object;
 
 
-	protected function setUp()
+	protected function setUp(): void
 	{
 		$this->object = new PHPCoffeeScriptFilter();
 	}
 
 
-	public function testSimpleLoadAndParse()
+	public function testSimpleLoadAndParse(): void
 	{
 		if (!class_exists('CoffeeScript\Compiler')) {
 			$this->markTestSkipped('Missing CoffeeScript compiler.');

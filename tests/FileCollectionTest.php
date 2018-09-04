@@ -18,13 +18,13 @@ class FileCollectionTest extends TestCase
 	private $object;
 
 
-	protected function setUp()
+	protected function setUp(): void
 	{
 		$this->object = new FileCollection(__DIR__ . '/fixtures');
 	}
 
 
-	public function testAddGetFiles()
+	public function testAddGetFiles(): void
 	{
 		$this->object->addFile('a.txt');
 		$this->object->addFile(__DIR__ . '/fixtures/a.txt');

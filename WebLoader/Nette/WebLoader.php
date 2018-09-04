@@ -27,7 +27,7 @@ abstract class WebLoader extends \Nette\Application\UI\Control
 	private $appendLastModified;
 
 
-	public function __construct(Compiler $compiler, $tempPath, $appendLastModified)
+	public function __construct(Compiler $compiler, string $tempPath, bool $appendLastModified)
 	{
 		parent::__construct();
 		$this->compiler = $compiler;
@@ -95,7 +95,7 @@ abstract class WebLoader extends \Nette\Application\UI\Control
 	}
 
 
-	protected function getGeneratedFilePath($file)
+	protected function getGeneratedFilePath(string $file)
 	{
 		$path = $this->tempPath . '/' . $file->file;
 

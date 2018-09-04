@@ -15,7 +15,7 @@ class ExtensionTest extends TestCase
 	private $container;
 
 
-	private function prepareContainer($configFiles)
+	private function prepareContainer($configFiles): void
 	{
 		$tempDir = __DIR__ . '/../temp';
 		foreach (Finder::findFiles('*')->exclude('.gitignore')->from($tempDir . '/cache') as $file) {
@@ -42,14 +42,14 @@ class ExtensionTest extends TestCase
 	}
 
 
-	public function testJsCompilerService()
+	public function testJsCompilerService(): void
 	{
 		$this->prepareContainer([__DIR__ . '/../fixtures/extension.neon']);
 		$this->assertInstanceOf('WebLoader\Compiler', $this->container->getService('webloader.jsDefaultCompiler'));
 	}
 
 
-	public function testExcludeFiles()
+	public function testExcludeFiles(): void
 	{
 		$this->prepareContainer([__DIR__ . '/../fixtures/extension.neon']);
 		$files = $this->container->getService('webloader.jsExcludeCompiler')->getFileCollection()->getFiles();
@@ -59,7 +59,7 @@ class ExtensionTest extends TestCase
 	}
 
 
-	public function testJoinFilesOn()
+	public function testJoinFilesOn(): void
 	{
 		$this->prepareContainer([
 			__DIR__ . '/../fixtures/extension.neon',
@@ -69,7 +69,7 @@ class ExtensionTest extends TestCase
 	}
 
 
-	public function testJoinFilesOff()
+	public function testJoinFilesOff(): void
 	{
 		$this->prepareContainer([
 			__DIR__ . '/../fixtures/extension.neon',
@@ -79,7 +79,7 @@ class ExtensionTest extends TestCase
 	}
 
 
-	public function testJoinFilesOffInOneService()
+	public function testJoinFilesOffInOneService(): void
 	{
 		$this->prepareContainer([
 			__DIR__ . '/../fixtures/extension.neon',
@@ -88,7 +88,7 @@ class ExtensionTest extends TestCase
 	}
 
 
-	public function testAsyncOn()
+	public function testAsyncOn(): void
 	{
 		$this->prepareContainer([
 			__DIR__ . '/../fixtures/extension.neon',
@@ -98,7 +98,7 @@ class ExtensionTest extends TestCase
 	}
 
 
-	public function testAsyncOff()
+	public function testAsyncOff(): void
 	{
 		$this->prepareContainer([
 			__DIR__ . '/../fixtures/extension.neon',
@@ -108,7 +108,7 @@ class ExtensionTest extends TestCase
 	}
 
 
-	public function testDeferOn()
+	public function testDeferOn(): void
 	{
 		$this->prepareContainer([
 			__DIR__ . '/../fixtures/extension.neon',
@@ -118,7 +118,7 @@ class ExtensionTest extends TestCase
 	}
 
 
-	public function testDeferOff()
+	public function testDeferOff(): void
 	{
 		$this->prepareContainer([
 			__DIR__ . '/../fixtures/extension.neon',
@@ -128,7 +128,7 @@ class ExtensionTest extends TestCase
 	}
 
 
-	public function testNonceSet()
+	public function testNonceSet(): void
 	{
 		$this->prepareContainer([
 			__DIR__ . '/../fixtures/extension.neon',
@@ -138,7 +138,7 @@ class ExtensionTest extends TestCase
 	}
 
 
-	public function testNonceNotSet()
+	public function testNonceNotSet(): void
 	{
 		$this->prepareContainer([
 			__DIR__ . '/../fixtures/extension.neon',
@@ -147,7 +147,7 @@ class ExtensionTest extends TestCase
 	}
 
 
-	public function testExtensionName()
+	public function testExtensionName(): void
 	{
 		$tempDir = __DIR__ . '/../temp';
 		$class = 'ExtensionNameServiceContainer';

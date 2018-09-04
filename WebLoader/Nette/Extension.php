@@ -110,7 +110,7 @@ class Extension extends \Nette\DI\CompilerExtension
 	}
 
 
-	private function addWebLoader(ContainerBuilder $builder, $name, $config): void
+	private function addWebLoader(ContainerBuilder $builder, string $name, array $config): void
 	{
 		$filesServiceName = $this->prefix($name . 'Files');
 

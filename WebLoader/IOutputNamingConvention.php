@@ -11,5 +11,5 @@ namespace WebLoader;
  */
 interface IOutputNamingConvention
 {
-	public function getFilename(array $files, Compiler $compiler);
+	public function getFilename(array $files, Compiler $compiler): string;
 }

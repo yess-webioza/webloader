@@ -49,7 +49,7 @@ class Compiler
 	private $absoluteUrl = false;
 
 
-	public function __construct(IFileCollection $files, IOutputNamingConvention $convention, $outputDir)
+	public function __construct(IFileCollection $files, IOutputNamingConvention $convention, string $outputDir)
 	{
 		$this->collection = $files;
 		$this->namingConvention = $convention;
@@ -135,7 +135,7 @@ class Compiler
 	 */
 	public function setJoinFiles(bool $joinFiles): void
 	{
-		$this->joinFiles = (bool) $joinFiles;
+		$this->joinFiles = $joinFiles;
 	}
 
 
@@ -147,7 +147,7 @@ class Compiler
 
 	public function setAsync(bool $async): self
 	{
-		$this->async = (bool) $async;
+		$this->async = $async;
 		return $this;
 	}
 
@@ -183,7 +183,7 @@ class Compiler
 	 */
 	public function setCheckLastModified(bool $checkLastModified): void
 	{
-		$this->checkLastModified = (bool) $checkLastModified;
+		$this->checkLastModified = $checkLastModified;
 	}
 
 

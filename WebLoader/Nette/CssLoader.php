@@ -28,47 +28,30 @@ class CssLoader extends \WebLoader\Nette\WebLoader
 	private $alternate = false;
 
 
-	/**
-	 * Get media
-	 */
 	public function getMedia(): string
 	{
 		return $this->media;
 	}
 
 
-	/**
-	 * Get type
-	 */
 	public function getType(): string
 	{
 		return $this->type;
 	}
 
 
-	/**
-	 * Get title
-	 */
 	public function getTitle(): string
 	{
 		return $this->title;
 	}
 
 
-	/**
-	 * Is alternate ?
-	 */
 	public function isAlternate(): bool
 	{
 		return $this->alternate;
 	}
 
 
-	/**
-	 * Set media
-	 *
-	 * @return \WebLoader\Nette\CssLoader
-	 */
 	public function setMedia(string $media): self
 	{
 		$this->media = $media;
@@ -76,11 +59,6 @@ class CssLoader extends \WebLoader\Nette\WebLoader
 	}
 
 
-	/**
-	 * Set type
-	 *
-	 * @return \WebLoader\Nette\CssLoader
-	 */
 	public function setType(string $type): self
 	{
 		$this->type = $type;
@@ -88,11 +66,6 @@ class CssLoader extends \WebLoader\Nette\WebLoader
 	}
 
 
-	/**
-	 * Set title
-	 *
-	 * @return \WebLoader\Nette\CssLoader
-	 */
 	public function setTitle(string $title): self
 	{
 		$this->title = $title;
@@ -100,11 +73,6 @@ class CssLoader extends \WebLoader\Nette\WebLoader
 	}
 
 
-	/**
-	 * Set alternate
-	 *
-	 * @return \WebLoader\Nette\CssLoader
-	 */
 	public function setAlternate(bool $alternate): self
 	{
 		$this->alternate = $alternate;
@@ -112,9 +80,6 @@ class CssLoader extends \WebLoader\Nette\WebLoader
 	}
 
 
-	/**
-	 * Get link element
-	 */
 	public function getElement(string $source): Html
 	{
 		if ($this->alternate) {

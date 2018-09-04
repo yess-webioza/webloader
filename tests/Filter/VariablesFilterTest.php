@@ -13,7 +13,7 @@ class VariablesFilterTest extends TestCase
 	private $object;
 
 
-	protected function setUp()
+	protected function setUp(): void
 	{
 		$this->object = new VariablesFilter([
 			'foo' => 'bar',
@@ -21,7 +21,7 @@ class VariablesFilterTest extends TestCase
 	}
 
 
-	public function testReplace()
+	public function testReplace(): void
 	{
 		$this->object->bar = 'baz';
 
@@ -35,7 +35,7 @@ class VariablesFilterTest extends TestCase
 	}
 
 
-	public function testDelimiters()
+	public function testDelimiters(): void
 	{
 		$this->object->setDelimiter('[', ']');
 		$this->assertEquals('bar', call_user_func($this->object, '[foo]'));

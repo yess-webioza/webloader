@@ -19,7 +19,7 @@ class ScssFilterTest extends TestCase
 	private $compiler;
 
 
-	protected function setUp()
+	protected function setUp(): void
 	{
 		$this->filter = new ScssFilter(new \Leafo\ScssPhp\Compiler());
 
@@ -29,7 +29,7 @@ class ScssFilterTest extends TestCase
 	}
 
 
-	public function testReplace()
+	public function testReplace(): void
 	{
 		$file = __DIR__ . '/../fixtures/style.scss';
 		$less = $this->filter->__invoke(file_get_contents($file), $this->compiler, $file);
@@ -37,7 +37,7 @@ class ScssFilterTest extends TestCase
 	}
 
 
-	public function testImportAbsolutePath()
+	public function testImportAbsolutePath(): void
 	{
 		$file = __DIR__ . '/../fixtures/styleAbsolute.scss';
 		$filter = new VariablesFilter([

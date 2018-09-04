@@ -6,7 +6,7 @@ namespace WebLoader;
 
 class Path
 {
-	public static function normalize($path)
+	public static function normalize(string $path): string
 	{
 		$path = strtr($path, '\\', '/');
 		$root = (strpos($path, '/') === 0) ? '/' : '';

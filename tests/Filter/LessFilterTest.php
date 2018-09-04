@@ -18,7 +18,7 @@ class LessFilterTest extends TestCase
 	private $compiler;
 
 
-	protected function setUp()
+	protected function setUp(): void
 	{
 		$this->filter = new LessFilter(new \lessc());
 
@@ -28,7 +28,7 @@ class LessFilterTest extends TestCase
 	}
 
 
-	public function testReplace()
+	public function testReplace(): void
 	{
 		$file = __DIR__ . '/../fixtures/style.less';
 		$less = $this->filter->__invoke(file_get_contents($file), $this->compiler, $file);

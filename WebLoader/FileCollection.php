@@ -46,10 +46,9 @@ class FileCollection implements \WebLoader\IFileCollection
 	/**
 	 * Make path absolute
 	 *
-	 * @param $path string
 	 * @throws \WebLoader\FileNotFoundException
 	 */
-	public function cannonicalizePath($path): string
+	public function cannonicalizePath(string $path): string
 	{
 		$rel = Path::normalize($this->root . '/' . $path);
 		if (file_exists($rel)) {
@@ -67,7 +66,7 @@ class FileCollection implements \WebLoader\IFileCollection
 
 	/**
 	 * Add file
-	 * @param $file string filename
+	 * @param string|\SplFileInfo
 	 */
 	public function addFile($file): void
 	{
@@ -97,7 +96,7 @@ class FileCollection implements \WebLoader\IFileCollection
 	 * Remove file
 	 * @param $file string filename
 	 */
-	public function removeFile($file): void
+	public function removeFile(string $file): void
 	{
 		$this->removeFiles([$file]);
 	}
@@ -165,9 +164,8 @@ class FileCollection implements \WebLoader\IFileCollection
 
 	/**
 	 * Add watch file
-	 * @param $file string filename
 	 */
-	public function addWatchFile($file): void
+	public function addWatchFile(string $file): void
 	{
 		$file = $this->cannonicalizePath((string) $file);
 

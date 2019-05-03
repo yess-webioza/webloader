@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace WebLoader\Nette;
 
+use Nette\Application\UI\Control;
 use Nette\Utils\Html;
 use WebLoader\Compiler;
 use WebLoader\File;
@@ -15,10 +16,10 @@ use WebLoader\FileCollection;
  * @author Jan Marek
  * @license MIT
  */
-abstract class WebLoader extends \Nette\Application\UI\Control
+abstract class WebLoader extends Control
 {
 
-	/** @var \WebLoader\Compiler */
+	/** @var Compiler */
 	private $compiler;
 
 	/** @var string */
@@ -30,7 +31,6 @@ abstract class WebLoader extends \Nette\Application\UI\Control
 
 	public function __construct(Compiler $compiler, string $tempPath, bool $appendLastModified)
 	{
-		parent::__construct();
 		$this->compiler = $compiler;
 		$this->tempPath = $tempPath;
 		$this->appendLastModified = $appendLastModified;

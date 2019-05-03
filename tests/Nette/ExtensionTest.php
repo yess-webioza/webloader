@@ -3,15 +3,19 @@ declare(strict_types=1);
 
 namespace WebLoader\Test\Nette;
 
+use Nette\Configurator;
+use Nette\DI\Compiler;
+use Nette\DI\Container;
 use Nette\Utils\Finder;
 use PHPUnit\Framework\TestCase;
+use WebLoader\Nette\Extension;
 use WebLoader\Path;
 
 
 class ExtensionTest extends TestCase
 {
 
-	/** @var \Nette\DI\Container */
+	/** @var Container */
 	private $container;
 
 
@@ -22,7 +26,7 @@ class ExtensionTest extends TestCase
 			unlink((string) $file);
 		}
 
-		$configurator = new \Nette\Configurator();
+		$configurator = new Configurator();
 		$configurator->setTempDirectory($tempDir);
 
 		foreach ($configFiles as $file) {
@@ -35,7 +39,7 @@ class ExtensionTest extends TestCase
 			'tempDir' => $tempDir,
 		]);
 
-		$extension = new \WebLoader\Nette\Extension();
+		$extension = new Extension(__DIR__ . '/..', $configurator->isDebugMode());
 		$extension->install($configurator);
 
 		$this->container = @$configurator->createContainer(); // sends header X-Powered-By, ...
@@ -172,11 +176,12 @@ class ExtensionTest extends TestCase
 		$tempDir = __DIR__ . '/../temp';
 		$class = 'ExtensionNameServiceContainer';
 
-		$configurator = new \Nette\Configurator();
+		$configurator = new Configurator();
 		$configurator->setTempDirectory($tempDir);
 		$configurator->addParameters(['container' => ['class' => $class]]);
-		$configurator->onCompile[] = function ($configurator, \Nette\DI\Compiler $compiler) {
-			$compiler->addExtension('Foo', new \WebLoader\Nette\Extension());
+		$configurator->onCompile[] = function (Configurator $configurator, Compiler $compiler) {
+			$extension = new Extension(__DIR__ . '/..', $configurator->isDebugMode());
+			$compiler->addExtension('Foo', $extension);
 		};
 		$configurator->addConfig(__DIR__ . '/../fixtures/extensionName.neon');
 		$container = $configurator->createContainer();

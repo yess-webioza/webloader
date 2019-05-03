@@ -31,13 +31,11 @@ class StylusFilter
 	}
 
 
-	/**
-	 * Invoke filter
-	 */
 	public function __invoke(string $code, Compiler $loader, ?string $file = null): string
 	{
+		$file = (string) $file;
+
 		if (pathinfo($file, PATHINFO_EXTENSION) === 'styl') {
-			$path =
 			$cmd = $this->bin . ($this->compress ? ' -c' : '') . ($this->includeCss ? ' --include-css' : '') . ' -I ' . pathinfo($file, PATHINFO_DIRNAME);
 			try {
 				$code = Process::run($cmd, $code);
@@ -46,6 +44,6 @@ class StylusFilter
 			}
 		}
 
-		return $code;
+		return (string) $code;
 	}
 }

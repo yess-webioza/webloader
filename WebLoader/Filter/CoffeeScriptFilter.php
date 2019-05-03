@@ -18,7 +18,7 @@ class CoffeeScriptFilter
 	/** @var bool */
 	public $bare = false;
 
-	/** @var \WebLoader\Filter\path to coffee bin */
+	/** @var string */
 	private $bin;
 
 
@@ -28,11 +28,10 @@ class CoffeeScriptFilter
 	}
 
 
-	/**
-	 * Invoke filter
-	 */
 	public function __invoke(string $code, Compiler $loader, ?string $file = null): string
 	{
+		$file = (string) $file;
+
 		if (pathinfo($file, PATHINFO_EXTENSION) === 'coffee') {
 			$code = $this->compileCoffee($code);
 		}

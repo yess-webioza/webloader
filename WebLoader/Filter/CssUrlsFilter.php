@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace WebLoader\Filter;
 
 use WebLoader\Compiler;
+use WebLoader\InvalidArgumentException;
 use WebLoader\Path;
 
 /**
@@ -16,27 +17,19 @@ use WebLoader\Path;
 class CssUrlsFilter
 {
 
-	/**
-	 * @var string
-	 */
+	/** @var string */
 	protected $basePath;
 
-	/**
-	 * @var string
-	 */
+	/** @var string */
 	private $docRoot;
 
 
-	/**
-	 * @param string $docRoot web document root
-	 * @throws \WebLoader\InvalidArgumentException
-	 */
 	public function __construct(string $docRoot, string $basePath = '/')
 	{
 		$this->docRoot = Path::normalize($docRoot);
 
 		if (!is_dir($this->docRoot)) {
-			throw new \WebLoader\InvalidArgumentException('Given document root is not directory.');
+			throw new InvalidArgumentException('Given document root is not directory.');
 		}
 
 		$this->basePath = $basePath;
@@ -49,13 +42,6 @@ class CssUrlsFilter
 	}
 
 
-	/**
-	 * Make relative url absolute
-	 *
-	 * @param string $url image url
-	 * @param string $quote single or double quote
-	 * @param string $cssFile absolute css file path
-	 */
 	public function absolutizeUrl(string $url, string $quote, string $cssFile): string
 	{
 		// is already absolute
@@ -79,11 +65,6 @@ class CssUrlsFilter
 	}
 
 
-	/**
-	 * Cannonicalize path
-	 *
-	 * @return string path
-	 */
 	public function cannonicalizePath(string $path): string
 	{
 		$path = strtr($path, DIRECTORY_SEPARATOR, '/');
@@ -106,11 +87,10 @@ class CssUrlsFilter
 	}
 
 
-	/**
-	 * Invoke filter
-	 */
 	public function __invoke(string $code, Compiler $loader, ?string $file = null): string
 	{
+		$file = (string) $file;
+
 		// thanks to kravco
 		$regexp = '~
 			(?<![a-z])
@@ -132,8 +112,10 @@ class CssUrlsFilter
 
 		$self = $this;
 
-		return preg_replace_callback($regexp, function ($matches) use ($self, $file) {
+		$return = preg_replace_callback($regexp, function ($matches) use ($self, $file) {
 			return "url('" . $self->absolutizeUrl($matches[2], $matches[1], $file) . "')";
 		}, $code);
+
+		return (string) $return;
 	}
 }

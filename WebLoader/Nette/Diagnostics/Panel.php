@@ -7,6 +7,7 @@ namespace WebLoader\Nette\Diagnostics;
 use Latte;
 use Latte\Runtime\Filters;
 use Tracy\Debugger;
+use Tracy\IBarPanel;
 use WebLoader\Compiler;
 use WebLoader\File;
 
@@ -14,7 +15,7 @@ use WebLoader\File;
  * Debugger panel.
  * @author Adam Klvač
  */
-class Panel implements \Tracy\IBarPanel
+class Panel implements IBarPanel
 {
 
 	/** @var array */
@@ -26,7 +27,7 @@ class Panel implements \Tracy\IBarPanel
 		'coffee' => 'CoffeeScript files',
 	];
 
-	/** @var \WebLoader\Compiler[] */
+	/** @var Compiler[] */
 	private $compilers = [];
 
 	/** @var array */
@@ -44,7 +45,7 @@ class Panel implements \Tracy\IBarPanel
 
 	public function __construct(?string $appDir = null)
 	{
-		$this->root = $appDir ? str_replace('\\', DIRECTORY_SEPARATOR, realpath(dirname($appDir))) : '';
+		$this->root = $appDir ? str_replace('\\', DIRECTORY_SEPARATOR, (string) realpath(dirname($appDir))) : '';
 		Debugger::getBar()->addPanel($this);
 	}
 
@@ -52,7 +53,7 @@ class Panel implements \Tracy\IBarPanel
 	/**
 	 * Registers a compiler.
 	 *
-	 * @return \WebLoader\Nette\Diagnostics\Panel
+	 * @return Panel
 	 */
 	public function addLoader(string $name, Compiler $compiler): self
 	{
@@ -88,7 +89,7 @@ class Panel implements \Tracy\IBarPanel
 
 			$compilerCombinedSize = 0;
 
-			/** @var $generated File */
+			/** @var File $generated */
 			foreach ($compiler->generate() as $generated) {
 				$generatedSize = filesize($compiler->getOutputDir() . DIRECTORY_SEPARATOR . $generated->getFile());
 				$size['combined'] += $generatedSize;
@@ -96,13 +97,13 @@ class Panel implements \Tracy\IBarPanel
 
 				foreach ($generated->getSourceFiles() as $file) {
 					$extension = strtolower(pathinfo($file, PATHINFO_EXTENSION));
-					$file = str_replace('\\', DIRECTORY_SEPARATOR, realpath($file));
+					$file = str_replace('\\', DIRECTORY_SEPARATOR, (string) realpath($file));
 
 					if (!isset($this->files[$group][$extension])) {
 						$this->files[$group][$extension] = [];
 					}
 					if (!isset($this->sizes[$group][$extension])) {
-						$this->sizes[$group][$extension] = ['original' => 0];
+						$this->sizes[$group][$extension] = ['original' => 0, 'combined' => 0];
 					}
 
 					$this->files[$group][$extension][] = [

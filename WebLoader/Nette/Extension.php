@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace WebLoader\Nette;
 
-use Nette;
 use Nette\Configurator;
 use Nette\DI\Compiler;
 use Nette\DI\CompilerExtension;
@@ -89,7 +88,9 @@ class Extension extends CompilerExtension
 	public function loadConfiguration(): void
 	{
 		$builder = $this->getContainerBuilder();
-		$config =  json_decode(json_encode($this->getConfig()), true);
+
+		$json = json_encode($this->getConfig());
+		$config =  json_decode((string) $json, true);
 
 		$builder->addDefinition($this->prefix('cssNamingConvention'))
 			->setFactory('WebLoader\DefaultOutputNamingConvention::createCssConvention');
@@ -109,6 +110,7 @@ class Extension extends CompilerExtension
 
 		foreach (['css', 'js'] as $type) {
 			foreach ($config[$type] as $name => $wlConfig) {
+				/** @var array $wlConfig */
 				$wlConfig = Helpers::merge($wlConfig, $config[$type . 'Defaults']);
 				$this->addWebLoader($builder, $type . ucfirst($name), $wlConfig);
 				$loaderFactoryTempPaths[strtolower($name)] = $wlConfig['tempPath'];

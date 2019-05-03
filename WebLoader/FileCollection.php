@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace WebLoader;
 
+use Traversable;
+
 /**
  * FileCollection
  *
@@ -30,7 +32,7 @@ class FileCollection implements \WebLoader\IFileCollection
 	 */
 	public function __construct(?string $root = null)
 	{
-		$this->root = $root;
+		$this->root = (string) $root;
 	}
 
 
@@ -46,7 +48,7 @@ class FileCollection implements \WebLoader\IFileCollection
 	/**
 	 * Make path absolute
 	 *
-	 * @throws \WebLoader\FileNotFoundException
+	 * @throws FileNotFoundException
 	 */
 	public function cannonicalizePath(string $path): string
 	{
@@ -60,14 +62,10 @@ class FileCollection implements \WebLoader\IFileCollection
 			return $abs;
 		}
 
-		throw new \WebLoader\FileNotFoundException("File '$path' does not exist.");
+		throw new FileNotFoundException("File '$path' does not exist.");
 	}
 
 
-	/**
-	 * Add file
-	 * @param string|\SplFileInfo
-	 */
 	public function addFile($file): void
 	{
 		$file = $this->cannonicalizePath((string) $file);
@@ -82,7 +80,7 @@ class FileCollection implements \WebLoader\IFileCollection
 
 	/**
 	 * Add files
-	 * @param array|\Traversable $files array list of files
+	 * @param array|Traversable $files array list of files
 	 */
 	public function addFiles($files): void
 	{
@@ -92,20 +90,12 @@ class FileCollection implements \WebLoader\IFileCollection
 	}
 
 
-	/**
-	 * Remove file
-	 * @param $file string filename
-	 */
 	public function removeFile(string $file): void
 	{
 		$this->removeFiles([$file]);
 	}
 
 
-	/**
-	 * Remove files
-	 * @param array $files list of files
-	 */
 	public function removeFiles(array $files): void
 	{
 		$files = array_map([$this, 'cannonicalizePath'], $files);
@@ -129,7 +119,7 @@ class FileCollection implements \WebLoader\IFileCollection
 
 	/**
 	 * Add multiple remote files
-	 * @param array|\Traversable $files
+	 * @param array|Traversable $files
 	 */
 	public function addRemoteFiles($files): void
 	{
@@ -162,9 +152,6 @@ class FileCollection implements \WebLoader\IFileCollection
 	}
 
 
-	/**
-	 * Add watch file
-	 */
 	public function addWatchFile(string $file): void
 	{
 		$file = $this->cannonicalizePath((string) $file);
@@ -179,7 +166,7 @@ class FileCollection implements \WebLoader\IFileCollection
 
 	/**
 	 * Add watch files
-	 * @param array|\Traversable $files array list of files
+	 * @param array|Traversable $files array list of files
 	 */
 	public function addWatchFiles($files): void
 	{
@@ -189,9 +176,6 @@ class FileCollection implements \WebLoader\IFileCollection
 	}
 
 
-	/**
-	 * Get watch file list
-	 */
 	public function getWatchFiles(): array
 	{
 		return array_values($this->watchFiles);

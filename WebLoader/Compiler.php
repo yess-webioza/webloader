@@ -42,7 +42,7 @@ class Compiler
 	/** @var bool */
 	private $defer = false;
 
-	/** @var string */
+	/** @var string|null */
 	private $nonce;
 
 	/** @var bool */
@@ -93,18 +93,12 @@ class Compiler
 	}
 
 
-	/**
-	 * Get temp path
-	 */
 	public function getOutputDir(): string
 	{
 		return $this->outputDir;
 	}
 
 
-	/**
-	 * Set temp path
-	 */
 	public function setOutputDir(string $tempPath): void
 	{
 		$tempPath = Path::normalize($tempPath);
@@ -199,10 +193,10 @@ class Compiler
 		$modified = 0;
 
 		foreach ($files as $file) {
-			$modified = max($modified, filemtime(realpath($file)));
+			$modified = max($modified, filemtime((string) realpath($file)));
 		}
 
-		return $modified;
+		return (int) $modified;
 	}
 
 
@@ -272,7 +266,7 @@ class Compiler
 			file_put_contents($outPath, $this->getContent($files));
 		}
 
-		return new File($name, filemtime($path), $files);
+		return new File($name, (int) filemtime($path), $files);
 	}
 
 

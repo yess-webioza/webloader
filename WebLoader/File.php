@@ -7,19 +7,13 @@ namespace WebLoader;
 class File
 {
 
-	/**
-	 * @var string
-	 */
+	/** @var string */
 	protected $file;
 
-	/**
-	 * @var int
-	 */
+	/** @var int|null */
 	protected $lastModified = null;
 
-	/**
-	 * @var array
-	 */
+	/** @var array */
 	protected $sourceFiles;
 
 

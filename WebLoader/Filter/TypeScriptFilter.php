@@ -15,10 +15,10 @@ use WebLoader\Compiler;
 class TypeScriptFilter
 {
 
-	/** @var string */
+	/** @var string|null */
 	private $bin;
 
-	/** @var array */
+	/** @var array|null */
 	private $env;
 
 
@@ -30,11 +30,10 @@ class TypeScriptFilter
 	}
 
 
-	/**
-	 * Invoke filter
-	 */
 	public function __invoke(string $code, Compiler $compiler, ?string $file = null): string
 	{
+		$file = (string) $file;
+
 		if (pathinfo($file, PATHINFO_EXTENSION) === 'ts') {
 			$out = substr_replace($file, 'js', -2);
 			$cmd = sprintf('%s %s --target ES5 --out %s', $this->bin, escapeshellarg($file), escapeshellarg($out));
@@ -42,6 +41,6 @@ class TypeScriptFilter
 			$code = file_get_contents($out);
 		}
 
-		return $code;
+		return (string) $code;
 	}
 }

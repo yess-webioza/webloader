@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace WebLoader\Filter;
 
+use RuntimeException;
+
 /**
  * Simple process wrapper
  *
@@ -13,12 +15,6 @@ namespace WebLoader\Filter;
 class Process
 {
 
-	/**
-	 * @param string|null $stdin
-	 * @param string|null $cwd
-	 * @param array|null $env
-	 * @throws \RuntimeExeption
-	 */
 	public static function run(string $cmd, ?string $stdin = null, ?string $cwd = null, ?array $env = null): string
 	{
 		$descriptorspec = [
@@ -29,6 +25,10 @@ class Process
 
 		$pipes = [];
 		$proc = proc_open($cmd, $descriptorspec, $pipes, $cwd, $env);
+
+		if ($proc === false) {
+			throw new RuntimeException('Proc open failed');
+		}
 
 		if (!empty($stdin)) {
 			fwrite($pipes[0], $stdin . PHP_EOL);
@@ -41,9 +41,9 @@ class Process
 		$code = proc_close($proc);
 
 		if ($code !== 0) {
-			throw new \RuntimeException($stderr, $code);
+			throw new RuntimeException((string) $stderr, $code);
 		}
 
-		return $stdout;
+		return (string) $stdout;
 	}
 }

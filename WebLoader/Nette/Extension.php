@@ -88,7 +88,12 @@ class Extension extends CompilerExtension
 	public function loadConfiguration(): void
 	{
 		$builder = $this->getContainerBuilder();
-		$config =  json_decode(json_encode($this->getConfig()), true);
+
+		$json = json_encode($this->getConfig());
+		if ($json === false) {
+			$json = '';
+		}
+		$config =  json_decode($json, true);
 
 		$builder->addDefinition($this->prefix('cssNamingConvention'))
 			->setFactory('WebLoader\DefaultOutputNamingConvention::createCssConvention');
@@ -108,7 +113,7 @@ class Extension extends CompilerExtension
 
 		foreach (['css', 'js'] as $type) {
 			foreach ($config[$type] as $name => $wlConfig) {
-				$wlConfig = Helpers::merge($wlConfig, $config[$type . 'Defaults']);
+				// $wlConfig = Helpers::merge($wlConfig, $config[$type . 'Defaults']);
 				$this->addWebLoader($builder, $type . ucfirst($name), $wlConfig);
 				$loaderFactoryTempPaths[strtolower($name)] = $wlConfig['tempPath'];
 
@@ -186,7 +191,8 @@ class Extension extends CompilerExtension
 		// todo css media
 	}
 
-
+	// I have no clue what this is supposed to do...
+	//
 	// public function afterCompile(Nette\PhpGenerator\ClassType $class): void
 	// {
 	// 	$meta = $class->getProperty('meta');
@@ -204,10 +210,8 @@ class Extension extends CompilerExtension
 
 	public function install(Configurator $configurator): void
 	{
-
-		bdump('x');
 		$self = $this;
-		$configurator->onCompile[] = function ($configurator, Compiler $compiler) use ($self): void {
+		$configurator->onCompile[] = function (Configurator $configurator, Compiler $compiler) use ($self): void {
 			$compiler->addExtension($self::EXTENSION_NAME, $self);
 		};
 	}

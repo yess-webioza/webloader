@@ -276,11 +276,6 @@ class Compiler
 	}
 
 
-	/**
-	 * Load file
-	 *
-	 * @param string $file path
-	 */
 	protected function loadFile(string $file): string
 	{
 		$content = file_get_contents($file);

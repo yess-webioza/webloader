@@ -90,7 +90,7 @@ abstract class WebLoader extends Control
 			echo $this->getElement($this->getGeneratedFilePath($file)), PHP_EOL;
 		}
 
-		if ($hasArgs) {
+		if ($hasArgs && !empty($backup)) {
 			$this->compiler->setFileCollection($backup);
 		}
 	}

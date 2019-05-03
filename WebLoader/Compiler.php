@@ -24,10 +24,10 @@ class Compiler
 	/** @var array */
 	private $fileFilters = [];
 
-	/** @var \WebLoader\IFileCollection */
+	/** @var IFileCollection */
 	private $collection;
 
-	/** @var \WebLoader\IOutputNamingConvention */
+	/** @var IOutputNamingConvention */
 	private $namingConvention;
 
 	/** @var bool */
@@ -110,11 +110,11 @@ class Compiler
 		$tempPath = Path::normalize($tempPath);
 
 		if (!is_dir($tempPath)) {
-			throw new \WebLoader\FileNotFoundException("Temp path '$tempPath' does not exist.");
+			throw new FileNotFoundException("Temp path '$tempPath' does not exist.");
 		}
 
 		if (!is_writable($tempPath)) {
-			throw new \WebLoader\InvalidArgumentException("Directory '$tempPath' is not writeable.");
+			throw new InvalidArgumentException("Directory '$tempPath' is not writeable.");
 		}
 
 		$this->outputDir = $tempPath;
@@ -276,11 +276,6 @@ class Compiler
 	}
 
 
-	/**
-	 * Load file
-	 *
-	 * @param string $file path
-	 */
 	protected function loadFile(string $file): string
 	{
 		$content = file_get_contents($file);

@@ -13,6 +13,7 @@ use Nette\DI\ContainerBuilder;
 use Nette\Schema\Expect;
 use Nette\Schema\Schema;
 use Nette\Utils\Finder;
+use WebLoader\FileNotFoundException;
 
 /**
  * @author Jan Marek
@@ -259,7 +260,7 @@ class Extension extends CompilerExtension
 		if (!$this->fileExists($file)) {
 			$tmp = rtrim($sourceDir, '/\\') . DIRECTORY_SEPARATOR . $file;
 			if (!$this->fileExists($tmp)) {
-				throw new \WebLoader\FileNotFoundException(sprintf("Neither '%s' or '%s' was found", $file, $tmp));
+				throw new FileNotFoundException(sprintf("Neither '%s' or '%s' was found", $file, $tmp));
 			}
 		}
 	}

@@ -133,7 +133,7 @@ class Panel implements IBarPanel
 		$latte = new Latte\Engine;
 
 		$latte->addFilter('extension', function ($extension) {
-			return isset(Panel::$types[$extension]) ? Panel::$types[$extension] : $extension;
+			return isset(self::$types[$extension]) ? self::$types[$extension] : $extension;
 		});
 
 		return $latte->renderToString(__DIR__ . '/panel.latte', [

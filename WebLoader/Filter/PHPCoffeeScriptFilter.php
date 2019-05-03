@@ -15,7 +15,6 @@ use WebLoader\WebLoaderException;
  */
 class PHPCoffeeScriptFilter
 {
-
 	public function __invoke(string $code, \WebLoader\Compiler $loader, ?string $file = null): string
 	{
 		$file = (string) $file;

@@ -48,7 +48,7 @@ class Extension extends CompilerExtension
 				'sourceDir' => Expect::string($this->wwwDir . '/js'),
 				'tempDir' => Expect::string($this->wwwDir . '/' . self::DEFAULT_TEMP_PATH),
 				'tempPath' => Expect::string(self::DEFAULT_TEMP_PATH),
-				'files' =>  Expect::array(),
+				'files' => Expect::array(),
 				'watchFiles' => Expect::array(),
 				'remoteFiles' => Expect::array(),
 				'filters' => Expect::array(),
@@ -66,7 +66,7 @@ class Extension extends CompilerExtension
 				'sourceDir' => Expect::string($this->wwwDir . '/css')->dynamic(),
 				'tempDir' => Expect::string($this->wwwDir . '/' . self::DEFAULT_TEMP_PATH),
 				'tempPath' => Expect::string(self::DEFAULT_TEMP_PATH),
-				'files' =>  Expect::array(),
+				'files' => Expect::array(),
 				'watchFiles' => Expect::array(),
 				'remoteFiles' => Expect::array(),
 				'filters' => Expect::array(),
@@ -90,7 +90,7 @@ class Extension extends CompilerExtension
 		$builder = $this->getContainerBuilder();
 
 		$json = json_encode($this->getConfig());
-		$config =  json_decode((string) $json, true);
+		$config = json_decode((string) $json, true);
 
 		$builder->addDefinition($this->prefix('cssNamingConvention'))
 			->setFactory('WebLoader\DefaultOutputNamingConvention::createCssConvention');
@@ -190,6 +190,7 @@ class Extension extends CompilerExtension
 	}
 
 
+	// I have no clue what this is supposed to do...
 	// public function afterCompile(Nette\PhpGenerator\ClassType $class): void
 	// {
 	// 	$meta = $class->getProperty('meta');
@@ -207,8 +208,6 @@ class Extension extends CompilerExtension
 
 	public function install(Configurator $configurator): void
 	{
-
-		bdump('x');
 		$self = $this;
 		$configurator->onCompile[] = function ($configurator, Compiler $compiler) use ($self): void {
 			$compiler->addExtension($self::EXTENSION_NAME, $self);
@@ -282,4 +281,3 @@ class Extension extends CompilerExtension
 		return file_exists($file);
 	}
 }
-

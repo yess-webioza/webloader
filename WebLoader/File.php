@@ -11,7 +11,7 @@ class File
 	protected $file;
 
 	/** @var int|null */
-	protected $lastModified = null;
+	protected $lastModified;
 
 	/** @var array */
 	protected $sourceFiles;
@@ -21,8 +21,7 @@ class File
 		string $file,
 		?int $lastModified,
 		array $sourceFiles
-	)
-	{
+	) {
 		$this->file = $file;
 		$this->lastModified = $lastModified;
 		$this->sourceFiles = $sourceFiles;
@@ -45,5 +44,4 @@ class File
 	{
 		return $this->sourceFiles;
 	}
-
 }

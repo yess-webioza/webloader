@@ -12,6 +12,7 @@ use Nette\DI\ContainerBuilder;
 use Nette\Schema\Expect;
 use Nette\Schema\Schema;
 use Nette\Utils\Finder;
+use SplFileInfo;
 use WebLoader\FileNotFoundException;
 
 /**
@@ -219,6 +220,7 @@ class Extension extends CompilerExtension
 	{
 		$normalizedFiles = [];
 
+		/** @var array|string $file */
 		foreach ($filesConfig as $file) {
 			// finder support
 			if (is_array($file) && isset($file['files']) && (isset($file['in']) || isset($file['from']))) {
@@ -236,19 +238,22 @@ class Extension extends CompilerExtension
 
 				$foundFilesList = [];
 				foreach ($finder as $foundFile) {
-					/** @var \SplFileInfo $foundFile */
+					/** @var SplFileInfo $foundFile */
 					$foundFilesList[] = $foundFile->getPathname();
 				}
 
 				natsort($foundFilesList);
 
+				/** @var string $foundFilePathname */
 				foreach ($foundFilesList as $foundFilePathname) {
 					$normalizedFiles[] = $foundFilePathname;
 				}
 
 			} else {
-				$this->checkFileExists($file, $sourceDir);
-				$normalizedFiles[] = $file;
+				if (is_string($file)) {
+					$this->checkFileExists($file, $sourceDir);
+					$normalizedFiles[] = $file;
+				}
 			}
 		}
 

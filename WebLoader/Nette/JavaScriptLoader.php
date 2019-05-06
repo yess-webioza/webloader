@@ -12,19 +12,16 @@ use Nette\Utils\Html;
  * @author Jan Marek
  * @license MIT
  */
-class JavaScriptLoader extends \WebLoader\Nette\WebLoader
+class JavaScriptLoader extends WebLoader
 {
-
-	/**
-	 * Get script element
-	 */
 	public function getElement(string $source): Html
 	{
 		$el = Html::el('script');
-		$this->getCompiler()->isAsync() ? $el = $el->addAttributes(['async' => true]) : null;
-		$this->getCompiler()->isDefer() ? $el = $el->addAttributes(['defer' => true]) : null;
-		($nonce = $this->getCompiler()->getNonce()) ? $el = $el->addAttributes(['nonce' => $nonce]) : null;
+		$el->setAttribute('async', $this->getCompiler()->isAsync());
+		$el->setAttribute('defer', $this->getCompiler()->isDefer());
+		$el->setAttribute('nonce', $this->getCompiler()->getNonce());
+		$el->setAttribute('src', $source);
 
-		return $el->src($source);
+		return $el;
 	}
 }

@@ -6,6 +6,7 @@ namespace WebLoader\Nette;
 
 use Nette\DI\Container;
 use Nette\Http\IRequest;
+use WebLoader\Compiler;
 
 class LoaderFactory
 {
@@ -34,19 +35,16 @@ class LoaderFactory
 
 	public function createCssLoader(string $name, bool $appendLastModified = false): CssLoader
 	{
-		/** @var \WebLoader\Compiler $compiler */
+		/** @var Compiler $compiler */
 		$compiler = $this->serviceLocator->getService($this->extensionName . '.css' . ucfirst($name) . 'Compiler');
 		return new CssLoader($compiler, $this->formatTempPath($name, $compiler->isAbsoluteUrl()), $appendLastModified);
 	}
 
 
-	public function createJavaScriptLoader(string $name, bool $appendLastModified = false, ?string $nonce = null): JavaScriptLoader
+	public function createJavaScriptLoader(string $name, bool $appendLastModified = false): JavaScriptLoader
 	{
-		/** @var \WebLoader\Compiler $compiler */
+		/** @var Compiler $compiler */
 		$compiler = $this->serviceLocator->getService($this->extensionName . '.js' . ucfirst($name) . 'Compiler');
-		if ($nonce) {
-			$compiler->setNonce($nonce);
-		}
 		return new JavaScriptLoader($compiler, $this->formatTempPath($name, $compiler->isAbsoluteUrl()), $appendLastModified);
 	}
 

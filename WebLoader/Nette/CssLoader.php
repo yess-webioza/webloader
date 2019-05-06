@@ -12,7 +12,7 @@ use Nette\Utils\Html;
  * @author Jan Marek
  * @license MIT
  */
-class CssLoader extends \WebLoader\Nette\WebLoader
+class CssLoader extends WebLoader
 {
 
 	/** @var string */
@@ -88,6 +88,14 @@ class CssLoader extends \WebLoader\Nette\WebLoader
 			$alternate = '';
 		}
 
-		return Html::el('link')->rel('stylesheet' . $alternate)->type($this->type)->media($this->media)->title($this->title)->href($source);
+		$el = Html::el('link');
+		$el->setAttribute('rel', 'stylesheet' . $alternate);
+		$el->setAttribute('type', $this->type);
+		$el->setAttribute('media', $this->media);
+		$el->setAttribute('title', $this->title);
+		$el->setAttribute('nonce', $this->getCompiler()->getNonce());
+		$el->setAttribute('href', $source);
+
+		return $el;
 	}
 }

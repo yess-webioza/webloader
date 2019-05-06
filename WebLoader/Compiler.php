@@ -83,7 +83,7 @@ class Compiler
 
 	public function getNonce(): ?string
 	{
-		return $this->nonce;
+		return $this->nonce ?? $this->getGlobalNonce();
 	}
 
 
@@ -327,5 +327,14 @@ class Compiler
 	public function getFileFilters(): array
 	{
 		return $this->fileFilters;
+	}
+
+
+	/** Copy from \Tracy\Helpers::getNonce() */
+	private function getGlobalNonce(): ?string
+	{
+		return preg_match('#^Content-Security-Policy(?:-Report-Only)?:.*\sscript-src\s+(?:[^;]+\s)?\'nonce-([\w+/]+=*)\'#mi', implode("\n", headers_list()), $m)
+			? $m[1]
+			: null;
 	}
 }

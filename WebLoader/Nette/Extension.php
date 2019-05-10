@@ -7,8 +7,8 @@ namespace WebLoader\Nette;
 use Nette\Configurator;
 use Nette\DI\Compiler;
 use Nette\DI\CompilerExtension;
-use Nette\DI\Config\Helpers;
 use Nette\DI\ContainerBuilder;
+use Nette\DI\Helpers;
 use Nette\Schema\Expect;
 use Nette\Schema\Schema;
 use Nette\Utils\Finder;
@@ -26,19 +26,6 @@ class Extension extends CompilerExtension
 	/** @var string */
 	public const EXTENSION_NAME = 'webloader';
 
-	/** @var bool */
-	private $debugMode;
-
-	/** @var string */
-	private $wwwDir;
-
-
-	public function __construct(string $wwwDir, bool $debugMode = false)
-	{
-		$this->wwwDir = $wwwDir;
-		$this->debugMode = $debugMode;
-	}
-
 
 	public function getConfigSchema(): Schema
 	{
@@ -46,8 +33,8 @@ class Extension extends CompilerExtension
 			'jsDefaults' => Expect::structure([
 				'checkLastModified' => Expect::bool(true),
 				'debug' => Expect::bool(false),
-				'sourceDir' => Expect::string($this->wwwDir . '/js'),
-				'tempDir' => Expect::string($this->wwwDir . '/' . self::DEFAULT_TEMP_PATH),
+				'sourceDir' => Expect::string('%wwwDir%/js'),
+				'tempDir' => Expect::string('%wwwDir%/' . self::DEFAULT_TEMP_PATH),
 				'tempPath' => Expect::string(self::DEFAULT_TEMP_PATH),
 				'files' => Expect::array(),
 				'watchFiles' => Expect::array(),
@@ -64,8 +51,8 @@ class Extension extends CompilerExtension
 			'cssDefaults' => Expect::structure([
 				'checkLastModified' => Expect::bool(true),
 				'debug' => Expect::bool(false),
-				'sourceDir' => Expect::string($this->wwwDir . '/css')->dynamic(),
-				'tempDir' => Expect::string($this->wwwDir . '/' . self::DEFAULT_TEMP_PATH),
+				'sourceDir' => Expect::string('%wwwDir%/css')->dynamic(),
+				'tempDir' => Expect::string('%wwwDir%/' . self::DEFAULT_TEMP_PATH),
 				'tempPath' => Expect::string(self::DEFAULT_TEMP_PATH),
 				'files' => Expect::array(),
 				'watchFiles' => Expect::array(),
@@ -81,7 +68,7 @@ class Extension extends CompilerExtension
 			]),
 			'js' => Expect::array(),
 			'css' => Expect::array(),
-			'debugger' => Expect::bool($this->debugMode),
+			'debugger' => Expect::bool('%debugMode%'),
 		]);
 	}
 
@@ -90,8 +77,12 @@ class Extension extends CompilerExtension
 	{
 		$builder = $this->getContainerBuilder();
 
+		$params = $this->getContainerBuilder()->parameters;
 		$json = json_encode($this->getConfig());
 		$config = json_decode((string) $json, true);
+		$config = Helpers::expand($config, $params);
+
+		bdump($config);
 
 		$builder->addDefinition($this->prefix('cssNamingConvention'))
 			->setFactory('WebLoader\DefaultOutputNamingConvention::createCssConvention');
@@ -101,8 +92,8 @@ class Extension extends CompilerExtension
 
 		if ($config['debugger']) {
 			$builder->addDefinition($this->prefix('tracyPanel'))
-				->setClass('WebLoader\Nette\Diagnostics\Panel');
-				// ->setArguments([$builder->expand('%appDir%')]);
+				->setClass('WebLoader\Nette\Diagnostics\Panel')
+				->setArguments([$params['appDir']]);
 		}
 
 		$builder->parameters['webloader'] = $config;
@@ -112,7 +103,7 @@ class Extension extends CompilerExtension
 		foreach (['css', 'js'] as $type) {
 			foreach ($config[$type] as $name => $wlConfig) {
 				/** @var array $wlConfig */
-				$wlConfig = Helpers::merge($wlConfig, $config[$type . 'Defaults']);
+				$wlConfig = \Nette\Schema\Helpers::merge($wlConfig, $config[$type . 'Defaults']);
 				$this->addWebLoader($builder, $type . ucfirst($name), $wlConfig);
 				$loaderFactoryTempPaths[strtolower($name)] = $wlConfig['tempPath'];
 

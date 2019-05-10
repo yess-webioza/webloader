@@ -82,8 +82,6 @@ class Extension extends CompilerExtension
 		$config = json_decode((string) $json, true);
 		$config = Helpers::expand($config, $params);
 
-		bdump($config);
-
 		$builder->addDefinition($this->prefix('cssNamingConvention'))
 			->setFactory('WebLoader\DefaultOutputNamingConvention::createCssConvention');
 

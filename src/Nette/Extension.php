@@ -8,8 +8,10 @@ use Nette\Configurator;
 use Nette\DI\Compiler;
 use Nette\DI\CompilerExtension;
 use Nette\DI\ContainerBuilder;
-use Nette\DI\Helpers;
+use Nette\DI\Helpers as DIHelpers;
+use Nette\PhpGenerator\ClassType;
 use Nette\Schema\Expect;
+use Nette\Schema\Helpers as SchemaHelpers;
 use Nette\Schema\Schema;
 use Nette\Utils\Finder;
 use SplFileInfo;
@@ -26,6 +28,23 @@ class Extension extends CompilerExtension
 	/** @var string */
 	public const EXTENSION_NAME = 'webloader';
 
+	/** @var string */
+	private $appDir;
+
+	/** @var string */
+	private $wwwDir;
+
+	/** @var bool */
+	private $debugMode;
+
+
+	public function __construct(string $appDir, string $wwwDir, bool $debugMode)
+	{
+		$this->appDir = $appDir;
+		$this->wwwDir = $wwwDir;
+		$this->debugMode = $debugMode;
+	}
+
 
 	public function getConfigSchema(): Schema
 	{
@@ -33,8 +52,8 @@ class Extension extends CompilerExtension
 			'jsDefaults' => Expect::structure([
 				'checkLastModified' => Expect::bool(true),
 				'debug' => Expect::bool(false),
-				'sourceDir' => Expect::string('%wwwDir%/js'),
-				'tempDir' => Expect::string('%wwwDir%/' . self::DEFAULT_TEMP_PATH),
+				'sourceDir' => Expect::string($this->wwwDir . '/js'),
+				'tempDir' => Expect::string($this->wwwDir . '/' . self::DEFAULT_TEMP_PATH),
 				'tempPath' => Expect::string(self::DEFAULT_TEMP_PATH),
 				'files' => Expect::array(),
 				'watchFiles' => Expect::array(),
@@ -51,8 +70,8 @@ class Extension extends CompilerExtension
 			'cssDefaults' => Expect::structure([
 				'checkLastModified' => Expect::bool(true),
 				'debug' => Expect::bool(false),
-				'sourceDir' => Expect::string('%wwwDir%/css')->dynamic(),
-				'tempDir' => Expect::string('%wwwDir%/' . self::DEFAULT_TEMP_PATH),
+				'sourceDir' => Expect::string($this->wwwDir . '/css')->dynamic(),
+				'tempDir' => Expect::string($this->wwwDir . '/' . self::DEFAULT_TEMP_PATH),
 				'tempPath' => Expect::string(self::DEFAULT_TEMP_PATH),
 				'files' => Expect::array(),
 				'watchFiles' => Expect::array(),
@@ -68,7 +87,7 @@ class Extension extends CompilerExtension
 			]),
 			'js' => Expect::array(),
 			'css' => Expect::array(),
-			'debugger' => Expect::bool('%debugMode%'),
+			'debugger' => Expect::bool($this->debugMode),
 		]);
 	}
 
@@ -76,11 +95,7 @@ class Extension extends CompilerExtension
 	public function loadConfiguration(): void
 	{
 		$builder = $this->getContainerBuilder();
-
-		$params = $this->getContainerBuilder()->parameters;
-		$json = json_encode($this->getConfig());
-		$config = json_decode((string) $json, true);
-		$config = Helpers::expand($config, $params);
+		$config = json_decode((string) json_encode($this->getConfig()), true);
 
 		$builder->addDefinition($this->prefix('cssNamingConvention'))
 			->setFactory('WebLoader\DefaultOutputNamingConvention::createCssConvention');
@@ -90,8 +105,8 @@ class Extension extends CompilerExtension
 
 		if ($config['debugger']) {
 			$builder->addDefinition($this->prefix('tracyPanel'))
-				->setClass('WebLoader\Nette\Diagnostics\Panel')
-				->setArguments([$params['appDir']]);
+				->setType('WebLoader\Nette\Diagnostics\Panel')
+				->setArguments([$this->appDir]);
 		}
 
 		$builder->parameters['webloader'] = $config;
@@ -101,7 +116,7 @@ class Extension extends CompilerExtension
 		foreach (['css', 'js'] as $type) {
 			foreach ($config[$type] as $name => $wlConfig) {
 				/** @var array $wlConfig */
-				$wlConfig = \Nette\Schema\Helpers::merge($wlConfig, $config[$type . 'Defaults']);
+				$wlConfig = SchemaHelpers::merge($wlConfig, $config[$type . 'Defaults']);
 				$this->addWebLoader($builder, $type . ucfirst($name), $wlConfig);
 				$loaderFactoryTempPaths[strtolower($name)] = $wlConfig['tempPath'];
 
@@ -112,11 +127,12 @@ class Extension extends CompilerExtension
 		}
 
 		$builder->addDefinition($this->prefix('factory'))
-			->setFactory('WebLoader\Nette\LoaderFactory', [$loaderFactoryTempPaths, $this->name]);
+			->setType('WebLoader\Nette\LoaderFactory')
+			->setArguments([$loaderFactoryTempPaths, $this->name]);
 
 		if (class_exists('Symfony\Component\Console\Command\Command')) {
 			$builder->addDefinition($this->prefix('generateCommand'))
-				->setClass('WebLoader\Nette\SymfonyConsole\GenerateCommand')
+				->setType('WebLoader\Nette\SymfonyConsole\GenerateCommand')
 				->addTag('kdyby.console.command');
 		}
 	}
@@ -127,7 +143,7 @@ class Extension extends CompilerExtension
 		$filesServiceName = $this->prefix($name . 'Files');
 
 		$files = $builder->addDefinition($filesServiceName)
-			->setClass('WebLoader\FileCollection')
+			->setType('WebLoader\FileCollection')
 			->setArguments([$config['sourceDir']]);
 
 		foreach ($this->findFiles($config['files'], $config['sourceDir']) as $file) {
@@ -141,7 +157,7 @@ class Extension extends CompilerExtension
 		$files->addSetup('addRemoteFiles', [$config['remoteFiles']]);
 
 		$compiler = $builder->addDefinition($this->prefix($name . 'Compiler'))
-			->setClass('WebLoader\Compiler')
+			->setType('WebLoader\Compiler')
 			->setArguments([
 				'@' . $filesServiceName,
 				$config['namingConvention'],
@@ -181,19 +197,19 @@ class Extension extends CompilerExtension
 
 
 	// I have no clue what this is supposed to do...
-	// public function afterCompile(Nette\PhpGenerator\ClassType $class): void
-	// {
-	// 	$meta = $class->getProperty('meta');
-	// 	if (array_key_exists('webloader\\nette\\loaderfactory', $meta->value['types'])) {
-	// 		$meta->value['types']['webloader\\loaderfactory'] = $meta->value['types']['webloader\\nette\\loaderfactory'];
-	// 	}
-	// 	if (array_key_exists('WebLoader\\Nette\\LoaderFactory', $meta->value['types'])) {
-	// 		$meta->value['types']['WebLoader\\LoaderFactory'] = $meta->value['types']['WebLoader\\Nette\\LoaderFactory'];
-	// 	}
-	//
-	// 	$init = $class->methods['initialize'];
-	// 	$init->addBody('if (!class_exists(?, ?)) class_alias(?, ?);', ['WebLoader\\LoaderFactory', false, 'WebLoader\\Nette\\LoaderFactory', 'WebLoader\\LoaderFactory']);
-	// }
+	public function afterCompile(ClassType $class): void
+	{
+		$types = $class->getProperty('types');
+		if (array_key_exists('webloader\\nette\\loaderfactory', $types)) {
+			$types['webloader\\loaderfactory'] = $types['webloader\\nette\\loaderfactory'];
+		}
+		if (array_key_exists('WebLoader\\Nette\\LoaderFactory', $types)) {
+			$types['WebLoader\\LoaderFactory'] = $types['WebLoader\\Nette\\LoaderFactory'];
+		}
+
+		$init = $class->methods['initialize'];
+		$init->addBody('if (!class_exists(?, ?)) class_alias(?, ?);', ['WebLoader\\LoaderFactory', false, 'WebLoader\\Nette\\LoaderFactory', 'WebLoader\\LoaderFactory']);
+	}
 
 
 	public function install(Configurator $configurator): void

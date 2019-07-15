@@ -17,16 +17,40 @@ class ExtensionTest extends TestCase
 	/** @var Container */
 	private $container;
 
+	/** @var string */
+	private $appDir;
+
+	/** @var string */
+	private $wwwDir;
+
+	/** @var string */
+	private $tempDir;
+
+	/** @var string */
+	private $fixturesDir;
+
+	/** @var bool */
+	private $debugMode;
+
+
+	protected function setUp()
+	{
+		$this->appDir = __DIR__;
+		$this->wwwDir = $this->appDir . '/..';
+		$this->tempDir = $this->wwwDir . '/../temp';
+		$this->fixturesDir = $this->appDir . '/../fixtures';
+		$this->debugMode = false;
+	}
+
 
 	private function prepareContainer(array $configFiles): void
 	{
-		$tempDir = __DIR__ . '/../temp';
-		foreach (Finder::findFiles('*')->exclude('.gitignore')->from($tempDir . '/cache') as $file) {
+		foreach (Finder::findFiles('*')->exclude('.gitignore')->from($this->tempDir . '/cache') as $file) {
 			unlink((string) $file);
 		}
 
 		$configurator = new Configurator();
-		$configurator->setTempDirectory($tempDir);
+		$configurator->setTempDirectory($this->tempDir);
 
 		/** @var string $file */
 		foreach ($configFiles as $file) {
@@ -34,12 +58,12 @@ class ExtensionTest extends TestCase
 		}
 
 		$configurator->addParameters([
-			'wwwDir' => __DIR__ . '/..',
-			'fixturesDir' => __DIR__ . '/../fixtures',
-			'tempDir' => $tempDir,
+			'wwwDir' => $this->wwwDir,
+			'fixturesDir' => $this->fixturesDir,
+			'tempDir' => $this->tempDir,
 		]);
 
-		$extension = new Extension();
+		$extension = new Extension($this->appDir, $this->wwwDir, $this->debugMode);
 		$extension->install($configurator);
 
 		$this->container = @$configurator->createContainer(); // sends header X-Powered-By, ...
@@ -48,26 +72,26 @@ class ExtensionTest extends TestCase
 
 	public function testJsCompilerService(): void
 	{
-		$this->prepareContainer([__DIR__ . '/../fixtures/extension.neon']);
+		$this->prepareContainer([$this->fixturesDir . '/extension.neon']);
 		$this->assertInstanceOf('WebLoader\Compiler', $this->container->getService('webloader.jsDefaultCompiler'));
 	}
 
 
 	public function testExcludeFiles(): void
 	{
-		$this->prepareContainer([__DIR__ . '/../fixtures/extension.neon']);
+		$this->prepareContainer([$this->fixturesDir . '/extension.neon']);
 		$files = $this->container->getService('webloader.jsExcludeCompiler')->getFileCollection()->getFiles();
 
-		$this->assertTrue(in_array(Path::normalize(__DIR__ . '/../fixtures/a.txt'), $files, true));
-		$this->assertFalse(in_array(Path::normalize(__DIR__ . '/../fixtures/dir/one.js'), $files, true));
+		$this->assertTrue(in_array(Path::normalize($this->fixturesDir . '/a.txt'), $files, true));
+		$this->assertFalse(in_array(Path::normalize($this->fixturesDir . '/dir/one.js'), $files, true));
 	}
 
 
 	public function testJoinFilesOn(): void
 	{
 		$this->prepareContainer([
-			__DIR__ . '/../fixtures/extension.neon',
-			__DIR__ . '/../fixtures/extensionJoinFilesTrue.neon',
+			$this->fixturesDir . '/extension.neon',
+			$this->fixturesDir . '/extensionJoinFilesTrue.neon',
 		]);
 		$this->assertTrue($this->container->getService('webloader.jsDefaultCompiler')->getJoinFiles());
 	}
@@ -76,8 +100,8 @@ class ExtensionTest extends TestCase
 	public function testJoinFilesOff(): void
 	{
 		$this->prepareContainer([
-			__DIR__ . '/../fixtures/extension.neon',
-			__DIR__ . '/../fixtures/extensionJoinFilesFalse.neon',
+			$this->fixturesDir . '/extension.neon',
+			$this->fixturesDir . '/extensionJoinFilesFalse.neon',
 		]);
 		$this->assertFalse($this->container->getService('webloader.jsDefaultCompiler')->getJoinFiles());
 	}
@@ -86,7 +110,7 @@ class ExtensionTest extends TestCase
 	public function testJoinFilesOffInOneService(): void
 	{
 		$this->prepareContainer([
-			__DIR__ . '/../fixtures/extension.neon',
+			$this->fixturesDir . '/extension.neon',
 		]);
 		$this->assertFalse($this->container->getService('webloader.cssJoinOffCompiler')->getJoinFiles());
 	}
@@ -95,8 +119,8 @@ class ExtensionTest extends TestCase
 	public function testAsyncOn(): void
 	{
 		$this->prepareContainer([
-			__DIR__ . '/../fixtures/extension.neon',
-			__DIR__ . '/../fixtures/extensionAsyncTrue.neon',
+			$this->fixturesDir . '/extension.neon',
+			$this->fixturesDir . '/extensionAsyncTrue.neon',
 		]);
 		$this->assertTrue($this->container->getService('webloader.jsDefaultCompiler')->isAsync());
 	}
@@ -105,8 +129,8 @@ class ExtensionTest extends TestCase
 	public function testAsyncOff(): void
 	{
 		$this->prepareContainer([
-			__DIR__ . '/../fixtures/extension.neon',
-			__DIR__ . '/../fixtures/extensionAsyncFalse.neon',
+			$this->fixturesDir . '/extension.neon',
+			$this->fixturesDir . '/extensionAsyncFalse.neon',
 		]);
 		$this->assertFalse($this->container->getService('webloader.jsDefaultCompiler')->isAsync());
 	}
@@ -115,8 +139,8 @@ class ExtensionTest extends TestCase
 	public function testDeferOn(): void
 	{
 		$this->prepareContainer([
-			__DIR__ . '/../fixtures/extension.neon',
-			__DIR__ . '/../fixtures/extensionDeferTrue.neon',
+			$this->fixturesDir . '/extension.neon',
+			$this->fixturesDir . '/extensionDeferTrue.neon',
 		]);
 		$this->assertTrue($this->container->getService('webloader.jsDefaultCompiler')->isDefer());
 	}
@@ -125,8 +149,8 @@ class ExtensionTest extends TestCase
 	public function testDeferOff(): void
 	{
 		$this->prepareContainer([
-			__DIR__ . '/../fixtures/extension.neon',
-			__DIR__ . '/../fixtures/extensionDeferFalse.neon',
+			$this->fixturesDir . '/extension.neon',
+			$this->fixturesDir . '/extensionDeferFalse.neon',
 		]);
 		$this->assertFalse($this->container->getService('webloader.jsDefaultCompiler')->isDefer());
 	}
@@ -135,8 +159,8 @@ class ExtensionTest extends TestCase
 	public function testAbsoluteUrlOn(): void
 	{
 		$this->prepareContainer([
-			__DIR__ . '/../fixtures/extension.neon',
-			__DIR__ . '/../fixtures/extensionAbsoluteUrlTrue.neon',
+			$this->fixturesDir . '/extension.neon',
+			$this->fixturesDir . '/extensionAbsoluteUrlTrue.neon',
 		]);
 		$this->assertTrue($this->container->getService('webloader.jsDefaultCompiler')->isAbsoluteUrl());
 	}
@@ -145,8 +169,8 @@ class ExtensionTest extends TestCase
 	public function testAbsoluteUrlOff(): void
 	{
 		$this->prepareContainer([
-			__DIR__ . '/../fixtures/extension.neon',
-			__DIR__ . '/../fixtures/extensionAbsoluteUrlFalse.neon',
+			$this->fixturesDir . '/extension.neon',
+			$this->fixturesDir . '/extensionAbsoluteUrlFalse.neon',
 		]);
 		$this->assertFalse($this->container->getService('webloader.jsDefaultCompiler')->isAbsoluteUrl());
 	}
@@ -155,8 +179,8 @@ class ExtensionTest extends TestCase
 	public function testNonceSet(): void
 	{
 		$this->prepareContainer([
-			__DIR__ . '/../fixtures/extension.neon',
-			__DIR__ . '/../fixtures/extensionNonce.neon',
+			$this->fixturesDir . '/extension.neon',
+			$this->fixturesDir . '/extensionNonce.neon',
 		]);
 		$this->assertEquals('rAnd0m123', $this->container->getService('webloader.jsDefaultCompiler')->getNonce());
 	}
@@ -165,7 +189,7 @@ class ExtensionTest extends TestCase
 	public function testNonceNotSet(): void
 	{
 		$this->prepareContainer([
-			__DIR__ . '/../fixtures/extension.neon',
+			$this->fixturesDir . '/extension.neon',
 		]);
 		$this->assertNull($this->container->getService('webloader.jsDefaultCompiler')->getNonce());
 	}
@@ -173,17 +197,16 @@ class ExtensionTest extends TestCase
 
 	public function testExtensionName(): void
 	{
-		$tempDir = __DIR__ . '/../temp';
 		$class = 'ExtensionNameServiceContainer';
 
 		$configurator = new Configurator();
-		$configurator->setTempDirectory($tempDir);
+		$configurator->setTempDirectory($this->tempDir);
 		$configurator->addParameters(['container' => ['class' => $class]]);
 		$configurator->onCompile[] = function (Configurator $configurator, Compiler $compiler) {
-			$extension = new Extension();
+			$extension = new Extension($this->appDir, $this->wwwDir, $this->debugMode);
 			$compiler->addExtension('Foo', $extension);
 		};
-		$configurator->addConfig(__DIR__ . '/../fixtures/extensionName.neon');
+		$configurator->addConfig($this->fixturesDir . '/extensionName.neon');
 		$container = $configurator->createContainer();
 
 		$this->assertInstanceOf('WebLoader\Compiler', $container->getService('Foo.cssDefaultCompiler'));

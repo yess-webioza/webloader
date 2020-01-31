@@ -19,6 +19,8 @@ class GenerateCommand extends \Symfony\Component\Console\Command\Command
 	/** @var \WebLoader\Compiler[] */
 	private $compilers = [];
 
+	protected static $defaultName = 'webloader:generate';
+
 
 	public function __construct(Nette\DI\Container $container)
 	{
@@ -33,7 +35,7 @@ class GenerateCommand extends \Symfony\Component\Console\Command\Command
 
 	protected function configure(): void
 	{
-		$this->setName('webloader:generate')
+		$this->setName(self::$defaultName)
 			->setDescription('Generates files.')
 			->addOption('force', 'f', InputOption::VALUE_NONE, 'Generate if not modified.');
 	}

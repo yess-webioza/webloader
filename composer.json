@@ -23,10 +23,8 @@
 		"ext-json": "*"
     },
 	"suggest": {
-		"oyejorge/less.php": "LESS compiler written in PHP.",
-		"leafo/scssphp": "SCSS compiler written in PHP.",
-		"joseki/webloader-filters": "CSSMin & JSMin filters written in PHP.",
-		"coffeescript/coffeescript": "CoffeeScript compiler written in PHP."
+		"wikimedia/less.php": "LESS compiler written in PHP.",
+		"scssphp/scssphp": "SCSS compiler written in PHP."
 	},
 	"require-dev": {
 		"nette/application": "^3.0",

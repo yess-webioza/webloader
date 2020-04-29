@@ -7,7 +7,6 @@ use Mockery;
 use PHPUnit\Framework\TestCase;
 use TypeError;
 use WebLoader\Compiler;
-use WebLoader\File;
 use WebLoader\FileNotFoundException;
 
 /**

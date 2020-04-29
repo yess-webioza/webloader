@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace WebLoader\Test\Filter;
 
 use PHPUnit\Framework\TestCase;
-use stdClass;
 use WebLoader\Filter\VariablesFilter;
 
 class VariablesFilterTest extends TestCase

@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace WebLoader\Test;
 
 use Mockery;
-use Mockery\LegacyMockInterface;
 use PHPUnit\Framework\TestCase;
 use WebLoader\Compiler;
 use WebLoader\DefaultOutputNamingConvention;

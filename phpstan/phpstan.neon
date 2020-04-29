@@ -2,12 +2,26 @@ parameters:
 	tmpDir: %currentWorkingDirectory%/temp/phpstan/
 	autoload_directories:
 		 - %currentWorkingDirectory%/src/
-#		 - %currentWorkingDirectory%/tests/
+		 - %currentWorkingDirectory%/tests/
 
 	paths:
 		- %currentWorkingDirectory%/src/
-#		- %currentWorkingDirectory%/tests/
+		- %currentWorkingDirectory%/tests/
+
+	excludes_analyse:
+		- %currentWorkingDirectory%/tests/temp/*
 
 	level: 7
 
 	checkMissingIterableValueType: false
+
+	ignoreErrors:
+		-
+			message: '#Parameter \#1 \$filter of method WebLoader\\Compiler::addFilter\(\) expects callable\(\): mixed, 4 given\.#'
+			path: %currentWorkingDirectory%/tests/CompilerTest.php
+		-
+			message: '#Parameter \#1 \$filter of method WebLoader\\Compiler::addFileFilter\(\) expects callable\(\): mixed, 4 given\.#'
+			path: %currentWorkingDirectory%/tests/CompilerTest.php
+		-
+			message: '#Access to an undefined property WebLoader\\Filter\\VariablesFilter::\$bar\.#'
+			path: %currentWorkingDirectory%/tests/Filter/VariablesFilterTest.php

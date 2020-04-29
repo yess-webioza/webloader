@@ -3,7 +3,10 @@ declare(strict_types=1);
 
 namespace WebLoader\Test;
 
+use Mockery;
+use Mockery\LegacyMockInterface;
 use PHPUnit\Framework\TestCase;
+use WebLoader\Compiler;
 use WebLoader\DefaultOutputNamingConvention;
 
 /**
@@ -17,13 +20,14 @@ class DefaultOutputNamingConventionTest extends TestCase
 	/** @var DefaultOutputNamingConvention */
 	private $object;
 
+	/** @var Compiler */
 	private $compiler;
 
 
 	protected function setUp(): void
 	{
 		$this->object = new DefaultOutputNamingConvention();
-		$this->compiler = \Mockery::mock('Webloader\Compiler');
+		$this->compiler = Mockery::mock(Compiler::class);
 	}
 
 

@@ -33,7 +33,11 @@ class ScssFilterTest extends TestCase
 	public function testReplace(): void
 	{
 		$file = __DIR__ . '/../fixtures/style.scss';
-		$less = $this->filter->__invoke(file_get_contents($file), $this->compiler, $file);
+		$less = $this->filter->__invoke(
+			(string) file_get_contents($file),
+			$this->compiler,
+			$file
+		);
 		$this->assertSame(file_get_contents(__DIR__ . '/../fixtures/style.scss.expected'), $less);
 	}
 
@@ -42,9 +46,9 @@ class ScssFilterTest extends TestCase
 	{
 		$file = __DIR__ . '/../fixtures/styleAbsolute.scss';
 		$filter = new VariablesFilter([
-			'fixturesAbsolutePath' => realpath(__DIR__ . '/../fixtures'),
+			'fixturesAbsolutePath' => (string) realpath(__DIR__ . '/../fixtures'),
 		]);
-		$code = file_get_contents($file);
+		$code = (string) file_get_contents($file);
 		$filtered = $filter($code);
 		$less = $this->filter->__invoke($filtered, $this->compiler, $file);
 		$this->assertSame(file_get_contents(__DIR__ . '/../fixtures/styleAbsolute.scss.expected'), $less);

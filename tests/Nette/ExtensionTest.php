@@ -11,7 +11,6 @@ use PHPUnit\Framework\TestCase;
 use WebLoader\Nette\Extension;
 use WebLoader\Path;
 
-
 class ExtensionTest extends TestCase
 {
 
@@ -19,7 +18,7 @@ class ExtensionTest extends TestCase
 	private $container;
 
 
-	private function prepareContainer($configFiles): void
+	private function prepareContainer(array $configFiles): void
 	{
 		$tempDir = __DIR__ . '/../temp';
 		foreach (Finder::findFiles('*')->exclude('.gitignore')->from($tempDir . '/cache') as $file) {
@@ -29,6 +28,7 @@ class ExtensionTest extends TestCase
 		$configurator = new Configurator();
 		$configurator->setTempDirectory($tempDir);
 
+		/** @var string $file */
 		foreach ($configFiles as $file) {
 			$configurator->addConfig($file);
 		}
@@ -39,7 +39,7 @@ class ExtensionTest extends TestCase
 			'tempDir' => $tempDir,
 		]);
 
-		$extension = new Extension(__DIR__ . '/..', $configurator->isDebugMode());
+		$extension = new Extension();
 		$extension->install($configurator);
 
 		$this->container = @$configurator->createContainer(); // sends header X-Powered-By, ...
@@ -180,7 +180,7 @@ class ExtensionTest extends TestCase
 		$configurator->setTempDirectory($tempDir);
 		$configurator->addParameters(['container' => ['class' => $class]]);
 		$configurator->onCompile[] = function (Configurator $configurator, Compiler $compiler) {
-			$extension = new Extension(__DIR__ . '/..', $configurator->isDebugMode());
+			$extension = new Extension();
 			$compiler->addExtension('Foo', $extension);
 		};
 		$configurator->addConfig(__DIR__ . '/../fixtures/extensionName.neon');

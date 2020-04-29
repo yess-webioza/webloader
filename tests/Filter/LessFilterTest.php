@@ -31,7 +31,11 @@ class LessFilterTest extends TestCase
 	public function testReplace(): void
 	{
 		$file = __DIR__ . '/../fixtures/style.less';
-		$less = $this->filter->__invoke(file_get_contents($file), $this->compiler, $file);
+		$less = $this->filter->__invoke(
+			(string) file_get_contents($file),
+			$this->compiler,
+			$file
+		);
 		$this->assertSame(file_get_contents(__DIR__ . '/../fixtures/style.less.expected'), $less);
 	}
 }

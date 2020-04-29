@@ -3,8 +3,11 @@ declare(strict_types=1);
 
 namespace WebLoader\Test;
 
+use ArrayIterator;
 use PHPUnit\Framework\TestCase;
+use SplFileInfo;
 use WebLoader\FileCollection;
+use WebLoader\FileNotFoundException;
 
 /**
  * FileCollection test
@@ -39,16 +42,14 @@ class FileCollectionTest extends TestCase
 	}
 
 
-	/**
-	 * @expectedException \Webloader\FileNotFoundException
-	 */
-	public function testAddNonExistingFile()
+	public function testAddNonExistingFile(): void
 	{
+		$this->expectException(FileNotFoundException::class);
 		$this->object->addFile('sdfsdg.txt');
 	}
 
 
-	public function testRemoveFile()
+	public function testRemoveFile(): void
 	{
 		$this->object->addFile(__DIR__ . '/fixtures/a.txt');
 		$this->object->addFile(__DIR__ . '/fixtures/b.txt');
@@ -63,7 +64,7 @@ class FileCollectionTest extends TestCase
 	}
 
 
-	public function testCannonicalizePath()
+	public function testCannonicalizePath(): void
 	{
 		$abs = __DIR__ . '/./fixtures/a.txt';
 		$rel = 'a.txt';
@@ -75,12 +76,12 @@ class FileCollectionTest extends TestCase
 		try {
 			$this->object->cannonicalizePath('nesdagf');
 			$this->fail('Exception was not thrown.');
-		} catch (\WebLoader\FileNotFoundException $e) {
+		} catch (FileNotFoundException $e) {
 		}
 	}
 
 
-	public function testClear()
+	public function testClear(): void
 	{
 		$this->object->addFile('a.txt');
 		$this->object->addRemoteFile('http://jquery.com/jquery.js');
@@ -93,7 +94,7 @@ class FileCollectionTest extends TestCase
 	}
 
 
-	public function testRemoteFiles()
+	public function testRemoteFiles(): void
 	{
 		$this->object->addRemoteFile('http://jquery.com/jquery.js');
 		$this->object->addRemoteFiles([
@@ -109,7 +110,7 @@ class FileCollectionTest extends TestCase
 	}
 
 
-	public function testWatchFiles()
+	public function testWatchFiles(): void
 	{
 		$this->object->addWatchFile(__DIR__ . '/fixtures/a.txt');
 		$this->object->addWatchFile(__DIR__ . '/fixtures/b.txt');
@@ -123,28 +124,32 @@ class FileCollectionTest extends TestCase
 	}
 
 
-	public function testTraversableFiles()
+	public function testTraversableFiles(): void
 	{
-		$this->object->addFiles(new \ArrayIterator(['a.txt']));
-		$this->assertEquals(1, count($this->object->getFiles()));
+		$this->object->addFiles(new ArrayIterator(['a.txt']));
+		$this->assertCount(1, $this->object->getFiles());
 	}
 
 
-	public function testTraversableRemoteFiles()
+	public function testTraversableRemoteFiles(): void
 	{
-		$this->object->addRemoteFiles(new \ArrayIterator(['http://jquery.com/jquery.js']));
-		$this->assertEquals(1, count($this->object->getRemoteFiles()));
+		$this->object->addRemoteFiles(new ArrayIterator(['http://jquery.com/jquery.js']));
+		$this->assertCount(1, $this->object->getRemoteFiles());
 	}
 
 
-	public function testSplFileInfo()
+	public function testSplFileInfo(): void
 	{
-		$this->object->addFile(new \SplFileInfo(__DIR__ . '/fixtures/a.txt'));
-		$this->assertEquals(1, count($this->object->getFiles()));
+		$this->object->addFile(new SplFileInfo(__DIR__ . '/fixtures/a.txt'));
+		$this->assertCount(1, $this->object->getFiles());
 	}
 
 
-	private function assertEqualPaths($expected, $actual)
+	/**
+	 * @param mixed $expected
+	 * @param mixed $actual
+	 */
+	private function assertEqualPaths($expected, $actual): void
 	{
 		$actual = (array) $actual;
 		foreach ((array) $expected as $key => $path) {

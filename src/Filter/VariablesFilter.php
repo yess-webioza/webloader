@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace WebLoader\Filter;
 
+use WebLoader\InvalidArgumentException;
+
 /**
  * Variables filter for WebLoader
  *
@@ -37,7 +39,7 @@ class VariablesFilter
 	/**
 	 * Set delimiter
 	 *
-	 * @return \WebLoader\Filter\VariablesFilter
+	 * @return VariablesFilter
 	 */
 	public function setDelimiter(string $start, string $end): self
 	{
@@ -77,14 +79,14 @@ class VariablesFilter
 	/**
 	 * Magic get variable, do not call directly
 	 *
-	 * @throws \WebLoader\InvalidArgumentException
+	 * @throws InvalidArgumentException
 	 */
 	public function &__get(string $name): string
 	{
 		if (array_key_exists($name, $this->variables)) {
 			return $this->variables[$name];
 		} else {
-			throw new \WebLoader\InvalidArgumentException("Variable '$name' is not set.");
+			throw new InvalidArgumentException("Variable '$name' is not set.");
 		}
 	}
 }

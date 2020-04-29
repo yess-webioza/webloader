@@ -4,7 +4,8 @@ declare(strict_types = 1);
 
 namespace WebLoader\Filter;
 
-use Leafo\ScssPhp\Compiler;
+use ScssPhp\ScssPhp\Compiler as ScssCompiler;
+use WebLoader\Compiler;
 
 /**
  * Scss CSS filter
@@ -15,28 +16,28 @@ use Leafo\ScssPhp\Compiler;
 class ScssFilter
 {
 
-	/** @var Compiler|null */
+	/** @var ScssCompiler|null */
 	private $sc;
 
 
-	public function __construct(?Compiler $sc = null)
+	public function __construct(?ScssCompiler $sc = null)
 	{
 		$this->sc = $sc;
 	}
 
 
-	private function getScssC(): Compiler
+	private function getScssC(): ScssCompiler
 	{
 		// lazy loading
 		if (empty($this->sc)) {
-			$this->sc = new Compiler();
+			$this->sc = new ScssCompiler();
 		}
 
 		return $this->sc;
 	}
 
 
-	public function __invoke(string $code, \WebLoader\Compiler $loader, string $file): string
+	public function __invoke(string $code, Compiler $loader, string $file): string
 	{
 		$file = (string) $file;
 

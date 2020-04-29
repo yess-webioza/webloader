@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace WebLoader\Test\Filter;
 
 use PHPUnit\Framework\TestCase;
+use ScssPhp\ScssPhp\Compiler as ScssCompiler;
 use WebLoader\Compiler;
 use WebLoader\DefaultOutputNamingConvention;
 use WebLoader\FileCollection;
@@ -21,7 +22,7 @@ class ScssFilterTest extends TestCase
 
 	protected function setUp(): void
 	{
-		$this->filter = new ScssFilter(new \Leafo\ScssPhp\Compiler());
+		$this->filter = new ScssFilter(new ScssCompiler());
 
 		$files = new FileCollection(__DIR__ . '/../fixtures');
 		@mkdir($outputDir = __DIR__ . '/../temp/');

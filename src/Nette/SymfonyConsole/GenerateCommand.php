@@ -9,7 +9,6 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use WebLoader;
 use WebLoader\Compiler;
 
 /**
@@ -18,11 +17,11 @@ use WebLoader\Compiler;
 class GenerateCommand extends Command
 {
 
-	/** @var Compiler[] */
-	private $compilers = [];
-
 	/** @var string */
 	protected static $defaultName = 'webloader:generate';
+
+	/** @var Compiler[] */
+	private $compilers = [];
 
 
 	public function __construct(Container $container)

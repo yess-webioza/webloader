@@ -36,8 +36,7 @@ class LoaderFactory
 		string $extensionName,
 		IRequest $httpRequest,
 		Container $serviceLocator
-	)
-	{
+	) {
 		$this->httpRequest = $httpRequest;
 		$this->serviceLocator = $serviceLocator;
 		$this->tempPaths = $tempPaths;

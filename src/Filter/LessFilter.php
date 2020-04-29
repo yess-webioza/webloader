@@ -1,10 +1,10 @@
 <?php
-
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace WebLoader\Filter;
 
-use lessc;
+use Less_Parser;
+use Nette\SmartObject;
 use WebLoader\Compiler;
 
 /**
@@ -15,41 +15,20 @@ use WebLoader\Compiler;
  */
 class LessFilter
 {
+	use SmartObject;
 
-	/** @var lessc|null */
-	private $lc;
-
-
-	public function __construct(?lessc $lc = null)
+	private function getLessParser(): Less_Parser
 	{
-		$this->lc = $lc;
+		return new Less_Parser;
 	}
 
 
-	private function getLessC(): lessc
-	{
-		// lazy loading
-		if (empty($this->lc)) {
-			$this->lc = new lessc();
-		}
-
-		return clone $this->lc;
-	}
-
-
-	/**
-	 * Invoke filter
-	 * @param string $code
-	 * @param Compiler $loader
-	 * @param string $file
-	 * @return string
-	 */
 	public function __invoke(string $code, Compiler $loader, string $file): string
 	{
 		if (pathinfo($file, PATHINFO_EXTENSION) === 'less') {
-			$lessc = $this->getLessC();
-			$lessc->importDir = pathinfo($file, PATHINFO_DIRNAME) . '/';
-			return $lessc->compile($code);
+			$parser = $this->getLessParser();
+			$parser->parseFile($file);
+			return $parser->getCss();
 		}
 
 		return $code;

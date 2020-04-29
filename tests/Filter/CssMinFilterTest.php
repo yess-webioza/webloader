@@ -7,11 +7,11 @@ use PHPUnit\Framework\TestCase;
 use WebLoader\Compiler;
 use WebLoader\DefaultOutputNamingConvention;
 use WebLoader\FileCollection;
-use WebLoader\Filter\LessFilter;
+use WebLoader\Filter\CssMinFilter;
 
-class LessFilterTest extends TestCase
+class CssMinFilterTest extends TestCase
 {
-	/** @var LessFilter */
+	/** @var CssMinFilter */
 	private $filter;
 
 	/** @var Compiler */
@@ -20,7 +20,7 @@ class LessFilterTest extends TestCase
 
 	protected function setUp(): void
 	{
-		$this->filter = new LessFilter();
+		$this->filter = new CssMinFilter();
 
 		$files = new FileCollection(__DIR__ . '/../fixtures');
 		@mkdir($outputDir = __DIR__ . '/../temp/');
@@ -28,15 +28,14 @@ class LessFilterTest extends TestCase
 	}
 
 
-	public function testReplace(): void
+	public function testMinify(): void
 	{
-		$file = __DIR__ . '/../fixtures/style.less';
+		$file = __DIR__ . '/../fixtures/cssmin.css';
 		$minified = $this->filter->__invoke(
 			(string) file_get_contents($file),
 			$this->compiler,
 			$file
 		);
-
-		$this->assertSame(file_get_contents(__DIR__ . '/../fixtures/style.less.expected'), $minified);
+		$this->assertSame(file_get_contents(__DIR__ . '/../fixtures/cssmin.css.expected'), $minified);
 	}
 }

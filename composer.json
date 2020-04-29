@@ -27,20 +27,19 @@
     },
 	"suggest": {
 		"wikimedia/less.php": "LESS compiler written in PHP.",
-		"scssphp/scssphp": "SCSS compiler written in PHP."
+		"scssphp/scssphp": "SCSS compiler written in PHP.",
+		"tedivm/jshrink": "Javascript Minifier built in PHP",
+		"tubalmartin/cssmin": "A PHP port of the YUI CSS compressor"
 	},
 	"require-dev": {
-		"nette/application": "^3.0",
 		"nette/bootstrap": "^3.0",
 		"nette/caching": "^3.0",
 		"nette/component-model": "^3.0",
-		"nette/di": "^3.0",
 		"nette/finder": "^2.5",
 		"nette/forms": "^3.0",
 		"nette/http": "^3.0",
 		"nette/neon": "^3.0",
 		"nette/robot-loader": "^3.0",
-		"nette/utils": "^3.0",
 		"latte/latte": "^2.8",
 		"tracy/tracy": "^2.7",
 		"wikimedia/less.php": "^3.0.0",

@@ -11,9 +11,12 @@
 		}
 	],
 	"autoload": {
-		"psr-0": {
-			"WebLoader": ""
+		"psr-4": {
+			"WebLoader\\": "src/"
 		}
+	},
+	"autoload-dev": {
+		"psr-4": { "WebLoader\\Test\\": "tests/" }
 	},
 	"require": {
 		"php": ">= 7.1",

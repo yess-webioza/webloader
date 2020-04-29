@@ -11,20 +11,32 @@ use WebLoader\Compiler;
 class LoaderFactory
 {
 
-	/** @var \Nette\Http\IRequest */
+	/** @var IRequest */
 	private $httpRequest;
 
-	/** @var \Nette\DI\Container */
+	/** @var Container */
 	private $serviceLocator;
 
-	/** @var array */
+	/** @var array<string> */
 	private $tempPaths;
 
 	/** @var string */
 	private $extensionName;
 
 
-	public function __construct(array $tempPaths, string $extensionName, IRequest $httpRequest, Container $serviceLocator)
+	/**
+	 * LoaderFactory constructor.
+	 * @param array<string> $tempPaths
+	 * @param string $extensionName
+	 * @param IRequest $httpRequest
+	 * @param Container $serviceLocator
+	 */
+	public function __construct(
+		array $tempPaths,
+		string $extensionName,
+		IRequest $httpRequest,
+		Container $serviceLocator
+	)
 	{
 		$this->httpRequest = $httpRequest;
 		$this->serviceLocator = $serviceLocator;
@@ -49,7 +61,7 @@ class LoaderFactory
 	}
 
 
-	private function formatTempPath(string $name, $absoluteUrl = false): string
+	private function formatTempPath(string $name, bool $absoluteUrl = false): string
 	{
 		$lName = strtolower($name);
 		$tempPath = isset($this->tempPaths[$lName]) ? $this->tempPaths[$lName] : Extension::DEFAULT_TEMP_PATH;

@@ -62,7 +62,7 @@ class Compiler
 	 */
 	public static function createCssCompiler(IFileCollection $files, string $outputDir): self
 	{
-		return new static($files, DefaultOutputNamingConvention::createCssConvention(), $outputDir);
+		return new self($files, DefaultOutputNamingConvention::createCssConvention(), $outputDir);
 	}
 
 
@@ -71,7 +71,7 @@ class Compiler
 	 */
 	public static function createJsCompiler(IFileCollection $files, string $outputDir): self
 	{
-		return new static($files, DefaultOutputNamingConvention::createJsConvention(), $outputDir);
+		return new self($files, DefaultOutputNamingConvention::createJsConvention(), $outputDir);
 	}
 
 
@@ -255,7 +255,7 @@ class Compiler
 	}
 
 
-	protected function generateFiles(array $files, array $watchFiles = [])
+	protected function generateFiles(array $files, array $watchFiles = []): File
 	{
 		$name = $this->namingConvention->getFilename($files, $this);
 		$path = $this->outputDir . '/' . $name;

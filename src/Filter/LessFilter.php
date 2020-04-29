@@ -15,6 +15,8 @@ use WebLoader\Compiler;
  */
 class LessFilter
 {
+
+	/** @var lessc|null */
 	private $lc;
 
 
@@ -37,6 +39,10 @@ class LessFilter
 
 	/**
 	 * Invoke filter
+	 * @param string $code
+	 * @param Compiler $loader
+	 * @param string $file
+	 * @return string
 	 */
 	public function __invoke(string $code, Compiler $loader, string $file): string
 	{

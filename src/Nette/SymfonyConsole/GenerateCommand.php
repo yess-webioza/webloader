@@ -4,29 +4,32 @@ declare(strict_types = 1);
 
 namespace WebLoader\Nette\SymfonyConsole;
 
-use Nette;
+use Nette\DI\Container;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use WebLoader;
+use WebLoader\Compiler;
 
 /**
  * Generate Command
  */
-class GenerateCommand extends \Symfony\Component\Console\Command\Command
+class GenerateCommand extends Command
 {
 
-	/** @var \WebLoader\Compiler[] */
+	/** @var Compiler[] */
 	private $compilers = [];
 
+	/** @var string */
 	protected static $defaultName = 'webloader:generate';
 
 
-	public function __construct(Nette\DI\Container $container)
+	public function __construct(Container $container)
 	{
 		parent::__construct();
 
-		$compilers = $container->findByType(WebLoader\Compiler::class);
+		$compilers = $container->findByType(Compiler::class);
 		foreach ($compilers as $compilerName) {
 			$this->compilers[$compilerName] = $container->getService($compilerName);
 		}
@@ -41,21 +44,22 @@ class GenerateCommand extends \Symfony\Component\Console\Command\Command
 	}
 
 
-	protected function execute(InputInterface $input, OutputInterface $output): void
+	protected function execute(InputInterface $input, OutputInterface $output): int
 	{
-		$force = $input->getOption('force');
-
-		$nofiles = true;
+		$noFiles = true;
 		foreach ($this->compilers as $compiler) {
-			$files = $compiler->generate(!$force);
+			$files = $compiler->generate();
 			foreach ($files as $file) {
-				$output->writeln($file->file);
-				$nofiles = false;
+				$output->writeln($file->getFile());
+				$noFiles = false;
 			}
 		}
 
-		if ($nofiles) {
+		if ($noFiles) {
 			$output->writeln('No files generated.');
+			return 1;
 		}
+
+		return 0;
 	}
 }

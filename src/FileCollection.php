@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace WebLoader;
 
+use SplFileInfo;
 use Traversable;
 
 /**
@@ -11,7 +12,7 @@ use Traversable;
  *
  * @author Jan Marek
  */
-class FileCollection implements \WebLoader\IFileCollection
+class FileCollection implements IFileCollection
 {
 
 	/** @var string */
@@ -66,6 +67,10 @@ class FileCollection implements \WebLoader\IFileCollection
 	}
 
 
+	/**
+	 * @param string|SplFileInfo $file
+	 * @throws FileNotFoundException
+	 */
 	public function addFile($file): void
 	{
 		$file = $this->cannonicalizePath((string) $file);

@@ -1,13 +1,13 @@
 parameters:
+	tmpDir: %currentWorkingDirectory%/temp/phpstan/
 	autoload_directories:
-		 - WebLoader/
+		 - %currentWorkingDirectory%/src/
+#		 - %currentWorkingDirectory%/tests/
 
 	paths:
-		- WebLoader/
+		- %currentWorkingDirectory%/src/
+#		- %currentWorkingDirectory%/tests/
 
 	level: 7
 
-
-includes:
-	- ../vendor/phpstan/phpstan-nette/extension.neon
-	- ../vendor/phpstan/phpstan-nette/rules.neon
+	checkMissingIterableValueType: false

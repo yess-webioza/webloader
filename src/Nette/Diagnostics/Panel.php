@@ -53,6 +53,8 @@ class Panel implements IBarPanel
 	/**
 	 * Registers a compiler.
 	 *
+	 * @param string $name
+	 * @param Compiler $compiler
 	 * @return Panel
 	 */
 	public function addLoader(string $name, Compiler $compiler): self
@@ -77,6 +79,10 @@ class Panel implements IBarPanel
 		];
 		$this->files = $this->sizes = [];
 
+		/**
+		 * @var string $name
+		 * @var Compiler $compiler
+		 */
 		foreach ($this->compilers as $name => $compiler) {
 			$group = lcfirst(substr($name, $name[0] === 'c' ? 3 : 2));
 

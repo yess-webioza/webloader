@@ -9,7 +9,7 @@ namespace WebLoader;
  *
  * @author Jan Marek
  */
-class DefaultOutputNamingConvention implements \WebLoader\IOutputNamingConvention
+class DefaultOutputNamingConvention implements IOutputNamingConvention
 {
 
 	/** @var string */
@@ -21,7 +21,7 @@ class DefaultOutputNamingConvention implements \WebLoader\IOutputNamingConventio
 
 	public static function createCssConvention(): self
 	{
-		$convention = new static();
+		$convention = new self();
 		$convention->setSuffix('.css');
 
 		return $convention;
@@ -30,7 +30,7 @@ class DefaultOutputNamingConvention implements \WebLoader\IOutputNamingConventio
 
 	public static function createJsConvention(): self
 	{
-		$convention = new static();
+		$convention = new self();
 		$convention->setSuffix('.js');
 
 		return $convention;
@@ -84,7 +84,7 @@ class DefaultOutputNamingConvention implements \WebLoader\IOutputNamingConventio
 	}
 
 
-	protected function createHash(array $files, Compiler $compiler)
+	protected function createHash(array $files, Compiler $compiler): string
 	{
 		$parts = $files;
 		foreach ($files as $file) {

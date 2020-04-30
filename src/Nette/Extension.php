@@ -8,8 +8,6 @@ use Nette\Configurator;
 use Nette\DI\Compiler;
 use Nette\DI\CompilerExtension;
 use Nette\DI\ContainerBuilder;
-use Nette\DI\Helpers as DIHelpers;
-use Nette\PhpGenerator\ClassType;
 use Nette\Schema\Expect;
 use Nette\Schema\Helpers as SchemaHelpers;
 use Nette\Schema\Schema;
@@ -197,19 +195,19 @@ class Extension extends CompilerExtension
 
 
 	// I have no clue what this is supposed to do...
-	public function afterCompile(ClassType $class): void
-	{
-		$types = $class->getProperty('types');
-		if (array_key_exists('webloader\\nette\\loaderfactory', $types)) {
-			$types['webloader\\loaderfactory'] = $types['webloader\\nette\\loaderfactory'];
-		}
-		if (array_key_exists('WebLoader\\Nette\\LoaderFactory', $types)) {
-			$types['WebLoader\\LoaderFactory'] = $types['WebLoader\\Nette\\LoaderFactory'];
-		}
-
-		$init = $class->methods['initialize'];
-		$init->addBody('if (!class_exists(?, ?)) class_alias(?, ?);', ['WebLoader\\LoaderFactory', false, 'WebLoader\\Nette\\LoaderFactory', 'WebLoader\\LoaderFactory']);
-	}
+	// public function afterCompile(ClassType $class): void
+	// {
+	// 	$types = $class->getProperty('types');
+	// 	if (array_key_exists('webloader\\nette\\loaderfactory', $types)) {
+	// 		$types['webloader\\loaderfactory'] = $types['webloader\\nette\\loaderfactory'];
+	// 	}
+	// 	if (array_key_exists('WebLoader\\Nette\\LoaderFactory', $types)) {
+	// 		$types['WebLoader\\LoaderFactory'] = $types['WebLoader\\Nette\\LoaderFactory'];
+	// 	}
+	//
+	// 	$init = $class->methods['initialize'];
+	// 	$init->addBody('if (!class_exists(?, ?)) class_alias(?, ?);', ['WebLoader\\LoaderFactory', false, 'WebLoader\\Nette\\LoaderFactory', 'WebLoader\\LoaderFactory']);
+	// }
 
 
 	public function install(Configurator $configurator): void

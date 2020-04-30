@@ -33,7 +33,7 @@ class ExtensionTest extends TestCase
 	private $debugMode;
 
 
-	protected function setUp()
+	protected function setUp(): void
 	{
 		$this->appDir = __DIR__;
 		$this->wwwDir = $this->appDir . '/..';

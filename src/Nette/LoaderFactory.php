@@ -6,7 +6,10 @@ namespace WebLoader\Nette;
 
 use Nette\DI\Container;
 use Nette\Http\IRequest;
+use Nette\Utils\Strings;
 use WebLoader\Compiler;
+use WebLoader\DefaultOutputNamingConvention;
+use WebLoader\IOutputNamingConvention;
 
 class LoaderFactory
 {
@@ -48,6 +51,7 @@ class LoaderFactory
 	{
 		/** @var Compiler $compiler */
 		$compiler = $this->diContainer->getService($this->extensionName . '.css' . ucfirst($name) . 'Compiler');
+		$this->modifyConvention($compiler->getOutputNamingConvention(), $name);
 		return new CssLoader($compiler, $this->formatTempPath($name, $compiler->isAbsoluteUrl()), $appendLastModified);
 	}
 
@@ -56,6 +60,7 @@ class LoaderFactory
 	{
 		/** @var Compiler $compiler */
 		$compiler = $this->diContainer->getService($this->extensionName . '.js' . ucfirst($name) . 'Compiler');
+		$this->modifyConvention($compiler->getOutputNamingConvention(), $name);
 		return new JavaScriptLoader($compiler, $this->formatTempPath($name, $compiler->isAbsoluteUrl()), $appendLastModified);
 	}
 
@@ -66,5 +71,15 @@ class LoaderFactory
 		$tempPath = isset($this->tempPaths[$lName]) ? $this->tempPaths[$lName] : Extension::DEFAULT_TEMP_PATH;
 		$method = $absoluteUrl ? 'getBaseUrl' : 'getBasePath';
 		return rtrim($this->httpRequest->getUrl()->{$method}(), '/') . '/' . $tempPath;
+	}
+
+
+	private function modifyConvention(IOutputNamingConvention $convention, string $name): IOutputNamingConvention
+	{
+		if ($convention instanceof DefaultOutputNamingConvention) {
+			$convention->setPrefix($name . '-');
+		}
+
+		return $convention;
 	}
 }

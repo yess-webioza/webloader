@@ -1,8 +1,5 @@
 parameters:
 	tmpDir: %currentWorkingDirectory%/temp/phpstan/
-	autoload_directories:
-		 - %currentWorkingDirectory%/src/
-		 - %currentWorkingDirectory%/tests/
 
 	paths:
 		- %currentWorkingDirectory%/src/

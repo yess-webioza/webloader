@@ -15,7 +15,7 @@ class LoaderFactory
 	private $httpRequest;
 
 	/** @var Container */
-	private $serviceLocator;
+	private $diContainer;
 
 	/** @var array<string> */
 	private $tempPaths;
@@ -29,16 +29,16 @@ class LoaderFactory
 	 * @param array<string> $tempPaths
 	 * @param string $extensionName
 	 * @param IRequest $httpRequest
-	 * @param Container $serviceLocator
+	 * @param Container $diContainer
 	 */
 	public function __construct(
 		array $tempPaths,
 		string $extensionName,
 		IRequest $httpRequest,
-		Container $serviceLocator
+		Container $diContainer
 	) {
 		$this->httpRequest = $httpRequest;
-		$this->serviceLocator = $serviceLocator;
+		$this->diContainer = $diContainer;
 		$this->tempPaths = $tempPaths;
 		$this->extensionName = $extensionName;
 	}
@@ -47,7 +47,7 @@ class LoaderFactory
 	public function createCssLoader(string $name, bool $appendLastModified = false): CssLoader
 	{
 		/** @var Compiler $compiler */
-		$compiler = $this->serviceLocator->getService($this->extensionName . '.css' . ucfirst($name) . 'Compiler');
+		$compiler = $this->diContainer->getService($this->extensionName . '.css' . ucfirst($name) . 'Compiler');
 		return new CssLoader($compiler, $this->formatTempPath($name, $compiler->isAbsoluteUrl()), $appendLastModified);
 	}
 
@@ -55,7 +55,7 @@ class LoaderFactory
 	public function createJavaScriptLoader(string $name, bool $appendLastModified = false): JavaScriptLoader
 	{
 		/** @var Compiler $compiler */
-		$compiler = $this->serviceLocator->getService($this->extensionName . '.js' . ucfirst($name) . 'Compiler');
+		$compiler = $this->diContainer->getService($this->extensionName . '.js' . ucfirst($name) . 'Compiler');
 		return new JavaScriptLoader($compiler, $this->formatTempPath($name, $compiler->isAbsoluteUrl()), $appendLastModified);
 	}
 

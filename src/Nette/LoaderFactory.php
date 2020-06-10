@@ -44,7 +44,7 @@ class LoaderFactory
 	}
 
 
-	public function createCssLoader(string $name, bool $appendLastModified = false): CssLoader
+	public function createCssLoader(string $name, bool $appendLastModified = true): CssLoader
 	{
 		/** @var Compiler $compiler */
 		$compiler = $this->diContainer->getService($this->extensionName . '.css' . ucfirst($name) . 'Compiler');
@@ -52,7 +52,7 @@ class LoaderFactory
 	}
 
 
-	public function createJavaScriptLoader(string $name, bool $appendLastModified = false): JavaScriptLoader
+	public function createJavaScriptLoader(string $name, bool $appendLastModified = true): JavaScriptLoader
 	{
 		/** @var Compiler $compiler */
 		$compiler = $this->diContainer->getService($this->extensionName . '.js' . ucfirst($name) . 'Compiler');

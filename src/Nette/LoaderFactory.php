@@ -6,7 +6,6 @@ namespace WebLoader\Nette;
 
 use Nette\DI\Container;
 use Nette\Http\IRequest;
-use Nette\Utils\Strings;
 use WebLoader\Compiler;
 use WebLoader\DefaultOutputNamingConvention;
 use WebLoader\IOutputNamingConvention;

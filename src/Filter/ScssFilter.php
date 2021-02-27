@@ -16,8 +16,7 @@ use WebLoader\Compiler;
 class ScssFilter
 {
 
-	/** @var ScssCompiler|null */
-	private $sc;
+	private ?ScssCompiler $sc;
 
 
 	public function __construct(?ScssCompiler $sc = null)

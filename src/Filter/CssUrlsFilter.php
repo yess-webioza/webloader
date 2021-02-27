@@ -17,11 +17,8 @@ use WebLoader\Path;
 class CssUrlsFilter
 {
 
-	/** @var string */
-	protected $basePath;
-
-	/** @var string */
-	private $docRoot;
+	protected string $basePath;
+	private string $docRoot;
 
 
 	public function __construct(string $docRoot, string $basePath = '/')

@@ -20,20 +20,12 @@ use WebLoader\FileNotFoundException;
  */
 class Extension extends CompilerExtension
 {
-	/** @var string */
 	public const DEFAULT_TEMP_PATH = 'webtemp';
-
-	/** @var string */
 	public const EXTENSION_NAME = 'webloader';
 
-	/** @var string */
-	private $appDir;
-
-	/** @var string */
-	private $wwwDir;
-
-	/** @var bool */
-	private $debugMode;
+	private string $appDir;
+	private string $wwwDir;
+	private bool $debugMode;
 
 
 	public function __construct(string $appDir, string $wwwDir, bool $debugMode)

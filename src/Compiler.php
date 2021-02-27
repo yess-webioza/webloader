@@ -12,41 +12,18 @@ namespace WebLoader;
 class Compiler
 {
 
-	/** @var string */
-	private $outputDir;
-
-	/** @var bool */
-	private $joinFiles = true;
-
-	/** @var array */
-	private $filters = [];
-
-	/** @var array */
-	private $fileFilters = [];
-
-	/** @var IFileCollection */
-	private $collection;
-
-	/** @var IOutputNamingConvention */
-	private $namingConvention;
-
-	/** @var bool */
-	private $checkLastModified = true;
-
-	/** @var bool */
-	private $debugging = false;
-
-	/** @var bool */
-	private $async = false;
-
-	/** @var bool */
-	private $defer = false;
-
-	/** @var string|null */
-	private $nonce;
-
-	/** @var bool */
-	private $absoluteUrl = false;
+	private IFileCollection $collection;
+	private IOutputNamingConvention $namingConvention;
+	private string $outputDir;
+	private bool $joinFiles = true;
+	private array $filters = [];
+	private array $fileFilters = [];
+	private bool $checkLastModified = true;
+	private bool $debugging = false;
+	private bool $async = false;
+	private bool $defer = false;
+	private bool $absoluteUrl = false;
+	private ?string $nonce;
 
 
 	public function __construct(IFileCollection $files, IOutputNamingConvention $convention, string $outputDir)

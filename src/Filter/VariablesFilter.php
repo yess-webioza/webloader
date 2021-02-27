@@ -15,14 +15,9 @@ use WebLoader\InvalidArgumentException;
 class VariablesFilter
 {
 
-	/** @var string */
-	private $startVariable = '{{$';
-
-	/** @var string */
-	private $endVariable = '}}';
-
-	/** @var array */
-	private $variables;
+	private string $startVariable = '{{$';
+	private string $endVariable = '}}';
+	private array $variables;
 
 
 	/**

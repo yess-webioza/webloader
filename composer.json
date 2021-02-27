@@ -19,28 +19,30 @@
 		"psr-4": { "WebLoader\\Test\\": "tests/" }
 	},
 	"require": {
-		"php": ">= 7.1",
+		"php": ">= 7.4",
 		"nette/application": "^3.1",
 		"nette/di": "^3.0",
 		"nette/utils": "^3.2",
-		"ext-json": "*"
+		"ext-json": "*",
+		"nette/schema": "^1.2",
+		"nette/finder": "^2.5",
+		"latte/latte": "^2.10",
+		"tracy/tracy": "^2.8"
     },
 	"suggest": {
 		"wikimedia/less.php": "LESS compiler written in PHP.",
 		"scssphp/scssphp": "SCSS compiler written in PHP.",
 		"tedivm/jshrink": "Javascript Minifier built in PHP",
-		"tubalmartin/cssmin": "A PHP port of the YUI CSS compressor"
+		"tubalmartin/cssmin": "A PHP port of the YUI CSS compressor",
+		"symfony/console": "For pre-generating files form the CLI"
 	},
 	"require-dev": {
 		"nette/bootstrap": "^3.1",
 		"nette/caching": "^3.1",
 		"nette/component-model": "^3.0",
-		"nette/finder": "^2.5",
 		"nette/http": "^3.0",
 		"nette/neon": "^3.0",
 		"nette/robot-loader": "^3.0",
-		"latte/latte": "^2.8",
-		"tracy/tracy": "^2.7",
 		"wikimedia/less.php": "^3.0.0",
 		"scssphp/scssphp": "^1.1.0",
 		"mockery/mockery": "1.*",

@@ -18,8 +18,7 @@ use WebLoader\File;
 class Panel implements IBarPanel
 {
 
-	/** @var array */
-	public static $types = [
+	public static array $types = [
 		'css' => 'CSS files',
 		'js' => 'JavaScript files',
 		'less' => 'Less files',
@@ -27,19 +26,12 @@ class Panel implements IBarPanel
 	];
 
 	/** @var Compiler[] */
-	private $compilers = [];
+	private array $compilers = [];
 
-	/** @var array */
-	private $size;
-
-	/** @var array */
-	private $files;
-
-	/** @var array */
-	private $sizes;
-
-	/** @var string */
-	private $root;
+	private ?array $size;
+	private array $files;
+	private array $sizes;
+	private string $root;
 
 
 	public function __construct(?string $appDir = null)

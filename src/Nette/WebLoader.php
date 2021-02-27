@@ -19,14 +19,9 @@ use WebLoader\FileCollection;
 abstract class WebLoader extends Control
 {
 
-	/** @var Compiler */
-	private $compiler;
-
-	/** @var string */
-	private $tempPath;
-
-	/** @var bool */
-	private $appendLastModified;
+	private Compiler $compiler;
+	private string $tempPath;
+	private bool $appendLastModified;
 
 
 	public function __construct(Compiler $compiler, string $tempPath, bool $appendLastModified)

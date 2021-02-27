@@ -15,14 +15,9 @@ use WebLoader\Compiler;
 class StylusFilter
 {
 
-	/** @var bool */
-	public $compress = false;
-
-	/** @var bool */
-	public $includeCss = false;
-
-	/** @var string */
-	private $bin;
+	public bool $compress = false;
+	public bool $includeCss = false;
+	private string $bin;
 
 
 	public function __construct(string $bin = 'stylus')

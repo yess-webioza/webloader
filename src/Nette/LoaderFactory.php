@@ -13,17 +13,12 @@ use WebLoader\IOutputNamingConvention;
 class LoaderFactory
 {
 
-	/** @var IRequest */
-	private $httpRequest;
-
-	/** @var Container */
-	private $diContainer;
+	private IRequest $httpRequest;
+	private Container $diContainer;
+	private string $extensionName;
 
 	/** @var array<string> */
-	private $tempPaths;
-
-	/** @var string */
-	private $extensionName;
+	private array $tempPaths;
 
 
 	/**

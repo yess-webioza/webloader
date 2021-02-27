@@ -14,18 +14,10 @@ use Nette\Utils\Html;
  */
 class CssLoader extends WebLoader
 {
-
-	/** @var string */
-	private $media;
-
-	/** @var string */
-	private $title;
-
-	/** @var string */
-	private $type = 'text/css';
-
-	/** @var bool */
-	private $alternate = false;
+	private string $media;
+	private string $title;
+	private string $type = 'text/css';
+	private bool $alternate = false;
 
 
 	public function getMedia(): string

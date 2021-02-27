@@ -12,11 +12,8 @@ namespace WebLoader;
 class DefaultOutputNamingConvention implements IOutputNamingConvention
 {
 
-	/** @var string */
-	private $prefix = '';
-
-	/** @var string */
-	private $suffix = '';
+	private string $prefix = '';
+	private string $suffix = '';
 
 
 	public static function createCssConvention(): self

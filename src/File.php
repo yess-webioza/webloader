@@ -7,14 +7,9 @@ namespace WebLoader;
 class File
 {
 
-	/** @var string */
-	protected $file;
-
-	/** @var int|null */
-	protected $lastModified;
-
-	/** @var array */
-	protected $sourceFiles;
+	protected string $file;
+	protected ?int $lastModified;
+	protected array $sourceFiles;
 
 
 	public function __construct(

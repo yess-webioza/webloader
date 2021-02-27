@@ -14,7 +14,12 @@ use RuntimeException;
  */
 class Process
 {
-	public static function run(string $cmd, ?string $stdin = null, ?string $cwd = null, ?array $env = null): string
+	public static function run(
+		string $cmd,
+		?string $stdin = null,
+		?string $cwd = null,
+		?array $env = null
+	): string
 	{
 		$descriptorspec = [
 			0 => ['pipe', 'r'], // stdin

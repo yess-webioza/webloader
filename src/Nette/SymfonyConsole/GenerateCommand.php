@@ -21,7 +21,7 @@ class GenerateCommand extends Command
 	protected static $defaultName = 'webloader:generate';
 
 	/** @var Compiler[] */
-	private $compilers = [];
+	private array $compilers = [];
 
 
 	public function __construct(Container $container)

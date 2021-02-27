@@ -15,17 +15,10 @@ use Traversable;
 class FileCollection implements IFileCollection
 {
 
-	/** @var string */
-	private $root;
-
-	/** @var array */
-	private $files = [];
-
-	/** @var array */
-	private $watchFiles = [];
-
-	/** @var array */
-	private $remoteFiles = [];
+	private string $root;
+	private array $files = [];
+	private array $watchFiles = [];
+	private array $remoteFiles = [];
 
 
 	/**

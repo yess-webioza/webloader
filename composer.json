@@ -34,7 +34,8 @@
 		"scssphp/scssphp": "SCSS compiler written in PHP.",
 		"tedivm/jshrink": "Javascript Minifier built in PHP",
 		"tubalmartin/cssmin": "A PHP port of the YUI CSS compressor",
-		"symfony/console": "For pre-generating files form the CLI"
+		"symfony/console": "For pre-generating files form the CLI",
+		"nette/safe-stream": "Atomic and safe manipulation with files via native PHP functions."
 	},
 	"require-dev": {
 		"nette/bootstrap": "^3.1",

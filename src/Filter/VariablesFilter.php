@@ -20,9 +20,6 @@ class VariablesFilter
 	private array $variables;
 
 
-	/**
-	 * Construct
-	 */
 	public function __construct(array $variables = [])
 	{
 		foreach ($variables as $key => $value) {
@@ -31,11 +28,6 @@ class VariablesFilter
 	}
 
 
-	/**
-	 * Set delimiter
-	 *
-	 * @return VariablesFilter
-	 */
 	public function setDelimiter(string $start, string $end): self
 	{
 		$this->startVariable = (string) $start;
@@ -44,9 +36,6 @@ class VariablesFilter
 	}
 
 
-	/**
-	 * Invoke filter
-	 */
 	public function __invoke(string $code): string
 	{
 		$start = $this->startVariable;

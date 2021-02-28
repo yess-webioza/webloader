@@ -11,11 +11,8 @@ use WebLoader\Filter\JsMinFilter;
 
 class JsMinFilterTest extends TestCase
 {
-	/** @var JsMinFilter */
-	private $filter;
-
-	/** @var Compiler */
-	private $compiler;
+	private JsMinFilter $filter;
+	private Compiler $compiler;
 
 
 	protected function setUp(): void

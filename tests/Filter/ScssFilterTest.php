@@ -13,11 +13,8 @@ use WebLoader\Filter\VariablesFilter;
 
 class ScssFilterTest extends TestCase
 {
-	/** @var ScssFilter */
-	private $filter;
-
-	/** @var Compiler */
-	private $compiler;
+	private ScssFilter $filter;
+	private Compiler $compiler;
 
 
 	protected function setUp(): void

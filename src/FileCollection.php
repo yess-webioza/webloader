@@ -21,18 +21,12 @@ class FileCollection implements IFileCollection
 	private array $remoteFiles = [];
 
 
-	/**
-	 * @param string|null $root files root for relative paths
-	 */
 	public function __construct(?string $root = null)
 	{
 		$this->root = (string) $root;
 	}
 
 
-	/**
-	 * Get file list
-	 */
 	public function getFiles(): array
 	{
 		return array_values($this->files);

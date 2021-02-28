@@ -22,7 +22,6 @@ class LoaderFactory
 
 
 	/**
-	 * LoaderFactory constructor.
 	 * @param array<string> $tempPaths
 	 * @param string $extensionName
 	 * @param IRequest $httpRequest

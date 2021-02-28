@@ -11,11 +11,8 @@ use WebLoader\Filter\LessFilter;
 
 class LessFilterTest extends TestCase
 {
-	/** @var LessFilter */
-	private $filter;
-
-	/** @var Compiler */
-	private $compiler;
+	private LessFilter $filter;
+	private Compiler $compiler;
 
 
 	protected function setUp(): void

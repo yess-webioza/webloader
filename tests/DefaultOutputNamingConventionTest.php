@@ -16,11 +16,8 @@ use WebLoader\DefaultOutputNamingConvention;
 class DefaultOutputNamingConventionTest extends TestCase
 {
 
-	/** @var DefaultOutputNamingConvention */
-	private $object;
-
-	/** @var Compiler */
-	private $compiler;
+	private DefaultOutputNamingConvention $object;
+	protected Compiler $compiler;
 
 
 	protected function setUp(): void

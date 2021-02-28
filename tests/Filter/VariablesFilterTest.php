@@ -9,8 +9,7 @@ use WebLoader\Filter\VariablesFilter;
 class VariablesFilterTest extends TestCase
 {
 
-	/** @var VariablesFilter */
-	private $object;
+	private VariablesFilter $object;
 
 
 	protected function setUp(): void

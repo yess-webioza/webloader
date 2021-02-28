@@ -17,8 +17,7 @@ use WebLoader\FileNotFoundException;
 class CompilerTest extends TestCase
 {
 
-	/** @var Compiler */
-	private $object;
+	private Compiler $object;
 
 
 	protected function setUp(): void

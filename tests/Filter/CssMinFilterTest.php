@@ -11,11 +11,8 @@ use WebLoader\Filter\CssMinFilter;
 
 class CssMinFilterTest extends TestCase
 {
-	/** @var CssMinFilter */
-	private $filter;
-
-	/** @var Compiler */
-	private $compiler;
+	private CssMinFilter $filter;
+	private Compiler $compiler;
 
 
 	protected function setUp(): void

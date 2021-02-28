@@ -14,23 +14,12 @@ use WebLoader\Path;
 class ExtensionTest extends TestCase
 {
 
-	/** @var Container */
-	private $container;
-
-	/** @var string */
-	private $appDir;
-
-	/** @var string */
-	private $wwwDir;
-
-	/** @var string */
-	private $tempDir;
-
-	/** @var string */
-	private $fixturesDir;
-
-	/** @var bool */
-	private $debugMode;
+	private Container $container;
+	private string $appDir;
+	private string $wwwDir;
+	private string $tempDir;
+	private string $fixturesDir;
+	private bool $debugMode;
 
 
 	protected function setUp(): void

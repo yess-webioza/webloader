@@ -17,8 +17,7 @@ use WebLoader\FileNotFoundException;
 class FileCollectionTest extends TestCase
 {
 
-	/** @var FileCollection */
-	private $object;
+	private FileCollection $object;
 
 
 	protected function setUp(): void

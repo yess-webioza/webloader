@@ -9,9 +9,6 @@ use WebLoader\Compiler;
 class CssMinFilter
 {
 
-	/**
-	 * Minify code
-	 */
 	public function __invoke(string $code, Compiler $compiler, string $file = ''): string
 	{
 		$minifier = new Minifier;

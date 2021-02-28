@@ -9,8 +9,7 @@ use WebLoader\Filter\CssUrlsFilter;
 class CssUrlsFilterTest extends TestCase
 {
 
-	/** @var CssUrlsFilter */
-	private $object;
+	private CssUrlsFilter $object;
 
 
 	protected function setUp(): void

@@ -14,8 +14,8 @@ use Nette\Utils\Html;
  */
 class CssLoader extends WebLoader
 {
-	private string $media;
-	private string $title;
+	private ?string $media = null;
+	private ?string $title = null;
 	private string $type = 'text/css';
 	private bool $alternate = false;
 

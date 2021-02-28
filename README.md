@@ -1,10 +1,12 @@
 ﻿WebLoader [![Build Status](https://secure.travis-ci.org/janmarek/WebLoader.png?branch=master)](http://travis-ci.org/janmarek/WebLoader)
 =======================
 
-Component for CSS and JS files loading
+Component for CSS and JS files loading.
 
-Author: Jan Marek
+Author: [Jan Marek](https://github.com/janmarek)
 Licence: MIT
+
+Updated for Nette 3/3.1 and PHP 7.4/8.0 by [Gappa](https://github.com/Gappa).
 
 Example
 -------

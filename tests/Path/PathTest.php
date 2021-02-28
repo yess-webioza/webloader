@@ -13,4 +13,11 @@ class PathTest extends TestCase
 		$normalized = Path::normalize('/path/to//project//that/contains/0/in/it');
 		$this->assertEquals('/path/to/project/that/contains/0/in/it', $normalized);
 	}
+
+
+	public function testDirectoryJump(): void
+	{
+		$normalized = Path::normalize('/path/to/my/project/../../wrong/path/../../correct/one/');
+		$this->assertEquals('/path/to/correct/one/', $normalized);
+	}
 }

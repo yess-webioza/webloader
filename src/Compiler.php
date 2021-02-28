@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace WebLoader;
 
+use Nette\Utils\FileSystem;
+
 /**
  * Compiler
  *
@@ -240,7 +242,7 @@ class Compiler
 
 		if (!file_exists($path) || $lastModified > filemtime($path) || $this->debugging === true) {
 			$outPath = in_array('nette.safe', stream_get_wrappers(), true) ? 'nette.safe://' . $path : $path;
-			file_put_contents($outPath, $this->getContent($files));
+			FileSystem::write($outPath, $this->getContent($files));
 		}
 
 		return new File($name, (int) filemtime($path), $files);

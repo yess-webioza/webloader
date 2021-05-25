@@ -17,7 +17,7 @@ class VariablesFilter
 
 	private string $startVariable = '{{$';
 	private string $endVariable = '}}';
-	private array $variables;
+	private array $variables = [];
 
 
 	public function __construct(array $variables = [])

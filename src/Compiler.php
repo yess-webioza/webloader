@@ -25,7 +25,7 @@ class Compiler
 	private bool $async = false;
 	private bool $defer = false;
 	private bool $absoluteUrl = false;
-	private ?string $nonce;
+	private ?string $nonce = null;
 
 
 	public function __construct(IFileCollection $files, IOutputNamingConvention $convention, string $outputDir)

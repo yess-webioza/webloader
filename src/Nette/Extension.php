@@ -50,7 +50,6 @@ class Extension extends CompilerExtension
 				'remoteFiles' => Expect::array(),
 				'filters' => Expect::array(),
 				'fileFilters' => Expect::array(),
-				'joinFiles' => Expect::bool(true),
 				'async' => Expect::bool(false),
 				'defer' => Expect::bool(false),
 				'nonce' => Expect::string()->nullable(),
@@ -68,7 +67,6 @@ class Extension extends CompilerExtension
 				'remoteFiles' => Expect::array(),
 				'filters' => Expect::array(),
 				'fileFilters' => Expect::array(),
-				'joinFiles' => Expect::bool(true),
 				'async' => Expect::bool(false),
 				'defer' => Expect::bool(false),
 				'nonce' => Expect::string()->nullable(),
@@ -155,7 +153,6 @@ class Extension extends CompilerExtension
 			]);
 
 		$compiler
-			->addSetup('setJoinFiles', [$config['joinFiles']])
 			->addSetup('setAsync', [$config['async']])
 			->addSetup('setDefer', [$config['defer']])
 			->addSetup('setNonce', [$config['nonce']])

@@ -17,7 +17,6 @@ class Compiler
 	private IFileCollection $collection;
 	private IOutputNamingConvention $namingConvention;
 	private string $outputDir;
-	private bool $joinFiles = true;
 	private array $filters = [];
 	private array $fileFilters = [];
 	private bool $checkLastModified = true;
@@ -91,24 +90,6 @@ class Compiler
 		}
 
 		$this->outputDir = $tempPath;
-	}
-
-
-	/**
-	 * Get join files
-	 */
-	public function getJoinFiles(): bool
-	{
-		return $this->joinFiles;
-	}
-
-
-	/**
-	 * Set join files
-	 */
-	public function setJoinFiles(bool $joinFiles): void
-	{
-		$this->joinFiles = $joinFiles;
 	}
 
 
@@ -214,23 +195,11 @@ class Compiler
 			return [];
 		}
 
-		if ($this->joinFiles) {
-			$watchFiles = $this->checkLastModified ? array_unique(array_merge($files, $this->collection->getWatchFiles())) : [];
+		$watchFiles = $this->checkLastModified ? array_unique(array_merge($files, $this->collection->getWatchFiles())) : [];
 
-			return [
-				$this->generateFiles($files, $watchFiles),
-			];
-
-		} else {
-			$arr = [];
-
-			foreach ($files as $file) {
-				$watchFiles = $this->checkLastModified ? array_unique(array_merge([$file], $this->collection->getWatchFiles())) : [];
-				$arr[] = $this->generateFiles([$file], $watchFiles);
-			}
-
-			return $arr;
-		}
+		return [
+			$this->generateFiles($files, $watchFiles),
+		];
 	}
 
 

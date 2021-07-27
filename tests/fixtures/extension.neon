@@ -1,6 +1,3 @@
-parameters:
-  cssJoinFiles: false
-
 http:
   frames: yes
 
@@ -20,10 +17,6 @@ webloader:
       files:
         - style.css
         - {files: ["*.css"], from: %fixturesDir%/dir}
-    joinOff:
-      joinFiles: %cssJoinFiles%
-      files:
-        - style.css
 
   js:
     default:

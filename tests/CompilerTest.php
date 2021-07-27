@@ -53,35 +53,13 @@ class CompilerTest extends TestCase
 	}
 
 
-	public function testJoinFiles(): void
-	{
-		$this->assertTrue($this->object->getJoinFiles());
-
-		$ret = $this->object->generate();
-		$this->assertCount(1, $ret, 'Multiple files are generated instead of join.');
-		$this->assertCount(1, $this->getTempFiles(), 'Multiple files are generated instead of join.');
-	}
-
-
 	public function testEmptyFiles(): void
 	{
-		$this->assertTrue($this->object->getJoinFiles());
 		$this->object->setFileCollection(new \WebLoader\FileCollection());
 
 		$ret = $this->object->generate();
 		$this->assertCount(0, $ret);
 		$this->assertCount(0, $this->getTempFiles());
-	}
-
-
-	public function testNotJoinFiles(): void
-	{
-		$this->object->setJoinFiles(false);
-		$this->assertFalse($this->object->getJoinFiles());
-
-		$ret = $this->object->generate();
-		$this->assertCount(3, $ret, 'Wrong file count generated.');
-		$this->assertCount(3, $this->getTempFiles(), 'Wrong file count generated.');
 	}
 
 

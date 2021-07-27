@@ -76,35 +76,6 @@ class ExtensionTest extends TestCase
 	}
 
 
-	public function testJoinFilesOn(): void
-	{
-		$this->prepareContainer([
-			$this->fixturesDir . '/extension.neon',
-			$this->fixturesDir . '/extensionJoinFilesTrue.neon',
-		]);
-		$this->assertTrue($this->container->getService('webloader.jsDefaultCompiler')->getJoinFiles());
-	}
-
-
-	public function testJoinFilesOff(): void
-	{
-		$this->prepareContainer([
-			$this->fixturesDir . '/extension.neon',
-			$this->fixturesDir . '/extensionJoinFilesFalse.neon',
-		]);
-		$this->assertFalse($this->container->getService('webloader.jsDefaultCompiler')->getJoinFiles());
-	}
-
-
-	public function testJoinFilesOffInOneService(): void
-	{
-		$this->prepareContainer([
-			$this->fixturesDir . '/extension.neon',
-		]);
-		$this->assertFalse($this->container->getService('webloader.cssJoinOffCompiler')->getJoinFiles());
-	}
-
-
 	public function testAsyncOn(): void
 	{
 		$this->prepareContainer([

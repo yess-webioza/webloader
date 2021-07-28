@@ -24,7 +24,7 @@ class Compiler
 	private bool $async = false;
 	private bool $defer = false;
 	private bool $absoluteUrl = false;
-	private ?string $nonce;
+	private ?string $nonce = null;
 
 
 	public function __construct(IFileCollection $files, IOutputNamingConvention $convention, string $outputDir)
@@ -205,8 +205,9 @@ class Compiler
 		$lastModified = $this->checkLastModified ? $this->getLastModified($watchFiles) : 0;
 
 		if (!file_exists($path) || $lastModified > filemtime($path) || $this->debugging === true) {
-			$outPath = in_array('nette.safe', stream_get_wrappers(), true) ? 'nette.safe://' . $path : $path;
-			FileSystem::write($outPath, $this->getContent($files));
+			// disabled: https://github.com/nette/safe-stream/pull/5
+			// $outPath = in_array('nette.safe', stream_get_wrappers(), true) ? 'nette.safe://' . $path : $path;
+			FileSystem::write($path, $this->getContent($files));
 		}
 
 		return new File($path, $files);

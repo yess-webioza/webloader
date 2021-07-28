@@ -28,7 +28,7 @@ class Panel implements IBarPanel
 	/** @var Compiler[] */
 	private array $compilers = [];
 
-	private ?array $size;
+	private ?array $size = null;
 	private array $files;
 	private array $sizes;
 	private string $root;
@@ -86,33 +86,37 @@ class Panel implements IBarPanel
 
 			$compilerCombinedSize = 0;
 
-			/** @var File $generated */
-			foreach ($compiler->generate() as $generated) {
-				$generatedSize = filesize($compiler->getOutputDir() . DIRECTORY_SEPARATOR . $generated->getFileName());
-				$size['combined'] += $generatedSize;
-				$compilerCombinedSize += $generatedSize;
+			$generated = $compiler->generate();
 
-				foreach ($generated->getSourceFiles() as $file) {
-					$extension = strtolower(pathinfo($file, PATHINFO_EXTENSION));
-					$file = str_replace('\\', DIRECTORY_SEPARATOR, (string) realpath($file));
+			if (is_null($generated)) {
+				continue;
+			}
 
-					if (!isset($this->files[$group][$extension])) {
-						$this->files[$group][$extension] = [];
-					}
-					if (!isset($this->sizes[$group][$extension])) {
-						$this->sizes[$group][$extension] = ['original' => 0, 'combined' => 0];
-					}
+			$generatedSize = filesize($compiler->getOutputDir() . DIRECTORY_SEPARATOR . $generated->getFileName());
+			$size['combined'] += $generatedSize;
 
-					$this->files[$group][$extension][] = [
-						'name' => basename($file),
-						'full' => $file,
-						'size' => $fileSize = filesize($file),
-					];
+			$compilerCombinedSize += $generatedSize;
 
-					$size['original'] += $fileSize;
-					$this->sizes[$group][$extension]['original'] += $fileSize;
-					$this->sizes[$group]['.']['original'] += $fileSize;
+			foreach ($generated->getSourceFiles() as $file) {
+				$extension = strtolower(pathinfo($file, PATHINFO_EXTENSION));
+				$file = str_replace('\\', DIRECTORY_SEPARATOR, (string) realpath($file));
+
+				if (!isset($this->files[$group][$extension])) {
+					$this->files[$group][$extension] = [];
 				}
+				if (!isset($this->sizes[$group][$extension])) {
+					$this->sizes[$group][$extension] = ['original' => 0, 'combined' => 0];
+				}
+
+				$this->files[$group][$extension][] = [
+					'name' => basename($file),
+					'full' => $file,
+					'size' => $fileSize = filesize($file),
+				];
+
+				$size['original'] += $fileSize;
+				$this->sizes[$group][$extension]['original'] += $fileSize;
+				$this->sizes[$group]['.']['original'] += $fileSize;
 			}
 
 			$this->sizes[$group]['.']['combined'] += $compilerCombinedSize;

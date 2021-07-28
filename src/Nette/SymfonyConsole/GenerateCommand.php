@@ -47,8 +47,8 @@ class GenerateCommand extends Command
 	{
 		$noFiles = true;
 		foreach ($this->compilers as $compiler) {
-			$files = $compiler->generate();
-			foreach ($files as $file) {
+			$file = $compiler->generate();
+			if (!is_null($file)) {
 				$output->writeln($file->getFileName());
 				$noFiles = false;
 			}

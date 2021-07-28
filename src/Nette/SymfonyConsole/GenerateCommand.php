@@ -49,7 +49,7 @@ class GenerateCommand extends Command
 		foreach ($this->compilers as $compiler) {
 			$files = $compiler->generate();
 			foreach ($files as $file) {
-				$output->writeln($file->getFile());
+				$output->writeln($file->getFileName());
 				$noFiles = false;
 			}
 		}

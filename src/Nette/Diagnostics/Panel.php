@@ -88,7 +88,7 @@ class Panel implements IBarPanel
 
 			/** @var File $generated */
 			foreach ($compiler->generate() as $generated) {
-				$generatedSize = filesize($compiler->getOutputDir() . DIRECTORY_SEPARATOR . $generated->getFile());
+				$generatedSize = filesize($compiler->getOutputDir() . DIRECTORY_SEPARATOR . $generated->getFileName());
 				$size['combined'] += $generatedSize;
 				$compilerCombinedSize += $generatedSize;
 

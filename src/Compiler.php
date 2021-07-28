@@ -184,22 +184,17 @@ class Compiler
 	}
 
 
-	/**
-	 * Load content and save file
-	 */
-	public function generate(): array
+	public function generate(): ?File
 	{
 		$files = $this->collection->getFiles();
 
 		if (!count($files)) {
-			return [];
+			return null;
 		}
 
 		$watchFiles = $this->checkLastModified ? array_unique(array_merge($files, $this->collection->getWatchFiles())) : [];
 
-		return [
-			$this->generateFiles($files, $watchFiles),
-		];
+		return $this->generateFiles($files, $watchFiles);
 	}
 
 
@@ -214,7 +209,7 @@ class Compiler
 			FileSystem::write($outPath, $this->getContent($files));
 		}
 
-		return new File($name, (int) filemtime($path), $files);
+		return new File($path, $files);
 	}
 
 

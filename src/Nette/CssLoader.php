@@ -4,7 +4,9 @@ declare(strict_types = 1);
 
 namespace WebLoader\Nette;
 
+use Nette\Utils\FileSystem;
 use Nette\Utils\Html;
+use WebLoader\File;
 
 /**
  * Css loader
@@ -72,7 +74,7 @@ class CssLoader extends WebLoader
 	}
 
 
-	public function getElement(string $source): Html
+	public function getElement(File $file): Html
 	{
 		if ($this->alternate) {
 			$alternate = ' alternate';
@@ -86,8 +88,22 @@ class CssLoader extends WebLoader
 		$el->setAttribute('media', $this->media);
 		$el->setAttribute('title', $this->title);
 		$el->setAttribute('nonce', $this->getCompiler()->getNonce());
-		$el->setAttribute('href', $source);
+		$el->setAttribute('href', $this->getGeneratedFilePath($file));
 
 		return $el;
 	}
+
+
+	public function getInlineElement(File $file): Html
+	{
+		$el = Html::el('style');
+		$el->setAttribute('type', $this->type);
+		$el->setAttribute('media', $this->media);
+		$el->setAttribute('title', $this->title);
+		$el->setAttribute('nonce', $this->getCompiler()->getNonce());
+		$el->setHtml(FileSystem::read($file->getPath()));
+
+		return $el;
+	}
+
 }

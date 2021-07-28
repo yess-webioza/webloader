@@ -59,7 +59,16 @@ abstract class WebLoader extends Control
 	/**
 	 * Get html element including generated content
 	 */
-	abstract public function getElement(string $source): Html;
+	abstract public function getElement(File $file): Html;
+
+
+	abstract public function getInlineElement(File $file): Html;
+
+
+	protected function getUrl(File $file): string
+	{
+		return $this->getGeneratedFilePath($file);
+	}
 
 
 	/**
@@ -81,8 +90,9 @@ abstract class WebLoader extends Control
 			echo $this->getElement($file), PHP_EOL;
 		}
 
-		foreach ($this->compiler->generate() as $file) {
-			echo $this->getElement($this->getGeneratedFilePath($file)), PHP_EOL;
+		$file = $this->compiler->generate();
+		if ($file) {
+			echo $this->getElement($file), PHP_EOL;
 		}
 
 		if ($hasArgs && !empty($backup)) {
@@ -91,9 +101,27 @@ abstract class WebLoader extends Control
 	}
 
 
+	public function renderInline(): void
+	{
+		$file = $this->compiler->generate();
+		if ($file) {
+			echo $this->getInlineElement($file), PHP_EOL;
+		}
+	}
+
+
+	public function renderUrl(): void
+	{
+		$file = $this->compiler->generate();
+		if ($file) {
+			echo $this->getUrl($file), PHP_EOL;
+		}
+	}
+
+
 	protected function getGeneratedFilePath(File $file): string
 	{
-		$path = $this->tempPath . '/' . $file->getFile();
+		$path = $this->tempPath . '/' . $file->getFileName();
 
 		if ($this->appendLastModified) {
 			$path .= '?' . $file->getLastModified();

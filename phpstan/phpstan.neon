@@ -5,7 +5,7 @@ parameters:
 		- %currentWorkingDirectory%/src/
 		- %currentWorkingDirectory%/tests/
 
-	excludes_analyse:
+	excludePaths:
 		- %currentWorkingDirectory%/tests/temp/*
 
 	level: 7

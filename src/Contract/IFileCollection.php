@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace WebLoader;
+namespace WebLoader\Contract;
 
 /**
  * @author Jan Marek

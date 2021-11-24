@@ -106,6 +106,8 @@ class Extension extends CompilerExtension
 
 		$loaderFactoryTempPaths = [];
 
+		bdump($config);
+
 		foreach (['css', 'js'] as $type) {
 			foreach ($config[$type] as $name => $wlConfig) {
 				/** @var array $wlConfig */

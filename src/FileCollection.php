@@ -6,6 +6,7 @@ namespace WebLoader;
 
 use SplFileInfo;
 use Traversable;
+use WebLoader\Contract\IFileCollection;
 
 /**
  * FileCollection

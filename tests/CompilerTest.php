@@ -7,6 +7,8 @@ use Mockery;
 use PHPUnit\Framework\TestCase;
 use TypeError;
 use WebLoader\Compiler;
+use WebLoader\Contract\IFileCollection;
+use WebLoader\Contract\IOutputNamingConvention;
 use WebLoader\FileCollection;
 use WebLoader\FileNotFoundException;
 
@@ -23,7 +25,7 @@ class CompilerTest extends TestCase
 
 	protected function setUp(): void
 	{
-		$fileCollection = Mockery::mock('WebLoader\IFileCollection');
+		$fileCollection = Mockery::mock(IFileCollection::class);
 		$fileCollection->shouldReceive('getFiles')->andReturn([
 			__DIR__ . '/fixtures/a.txt',
 			__DIR__ . '/fixtures/b.txt',
@@ -35,7 +37,7 @@ class CompilerTest extends TestCase
 			__DIR__ . '/fixtures/c.txt',
 		]);
 
-		$convention = Mockery::mock('WebLoader\IOutputNamingConvention');
+		$convention = Mockery::mock(IOutputNamingConvention::class);
 		$convention->shouldReceive('getFilename')->andReturnUsing(function ($files, $compiler) {
 			return 'webloader-' . md5(join(',', $files));
 		});

@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace WebLoader;
 
+use WebLoader\Contract\IOutputNamingConvention;
+
 /**
  * DefaultNamingConvention
  *

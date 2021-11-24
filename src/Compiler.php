@@ -5,6 +5,8 @@ declare(strict_types = 1);
 namespace WebLoader;
 
 use Nette\Utils\FileSystem;
+use WebLoader\Contract\IFileCollection;
+use WebLoader\Contract\IOutputNamingConvention;
 
 /**
  * Compiler

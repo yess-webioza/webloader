@@ -8,7 +8,7 @@ use Nette\DI\Container;
 use Nette\Http\IRequest;
 use WebLoader\Compiler;
 use WebLoader\DefaultOutputNamingConvention;
-use WebLoader\IOutputNamingConvention;
+use WebLoader\Contract\IOutputNamingConvention;
 
 class LoaderFactory
 {

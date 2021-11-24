@@ -7,7 +7,7 @@ use ArrayIterator;
 use PHPUnit\Framework\TestCase;
 use SplFileInfo;
 use WebLoader\FileCollection;
-use WebLoader\FileNotFoundException;
+use WebLoader\Exception\FileNotFoundException;
 
 /**
  * FileCollection test

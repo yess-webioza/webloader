@@ -7,6 +7,7 @@ namespace WebLoader;
 use SplFileInfo;
 use Traversable;
 use WebLoader\Contract\IFileCollection;
+use WebLoader\Exception\FileNotFoundException;
 
 /**
  * FileCollection

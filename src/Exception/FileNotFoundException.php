@@ -2,7 +2,9 @@
 
 declare(strict_types = 1);
 
-namespace WebLoader;
+namespace WebLoader\Exception;
+
+use WebLoader\Exception\WebLoaderException;
 
 /**
  * FileNotFoundException

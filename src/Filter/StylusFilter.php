@@ -35,7 +35,7 @@ class StylusFilter
 			try {
 				$code = Process::run($cmd, $code);
 			} catch (\RuntimeException $e) {
-				throw new \WebLoader\WebLoaderException('Stylus Filter Error', 0, $e);
+				throw new \WebLoader\Exception\WebLoaderException('Stylus Filter Error', 0, $e);
 			}
 		}
 

@@ -18,8 +18,9 @@ use SplFileInfo;
 use WebLoader\BatchCollection;
 use WebLoader\Compiler as WebloaderCompiler;
 use WebLoader\Contract\IBatchProvider;
+use WebLoader\Exception\CompilationException;
 use WebLoader\FileCollection;
-use WebLoader\FileNotFoundException;
+use WebLoader\Exception\FileNotFoundException;
 use WebLoader\Nette\Diagnostics\Panel;
 use WebLoader\Nette\SymfonyConsole\GenerateCommand;
 

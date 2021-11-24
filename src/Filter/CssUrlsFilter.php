@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace WebLoader\Filter;
 
 use WebLoader\Compiler;
-use WebLoader\InvalidArgumentException;
+use WebLoader\Exception\InvalidArgumentException;
 use WebLoader\Path;
 
 /**

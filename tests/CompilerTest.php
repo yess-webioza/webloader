@@ -10,7 +10,7 @@ use WebLoader\Compiler;
 use WebLoader\Contract\IFileCollection;
 use WebLoader\Contract\IOutputNamingConvention;
 use WebLoader\FileCollection;
-use WebLoader\FileNotFoundException;
+use WebLoader\Exception\FileNotFoundException;
 
 /**
  * CompilerTest

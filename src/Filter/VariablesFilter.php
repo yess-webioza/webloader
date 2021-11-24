@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace WebLoader\Filter;
 
-use WebLoader\InvalidArgumentException;
+use WebLoader\Exception\InvalidArgumentException;
 
 /**
  * Variables filter for WebLoader
@@ -63,7 +63,7 @@ class VariablesFilter
 	/**
 	 * Magic get variable, do not call directly
 	 *
-	 * @throws InvalidArgumentException
+	 * @throws \WebLoader\Exception\InvalidArgumentException
 	 */
 	public function &__get(string $name): string
 	{

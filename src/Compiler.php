@@ -7,6 +7,8 @@ namespace WebLoader;
 use Nette\Utils\FileSystem;
 use WebLoader\Contract\IFileCollection;
 use WebLoader\Contract\IOutputNamingConvention;
+use WebLoader\Exception\FileNotFoundException;
+use WebLoader\Exception\InvalidArgumentException;
 
 /**
  * Compiler

@@ -8,13 +8,16 @@ use Nette\Configurator;
 use Nette\DI\Compiler;
 use Nette\DI\CompilerExtension;
 use Nette\DI\ContainerBuilder;
+use Nette\PhpGenerator\ClassType;
 use Nette\Schema\Expect;
 use Nette\Schema\Helpers as SchemaHelpers;
+use Nette\Schema\Processor;
 use Nette\Schema\Schema;
 use Nette\Utils\Finder;
 use SplFileInfo;
+use WebLoader\BatchCollection;
 use WebLoader\Compiler as WebloaderCompiler;
-use WebLoader\DefaultOutputNamingConvention;
+use WebLoader\Contract\IBatchProvider;
 use WebLoader\FileCollection;
 use WebLoader\FileNotFoundException;
 use WebLoader\Nette\Diagnostics\Panel;
@@ -31,6 +34,7 @@ class Extension extends CompilerExtension
 	private string $appDir;
 	private string $wwwDir;
 	private bool $debugMode;
+	private BatchCollection $batchCollection;
 
 
 	public function __construct(string $appDir, string $wwwDir, bool $debugMode)
@@ -38,6 +42,7 @@ class Extension extends CompilerExtension
 		$this->appDir = $appDir;
 		$this->wwwDir = $wwwDir;
 		$this->debugMode = $debugMode;
+		$this->batchCollection = new BatchCollection;
 	}
 
 
@@ -110,8 +115,8 @@ class Extension extends CompilerExtension
 		return Expect::structure([
 			'jsDefaults' => $this->getJsConfigSchema(true),
 			'cssDefaults' => $this->getCssConfigSchema(true),
-			'js' => Expect::arrayOf($this->getJsConfigSchema()),
-			'css' => Expect::arrayOf($this->getCssConfigSchema()),
+			'js' => Expect::arrayOf($this->getJsConfigSchema())->nullable(),
+			'css' => Expect::arrayOf($this->getCssConfigSchema())->nullable(),
 			'debugger' => Expect::bool($this->debugMode),
 		]);
 	}
@@ -138,21 +143,25 @@ class Extension extends CompilerExtension
 
 		$loaderFactoryTempPaths = [];
 
-		foreach (['css', 'js'] as $type) {
-			foreach ($config[$type] as $name => $wlConfig) {
-				/** @var array $wlConfig */
-				$wlConfig = array_filter($wlConfig);
-				$wlConfig = SchemaHelpers::merge($wlConfig, $config[$type . 'Defaults']);
 
-				if (!is_array($wlConfig)) {
+		$this->extractBatchesFromExtensions();
+		$this->extractNormalBatches($config);
+
+		$batchTypes = $this->batchCollection->getBatches();
+		foreach ($batchTypes as $type => $batches) {
+			foreach ($batches as $name => $batch) {
+				$batch = array_filter($batch);
+				$batch = SchemaHelpers::merge($batch, $config[$type . 'Defaults']);
+
+				if (!is_array($batch)) {
 					throw new CompilationException('Batch config not valid.');
 				}
 
-				$this->addWebLoader($builder, $type . ucfirst($name), $wlConfig);
-				$loaderFactoryTempPaths[strtolower($name)] = $wlConfig['tempPath'];
+				$this->addWebLoader($builder, $type . ucfirst($name), $batch);
+				$loaderFactoryTempPaths[strtolower($name)] = $batch['tempPath'];
 
-				if (!is_dir($wlConfig['tempDir']) || !is_writable($wlConfig['tempDir'])) {
-					throw new CompilationException(sprintf("You must create a writable directory '%s'", $wlConfig['tempDir']));
+				if (!is_dir($batch['tempDir']) || !is_writable($batch['tempDir'])) {
+					throw new CompilationException(sprintf("You must create a writable directory '%s'", $batch['tempDir']));
 				}
 			}
 		}
@@ -319,5 +328,40 @@ class Extension extends CompilerExtension
 		}
 
 		return file_exists($file);
+	}
+
+
+	private function extractBatchesFromExtensions(): void
+	{
+		// Extension batches
+		/** @var array<IBatchProvider> $batchProviders */
+		$batchProviders = $this->compiler->getExtensions(IBatchProvider::class);
+
+		if (empty($batchProviders)) {
+			return;
+		}
+
+		$schemaProcessor = new Processor;
+
+		foreach($batchProviders as $batchProvider) {
+			$batchCollections = $batchProvider->getBatches();
+			$schemaProcessor->process($this->getConfigSchema(), $batchCollections);
+
+			foreach ($batchCollections as $type => $batches) {
+				foreach ($batches as $name => $batch) {
+					$this->batchCollection->addBatch($type, $name, $batch);
+				}
+			}
+		}
+	}
+
+
+	private function extractNormalBatches(array $config): void
+	{
+		foreach (['css', 'js'] as $type) {
+			foreach ($config[$type] as $name => $batch) {
+				$this->batchCollection->addBatch($type, $name, $batch);
+			}
+		}
 	}
 }

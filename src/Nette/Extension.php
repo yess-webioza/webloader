@@ -13,7 +13,12 @@ use Nette\Schema\Helpers as SchemaHelpers;
 use Nette\Schema\Schema;
 use Nette\Utils\Finder;
 use SplFileInfo;
+use WebLoader\Compiler as WebloaderCompiler;
+use WebLoader\DefaultOutputNamingConvention;
+use WebLoader\FileCollection;
 use WebLoader\FileNotFoundException;
+use WebLoader\Nette\Diagnostics\Panel;
+use WebLoader\Nette\SymfonyConsole\GenerateCommand;
 
 /**
  * @author Jan Marek
@@ -93,7 +98,7 @@ class Extension extends CompilerExtension
 
 		if ($config['debugger']) {
 			$builder->addDefinition($this->prefix('tracyPanel'))
-				->setType('WebLoader\Nette\Diagnostics\Panel')
+				->setType(Panel::class)
 				->setArguments([$this->appDir]);
 		}
 
@@ -115,12 +120,12 @@ class Extension extends CompilerExtension
 		}
 
 		$builder->addDefinition($this->prefix('factory'))
-			->setType('WebLoader\Nette\LoaderFactory')
+			->setType(LoaderFactory::class)
 			->setArguments([$loaderFactoryTempPaths, $this->name]);
 
 		if (class_exists('Symfony\Component\Console\Command\Command')) {
 			$builder->addDefinition($this->prefix('generateCommand'))
-				->setType('WebLoader\Nette\SymfonyConsole\GenerateCommand')
+				->setType(GenerateCommand::class)
 				->addTag('kdyby.console.command');
 		}
 	}
@@ -131,7 +136,7 @@ class Extension extends CompilerExtension
 		$filesServiceName = $this->prefix($name . 'Files');
 
 		$files = $builder->addDefinition($filesServiceName)
-			->setType('WebLoader\FileCollection')
+			->setType(FileCollection::class)
 			->setArguments([$config['sourceDir']]);
 
 		foreach ($this->findFiles($config['files'], $config['sourceDir']) as $file) {
@@ -145,7 +150,7 @@ class Extension extends CompilerExtension
 		$files->addSetup('addRemoteFiles', [$config['remoteFiles']]);
 
 		$compiler = $builder->addDefinition($this->prefix($name . 'Compiler'))
-			->setType('WebLoader\Compiler')
+			->setType(WebloaderCompiler::class)
 			->setArguments([
 				'@' . $filesServiceName,
 				$config['namingConvention'],

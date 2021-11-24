@@ -35,7 +35,7 @@ class DefaultOutputNamingConventionTest extends TestCase
 		];
 
 		$name = $this->object->getFilename($files, $this->compiler);
-		$this->assertRegExp('/^[0-9a-f]{12}$/', $name);
+		$this->assertMatchesRegularExpression('/^[0-9a-f]{12}$/', $name);
 
 		// another hash
 		$files[] = __DIR__ . DIRECTORY_SEPARATOR . 'fixtures' . DIRECTORY_SEPARATOR . 'c.txt';
@@ -51,7 +51,7 @@ class DefaultOutputNamingConventionTest extends TestCase
 		];
 
 		$name = $this->object->getFilename($files, $this->compiler);
-		$this->assertRegExp('/^[0-9a-f]{12}$/', $name);
+		$this->assertMatchesRegularExpression('/^[0-9a-f]{12}$/', $name);
 	}
 
 
@@ -62,7 +62,7 @@ class DefaultOutputNamingConventionTest extends TestCase
 		];
 
 		$name = DefaultOutputNamingConvention::createCssConvention()->getFilename($files, $this->compiler);
-		$this->assertRegExp('/^[0-9a-f]{12}.css$/', $name);
+		$this->assertMatchesRegularExpression('/^[0-9a-f]{12}.css$/', $name);
 	}
 
 
@@ -73,6 +73,6 @@ class DefaultOutputNamingConventionTest extends TestCase
 		];
 
 		$name = DefaultOutputNamingConvention::createJsConvention()->getFilename($files, $this->compiler);
-		$this->assertRegExp('/^[0-9a-f]{12}.js$/', $name);
+		$this->assertMatchesRegularExpression('/^[0-9a-f]{12}.js$/', $name);
 	}
 }

@@ -41,45 +41,77 @@ class Extension extends CompilerExtension
 	}
 
 
+	private function getJsConfigSchema(bool $useDefaults = false): Schema
+	{
+		$checkLastModified = $useDefaults ? true : null;
+		$debug = $useDefaults ? false : null;
+		$sourceDir = $useDefaults ? ($this->wwwDir . '/js') : null;
+		$tempDir = $useDefaults ? ($this->wwwDir . '/' . self::DEFAULT_TEMP_PATH) : null;
+		$tempPath = $useDefaults ? self::DEFAULT_TEMP_PATH : null;
+		$async = $useDefaults ? false : null;
+		$defer = $useDefaults ? false : null;
+		$absoluteUrl = $useDefaults ? false : null;
+		$namingConvention = $useDefaults ? ('@' . $this->prefix('jsNamingConvention')) : null;
+
+		return Expect::structure([
+			'checkLastModified' => Expect::bool($checkLastModified),
+			'debug' => Expect::bool($debug),
+			'sourceDir' => Expect::string($sourceDir),
+			'tempDir' => Expect::string($tempDir),
+			'tempPath' => Expect::string($tempPath),
+			'files' => Expect::array(),
+			'watchFiles' => Expect::array(),
+			'remoteFiles' => Expect::array(),
+			'filters' => Expect::array(),
+			'fileFilters' => Expect::array(),
+			'async' => Expect::bool($async),
+			'defer' => Expect::bool($defer),
+			'nonce' => Expect::string()->nullable(),
+			'absoluteUrl' => Expect::bool($absoluteUrl),
+			'namingConvention' => Expect::string($namingConvention),
+		]);
+	}
+
+
+	private function getCssConfigSchema(bool $useDefaults = false): Schema
+	{
+		$checkLastModified = $useDefaults ? true : null;
+		$debug = $useDefaults ? false : null;
+		$sourceDir = $useDefaults ? ($this->wwwDir . '/css') : null;
+		$tempDir = $useDefaults ? ($this->wwwDir . '/' . self::DEFAULT_TEMP_PATH) : null;
+		$tempPath = $useDefaults ? self::DEFAULT_TEMP_PATH : null;
+		$async = $useDefaults ? false : null;
+		$defer = $useDefaults ? false : null;
+		$absoluteUrl = $useDefaults ? false : null;
+		$namingConvention = $useDefaults ? ('@' . $this->prefix('cssNamingConvention')) : null;
+
+		return Expect::structure([
+			'checkLastModified' => Expect::bool($checkLastModified),
+			'debug' => Expect::bool($debug),
+			'sourceDir' => Expect::string($sourceDir),
+			'tempDir' => Expect::string($tempDir),
+			'tempPath' => Expect::string($tempPath),
+			'files' => Expect::array(),
+			'watchFiles' => Expect::array(),
+			'remoteFiles' => Expect::array(),
+			'filters' => Expect::array(),
+			'fileFilters' => Expect::array(),
+			'async' => Expect::bool($async),
+			'defer' => Expect::bool($defer),
+			'nonce' => Expect::string()->nullable(),
+			'absoluteUrl' => Expect::bool($absoluteUrl),
+			'namingConvention' => Expect::string($namingConvention),
+		]);
+	}
+
+
 	public function getConfigSchema(): Schema
 	{
 		return Expect::structure([
-			'jsDefaults' => Expect::structure([
-				'checkLastModified' => Expect::bool(true),
-				'debug' => Expect::bool(false),
-				'sourceDir' => Expect::string($this->wwwDir . '/js'),
-				'tempDir' => Expect::string($this->wwwDir . '/' . self::DEFAULT_TEMP_PATH),
-				'tempPath' => Expect::string(self::DEFAULT_TEMP_PATH),
-				'files' => Expect::array(),
-				'watchFiles' => Expect::array(),
-				'remoteFiles' => Expect::array(),
-				'filters' => Expect::array(),
-				'fileFilters' => Expect::array(),
-				'async' => Expect::bool(false),
-				'defer' => Expect::bool(false),
-				'nonce' => Expect::string()->nullable(),
-				'absoluteUrl' => Expect::bool(false),
-				'namingConvention' => Expect::string('@' . $this->prefix('jsNamingConvention')),
-			]),
-			'cssDefaults' => Expect::structure([
-				'checkLastModified' => Expect::bool(true),
-				'debug' => Expect::bool(false),
-				'sourceDir' => Expect::string($this->wwwDir . '/css')->dynamic(),
-				'tempDir' => Expect::string($this->wwwDir . '/' . self::DEFAULT_TEMP_PATH),
-				'tempPath' => Expect::string(self::DEFAULT_TEMP_PATH),
-				'files' => Expect::array(),
-				'watchFiles' => Expect::array(),
-				'remoteFiles' => Expect::array(),
-				'filters' => Expect::array(),
-				'fileFilters' => Expect::array(),
-				'async' => Expect::bool(false),
-				'defer' => Expect::bool(false),
-				'nonce' => Expect::string()->nullable(),
-				'absoluteUrl' => Expect::bool(false),
-				'namingConvention' => Expect::string('@' . $this->prefix('cssNamingConvention')),
-			]),
-			'js' => Expect::array(),
-			'css' => Expect::array(),
+			'jsDefaults' => $this->getJsConfigSchema(true),
+			'cssDefaults' => $this->getCssConfigSchema(true),
+			'js' => Expect::arrayOf($this->getJsConfigSchema()),
+			'css' => Expect::arrayOf($this->getCssConfigSchema()),
 			'debugger' => Expect::bool($this->debugMode),
 		]);
 	}
@@ -106,12 +138,16 @@ class Extension extends CompilerExtension
 
 		$loaderFactoryTempPaths = [];
 
-		bdump($config);
-
 		foreach (['css', 'js'] as $type) {
 			foreach ($config[$type] as $name => $wlConfig) {
 				/** @var array $wlConfig */
+				$wlConfig = array_filter($wlConfig);
 				$wlConfig = SchemaHelpers::merge($wlConfig, $config[$type . 'Defaults']);
+
+				if (!is_array($wlConfig)) {
+					throw new CompilationException('Batch config not valid.');
+				}
+
 				$this->addWebLoader($builder, $type . ucfirst($name), $wlConfig);
 				$loaderFactoryTempPaths[strtolower($name)] = $wlConfig['tempPath'];
 

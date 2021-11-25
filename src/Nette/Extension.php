@@ -144,7 +144,6 @@ class Extension extends CompilerExtension
 
 		$loaderFactoryTempPaths = [];
 
-
 		$this->extractBatchesFromExtensions();
 		$this->extractNormalBatches($config);
 

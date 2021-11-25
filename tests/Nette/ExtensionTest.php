@@ -8,12 +8,12 @@ use Nette\DI\Compiler;
 use Nette\DI\Container;
 use Nette\Utils\Finder;
 use PHPUnit\Framework\TestCase;
+use WebLoader\Compiler as WebloaderCompiler;
 use WebLoader\Nette\Extension;
 use WebLoader\Path;
 
 class ExtensionTest extends TestCase
 {
-
 	private Container $container;
 	private string $appDir;
 	private string $wwwDir;
@@ -34,7 +34,11 @@ class ExtensionTest extends TestCase
 
 	private function prepareContainer(array $configFiles): void
 	{
-		foreach (Finder::findFiles('*')->exclude('.gitignore')->from($this->tempDir . '/cache') as $file) {
+		$finder = Finder::findFiles('*')
+			->exclude('.gitignore')
+			->from($this->tempDir . '/cache');
+
+		foreach ($finder as $file) {
 			unlink((string) $file);
 		}
 
@@ -169,7 +173,13 @@ class ExtensionTest extends TestCase
 		$configurator->addConfig($this->fixturesDir . '/extensionName.neon');
 		$container = $configurator->createContainer();
 
-		$this->assertInstanceOf('WebLoader\Compiler', $container->getService('Foo.cssDefaultCompiler'));
-		$this->assertInstanceOf('WebLoader\Compiler', $container->getService('Foo.jsDefaultCompiler'));
+		$this->assertInstanceOf(
+			WebloaderCompiler::class,
+			$container->getService('Foo.cssDefaultCompiler')
+		);
+		$this->assertInstanceOf(
+			WebloaderCompiler::class,
+			$container->getService('Foo.jsDefaultCompiler')
+		);
 	}
 }

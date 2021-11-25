@@ -22,3 +22,6 @@ parameters:
 		-
 			message: '#Access to an undefined property WebLoader\\Filter\\VariablesFilter::\$bar\.#'
 			path: %currentWorkingDirectory%/tests/Filter/VariablesFilterTest.php
+		-
+			message: '#Property WebLoader\\Nette\\Diagnostics\\Panel::\$root is never read, only written.#'
+			path: %currentWorkingDirectory%/src/Nette/Diagnostics/Panel.php

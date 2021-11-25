@@ -17,7 +17,7 @@ use Nette\Utils\Finder;
 use SplFileInfo;
 use WebLoader\BatchCollection;
 use WebLoader\Compiler as WebloaderCompiler;
-use WebLoader\Contract\IBatchProvider;
+use WebLoader\Contract\IWebloaderAssetProvider;
 use WebLoader\Exception\CompilationException;
 use WebLoader\FileCollection;
 use WebLoader\Exception\FileNotFoundException;
@@ -334,8 +334,8 @@ class Extension extends CompilerExtension
 	private function extractBatchesFromExtensions(): void
 	{
 		// Extension batches
-		/** @var array<IBatchProvider> $batchProviders */
-		$batchProviders = $this->compiler->getExtensions(IBatchProvider::class);
+		/** @var array<IWebloaderAssetProvider> $batchProviders */
+		$batchProviders = $this->compiler->getExtensions(IWebloaderAssetProvider::class);
 
 		if (empty($batchProviders)) {
 			return;
@@ -344,10 +344,10 @@ class Extension extends CompilerExtension
 		$schemaProcessor = new Processor;
 
 		foreach($batchProviders as $batchProvider) {
-			$batchCollections = $batchProvider->getBatches();
-			$schemaProcessor->process($this->getConfigSchema(), $batchCollections);
+			$assets = $batchProvider->getWebloaderAssets();
+			$schemaProcessor->process($this->getConfigSchema(), $assets);
 
-			foreach ($batchCollections as $type => $batches) {
+			foreach ($assets as $type => $batches) {
 				foreach ($batches as $name => $batch) {
 					$this->batchCollection->addBatch($type, $name, $batch);
 				}

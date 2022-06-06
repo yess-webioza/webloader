@@ -60,5 +60,10 @@
 	"scripts": {
 		"phpstan": "./phpstan/phpstan",
 		"tests": "./vendor/bin/phpunit --configuration tests/phpunit.xml tests"
+	},
+	"config": {
+		"allow-plugins": {
+			"phpstan/extension-installer": true
+		}
 	}
 }

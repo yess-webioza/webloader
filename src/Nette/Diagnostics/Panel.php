@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace WebLoader\Nette\Diagnostics;
 
 use Latte;
-use Latte\Runtime\Filters;
+use Latte\Essential\Filters;
 use Tracy\Debugger;
 use Tracy\IBarPanel;
 use WebLoader\Compiler;

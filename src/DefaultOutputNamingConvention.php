@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace WebLoader;
 
@@ -13,14 +13,13 @@ use WebLoader\Contract\IOutputNamingConvention;
  */
 class DefaultOutputNamingConvention implements IOutputNamingConvention
 {
-
 	private string $prefix = '';
 	private string $suffix = '';
 
 
 	public static function createCssConvention(): self
 	{
-		$convention = new self();
+		$convention = new self;
 		$convention->setSuffix('.css');
 
 		return $convention;
@@ -29,7 +28,7 @@ class DefaultOutputNamingConvention implements IOutputNamingConvention
 
 	public static function createJsConvention(): self
 	{
-		$convention = new self();
+		$convention = new self;
 		$convention->setSuffix('.js');
 
 		return $convention;

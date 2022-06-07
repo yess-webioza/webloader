@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace WebLoader\Nette\Diagnostics;
 
@@ -9,7 +9,6 @@ use Latte\Essential\Filters;
 use Tracy\Debugger;
 use Tracy\IBarPanel;
 use WebLoader\Compiler;
-use WebLoader\File;
 
 /**
  * Debugger panel.
@@ -17,7 +16,6 @@ use WebLoader\File;
  */
 class Panel implements IBarPanel
 {
-
 	public static array $types = [
 		'css' => 'CSS files',
 		'js' => 'JavaScript files',
@@ -36,7 +34,9 @@ class Panel implements IBarPanel
 
 	public function __construct(?string $appDir = null)
 	{
-		$this->root = $appDir ? str_replace('\\', DIRECTORY_SEPARATOR, (string) realpath(dirname($appDir))) : '';
+		$this->root = $appDir
+			? str_replace('\\', DIRECTORY_SEPARATOR, (string) realpath(dirname($appDir)))
+			: '';
 		Debugger::getBar()->addPanel($this);
 	}
 
@@ -88,7 +88,7 @@ class Panel implements IBarPanel
 
 			$generated = $compiler->generate();
 
-			if (is_null($generated)) {
+			if (null === $generated) {
 				continue;
 			}
 
@@ -133,9 +133,7 @@ class Panel implements IBarPanel
 	{
 		$latte = new Latte\Engine;
 
-		$latte->addFilter('extension', function ($extension) {
-			return isset(self::$types[$extension]) ? self::$types[$extension] : $extension;
-		});
+		$latte->addFilter('extension', fn($extension) => self::$types[$extension] ?? $extension);
 
 		return $latte->renderToString(__DIR__ . '/panel.latte', [
 			'files' => $this->files,
@@ -160,6 +158,10 @@ class Panel implements IBarPanel
 	public function getTab(): string
 	{
 		$this->compute();
+
+		if (empty($this->size['combined'])) {
+			return '';
+		}
 
 		return '<span title="WebLoader">'
 			. '<svg viewBox="0 -50 600 600" style="vertical-align: bottom; width:1.23em; height:1.55em"><polygon fill="#1565C0" points="75.089,23.98 58.245,108.778 403.138,108.778 392.289,163.309 47.111,163.309 30.549,248.104 375.445,248.104 356.027,344.887 217.273,390.856 96.789,344.887 105.069,302.921 20.272,302.921 0,404.559 199.286,480.791 428.831,404.559 504.771,23.98"/></svg>'

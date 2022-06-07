@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace WebLoader\Nette;
 
@@ -22,7 +22,7 @@ class CssLoader extends WebLoader
 	private bool $alternate = false;
 
 
-	public function getMedia(): string
+	public function getMedia(): ?string
 	{
 		return $this->media;
 	}
@@ -34,7 +34,7 @@ class CssLoader extends WebLoader
 	}
 
 
-	public function getTitle(): string
+	public function getTitle(): ?string
 	{
 		return $this->title;
 	}
@@ -105,5 +105,4 @@ class CssLoader extends WebLoader
 
 		return $el;
 	}
-
 }

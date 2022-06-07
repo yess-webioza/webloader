@@ -3,12 +3,14 @@ declare(strict_types=1);
 
 namespace WebLoader\Test;
 
+use Exception;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 use TypeError;
 use WebLoader\Compiler;
 use WebLoader\Contract\IFileCollection;
 use WebLoader\Contract\IOutputNamingConvention;
+use WebLoader\File;
 use WebLoader\FileCollection;
 use WebLoader\Exception\FileNotFoundException;
 
@@ -52,13 +54,13 @@ class CompilerTest extends TestCase
 
 	private function getTempFiles(): array
 	{
-		return (array) glob(__DIR__ . '/temp/webloader-*');
+		return (array)glob(__DIR__ . '/temp/webloader-*');
 	}
 
 
 	public function testEmptyFiles(): void
 	{
-		$this->object->setFileCollection(new FileCollection());
+		$this->object->setFileCollection(new FileCollection(''));
 
 		$ret = $this->object->generate();
 		$this->assertNull($ret);
@@ -91,7 +93,7 @@ class CompilerTest extends TestCase
 		$expectedContent = '-' . PHP_EOL . 'a:cba,' . PHP_EOL . 'b:fed,' . PHP_EOL .
 			'c:ihg,-' . PHP_EOL . 'a:cba,' . PHP_EOL . 'b:fed,' . PHP_EOL . 'c:ihg,';
 
-		$file = $this->object->generate();
+		$file = $this->generateFile();
 
 		$this->assertTrue(is_numeric($file->getLastModified()) && $file->getLastModified() > 0, 'Generate does not provide last modified timestamp correctly.');
 
@@ -103,7 +105,8 @@ class CompilerTest extends TestCase
 
 	public function testGenerateReturnsSourceFilePaths(): void
 	{
-		$file = $this->object->generate();
+		$file = $this->generateFile();
+
 		$this->assertIsArray($file->getSourceFiles());
 		$this->assertCount(3, $file->getSourceFiles());
 		$this->assertFileExists($file->getSourceFiles()[0]);
@@ -143,5 +146,17 @@ class CompilerTest extends TestCase
 	{
 		$this->expectException(TypeError::class);
 		$this->object->addFileFilter(4);
+	}
+
+
+	private function generateFile(): File
+	{
+		$file = $this->object->generate();
+
+		if ($file === null) {
+			throw new Exception('Should not be empty');
+		}
+
+		return $file;
 	}
 }

@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace WebLoader\Filter;
 
@@ -19,8 +19,7 @@ class Process
 		?string $stdin = null,
 		?string $cwd = null,
 		?array $env = null
-	): string
-	{
+	): string {
 		$descriptorspec = [
 			0 => ['pipe', 'r'], // stdin
 			1 => ['pipe', 'w'], // stdout

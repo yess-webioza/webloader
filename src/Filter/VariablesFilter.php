@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace WebLoader\Filter;
 
@@ -14,13 +14,11 @@ use WebLoader\Exception\InvalidArgumentException;
  */
 class VariablesFilter
 {
-
 	private string $startVariable = '{{$';
 	private string $endVariable = '}}';
-	private array $variables = [];
 
 
-	public function __construct(array $variables = [])
+	public function __construct(private array $variables = [])
 	{
 		foreach ($variables as $key => $value) {
 			$this->$key = $value;
@@ -30,8 +28,8 @@ class VariablesFilter
 
 	public function setDelimiter(string $start, string $end): self
 	{
-		$this->startVariable = (string) $start;
-		$this->endVariable = (string) $end;
+		$this->startVariable = $start;
+		$this->endVariable = $end;
 		return $this;
 	}
 
@@ -41,9 +39,7 @@ class VariablesFilter
 		$start = $this->startVariable;
 		$end = $this->endVariable;
 
-		$variables = array_map(function ($key) use ($start, $end) {
-			return $start . $key . $end;
-		}, array_keys($this->variables));
+		$variables = array_map(fn($key) => $start . $key . $end, array_keys($this->variables));
 
 		$values = array_values($this->variables);
 

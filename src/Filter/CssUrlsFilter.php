@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace WebLoader\Filter;
 
@@ -16,20 +16,18 @@ use WebLoader\Path;
  */
 class CssUrlsFilter
 {
-
-	protected string $basePath;
 	private string $docRoot;
 
 
-	public function __construct(string $docRoot, string $basePath = '/')
-	{
+	public function __construct(
+		string $docRoot,
+		protected string $basePath = '/'
+	) {
 		$this->docRoot = Path::normalize($docRoot);
 
 		if (!is_dir($this->docRoot)) {
 			throw new InvalidArgumentException('Given document root is not directory.');
 		}
-
-		$this->basePath = $basePath;
 	}
 
 
@@ -109,9 +107,7 @@ class CssUrlsFilter
 
 		$self = $this;
 
-		$return = preg_replace_callback($regexp, function ($matches) use ($self, $file) {
-			return "url('" . $self->absolutizeUrl($matches[2], $matches[1], $file) . "')";
-		}, $code);
+		$return = preg_replace_callback($regexp, fn($matches) => "url('" . $self->absolutizeUrl($matches[2], $matches[1], $file) . "')", $code);
 
 		return (string) $return;
 	}

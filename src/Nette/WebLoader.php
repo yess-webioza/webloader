@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace WebLoader\Nette;
 
@@ -18,17 +18,11 @@ use WebLoader\FileCollection;
  */
 abstract class WebLoader extends Control
 {
-
-	private Compiler $compiler;
-	private string $tempPath;
-	private bool $appendLastModified;
-
-
-	public function __construct(Compiler $compiler, string $tempPath, bool $appendLastModified)
-	{
-		$this->compiler = $compiler;
-		$this->tempPath = $tempPath;
-		$this->appendLastModified = $appendLastModified;
+	public function __construct(
+		private Compiler $compiler,
+		private string $tempPath,
+		private bool $appendLastModified
+	) {
 	}
 
 

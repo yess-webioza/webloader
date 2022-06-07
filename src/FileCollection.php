@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace WebLoader;
 
@@ -16,16 +16,13 @@ use WebLoader\Exception\FileNotFoundException;
  */
 class FileCollection implements IFileCollection
 {
-
-	private string $root;
 	private array $files = [];
 	private array $watchFiles = [];
 	private array $remoteFiles = [];
 
 
-	public function __construct(?string $root = null)
+	public function __construct(private string $root)
 	{
-		$this->root = (string) $root;
 	}
 
 

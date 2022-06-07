@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace WebLoader\Nette;
 
@@ -8,7 +8,6 @@ use Nette\Configurator;
 use Nette\DI\Compiler;
 use Nette\DI\CompilerExtension;
 use Nette\DI\ContainerBuilder;
-use Nette\PhpGenerator\ClassType;
 use Nette\Schema\Expect;
 use Nette\Schema\Helpers as SchemaHelpers;
 use Nette\Schema\Processor;
@@ -19,8 +18,8 @@ use WebLoader\BatchCollection;
 use WebLoader\Compiler as WebloaderCompiler;
 use WebLoader\Contract\IWebloaderAssetProvider;
 use WebLoader\Exception\CompilationException;
-use WebLoader\FileCollection;
 use WebLoader\Exception\FileNotFoundException;
+use WebLoader\FileCollection;
 use WebLoader\Nette\Diagnostics\Panel;
 use WebLoader\Nette\SymfonyConsole\GenerateCommand;
 
@@ -57,7 +56,9 @@ class Extension extends CompilerExtension
 		$async = $useDefaults ? false : null;
 		$defer = $useDefaults ? false : null;
 		$absoluteUrl = $useDefaults ? false : null;
-		$namingConvention = $useDefaults ? ('@' . $this->prefix('jsNamingConvention')) : null;
+		$namingConvention = $useDefaults
+			? ('@' . $this->prefix('jsNamingConvention'))
+			: null;
 
 		return Expect::structure([
 			'checkLastModified' => Expect::bool($checkLastModified),
@@ -89,7 +90,9 @@ class Extension extends CompilerExtension
 		$async = $useDefaults ? false : null;
 		$defer = $useDefaults ? false : null;
 		$absoluteUrl = $useDefaults ? false : null;
-		$namingConvention = $useDefaults ? ('@' . $this->prefix('cssNamingConvention')) : null;
+		$namingConvention = $useDefaults
+			? ('@' . $this->prefix('cssNamingConvention'))
+			: null;
 
 		return Expect::structure([
 			'checkLastModified' => Expect::bool($checkLastModified),
@@ -343,7 +346,7 @@ class Extension extends CompilerExtension
 
 		$schemaProcessor = new Processor;
 
-		foreach($batchProviders as $batchProvider) {
+		foreach ($batchProviders as $batchProvider) {
 			$assets = $batchProvider->getWebloaderAssets();
 			$schemaProcessor->process($this->getConfigSchema(), $assets);
 

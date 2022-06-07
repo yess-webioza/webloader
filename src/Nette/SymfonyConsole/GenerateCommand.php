@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace WebLoader\Nette\SymfonyConsole;
 
@@ -48,7 +48,7 @@ class GenerateCommand extends Command
 		$noFiles = true;
 		foreach ($this->compilers as $compiler) {
 			$file = $compiler->generate();
-			if (!is_null($file)) {
+			if (null !== $file) {
 				$output->writeln($file->getFileName());
 				$noFiles = false;
 			}

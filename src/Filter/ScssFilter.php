@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace WebLoader\Filter;
 
@@ -15,13 +15,8 @@ use WebLoader\Compiler;
  */
 class ScssFilter
 {
-
-	private ?ScssCompiler $sc;
-
-
-	public function __construct(?ScssCompiler $sc = null)
+	public function __construct(private ?ScssCompiler $sc = null)
 	{
-		$this->sc = $sc;
 	}
 
 
@@ -29,7 +24,7 @@ class ScssFilter
 	{
 		// lazy loading
 		if (empty($this->sc)) {
-			$this->sc = new ScssCompiler();
+			$this->sc = new ScssCompiler;
 		}
 
 		return $this->sc;

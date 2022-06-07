@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace WebLoader;
 
@@ -17,7 +17,6 @@ use WebLoader\Exception\InvalidArgumentException;
  */
 class Compiler
 {
-
 	private IFileCollection $collection;
 	private IOutputNamingConvention $namingConvention;
 	private string $outputDir;
@@ -206,7 +205,9 @@ class Compiler
 	{
 		$name = $this->namingConvention->getFilename($files, $this);
 		$path = $this->outputDir . '/' . $name;
-		$lastModified = $this->checkLastModified ? $this->getLastModified($watchFiles) : 0;
+		$lastModified = $this->checkLastModified
+			? $this->getLastModified($watchFiles)
+			: 0;
 
 		if (!file_exists($path) || $lastModified > filemtime($path) || $this->debugging === true) {
 			// disabled: https://github.com/nette/safe-stream/pull/5

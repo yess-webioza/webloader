@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace WebLoader\Filter;
 
@@ -14,15 +14,12 @@ use WebLoader\Compiler;
  */
 class StylusFilter
 {
-
 	public bool $compress = false;
 	public bool $includeCss = false;
-	private string $bin;
 
 
-	public function __construct(string $bin = 'stylus')
+	public function __construct(private string $bin = 'stylus')
 	{
-		$this->bin = $bin;
 	}
 
 

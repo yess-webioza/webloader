@@ -8,7 +8,7 @@ parameters:
 	excludePaths:
 		- %currentWorkingDirectory%/tests/temp/*
 
-	level: 7
+	level: 8
 
 	checkMissingIterableValueType: false
 

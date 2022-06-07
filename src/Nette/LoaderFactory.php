@@ -1,42 +1,24 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace WebLoader\Nette;
 
 use Nette\DI\Container;
 use Nette\Http\IRequest;
 use WebLoader\Compiler;
-use WebLoader\DefaultOutputNamingConvention;
 use WebLoader\Contract\IOutputNamingConvention;
+use WebLoader\DefaultOutputNamingConvention;
 
 class LoaderFactory
 {
-
-	private IRequest $httpRequest;
-	private Container $diContainer;
-	private string $extensionName;
-
-	/** @var array<string> */
-	private array $tempPaths;
-
-
-	/**
-	 * @param array<string> $tempPaths
-	 * @param string $extensionName
-	 * @param IRequest $httpRequest
-	 * @param Container $diContainer
-	 */
+	/** @param array<string> $tempPaths */
 	public function __construct(
-		array $tempPaths,
-		string $extensionName,
-		IRequest $httpRequest,
-		Container $diContainer
+		private array $tempPaths,
+		private string $extensionName,
+		private IRequest $httpRequest,
+		private Container $diContainer
 	) {
-		$this->httpRequest = $httpRequest;
-		$this->diContainer = $diContainer;
-		$this->tempPaths = $tempPaths;
-		$this->extensionName = $extensionName;
 	}
 
 

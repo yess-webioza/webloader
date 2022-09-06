@@ -5,5 +5,6 @@ namespace WebLoader\Contract;
 
 interface IWebloaderAssetProvider
 {
+	/** @return array<string, array<mixed>> */
 	public function getWebloaderAssets(): array;
 }

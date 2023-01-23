@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace WebLoader\Nette;
 
-use Nette\Configurator;
+use Nette\Bootstrap\Configurator;
 use Nette\DI\Compiler;
 use Nette\DI\CompilerExtension;
 use Nette\DI\ContainerBuilder;

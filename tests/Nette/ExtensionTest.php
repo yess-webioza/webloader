@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace WebLoader\Test\Nette;
 
-use Nette\Configurator;
+use Nette\Bootstrap\Configurator;
 use Nette\DI\Compiler;
 use Nette\DI\Container;
 use Nette\Utils\Finder;
